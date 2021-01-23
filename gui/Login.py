@@ -26,8 +26,6 @@ class Login(QDialog):
 
         self.Header.mouseMoveEvent = moveWindow
 
-
-
     def forgetpass(self,eve):
         print('dsd')
 
