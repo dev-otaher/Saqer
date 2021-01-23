@@ -1,0 +1,12 @@
+<RCC>
+  <qresource prefix="logo">
+    <file>SAQER1.png</file>
+  </qresource>
+  <qresource prefix="Background">
+    <file>pattern-background-png-4.png</file>
+    <file>pattern-background-png-4.png</file>
+  </qresource>
+  <qresource prefix="logo2">
+    <file>SAQER2.png</file>
+  </qresource>
+</RCC>
