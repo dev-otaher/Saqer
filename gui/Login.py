@@ -45,6 +45,12 @@ class Login(QDialog):
     def printValue2(self):
         print("This is value")
 
+    def printValue2(self):
+        print("This is value")
+
+    def printValue3(self):
+        print("This is value")
+
 
 app=QApplication(sys.argv)
 mainwindow=Login()
