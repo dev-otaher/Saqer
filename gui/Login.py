@@ -2,7 +2,7 @@ import sys
 from PyQt5.QtWidgets import QDialog, QApplication, QLabel
 from PyQt5.uic import loadUi
 from PyQt5 import QtCore
-from PyQt5 import Qt
+from PyQt5.QtCore  import Qt
 
 
 class Login(QDialog):
@@ -17,7 +17,9 @@ class Login(QDialog):
         self.setWindowFlags(QtCore.Qt.WindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint))
         self.Fpassword.mousePressEvent = self.forgetpass
         self.show()
+        self.Header.mouseMoveEvent = self.moveWindow
 
+<<<<<<< Updated upstream
         def moveWindow(e):
                 if e.buttons() == Qt.LeftButton:
                     self.move(self.pos() + e.globalPos() - self.clickPosition)
@@ -29,6 +31,15 @@ class Login(QDialog):
 
 
     def forgetpass(self,eve):
+=======
+    def moveWindow(self, e):
+        if e.buttons() == Qt.LeftButton:
+            self.move(self.pos() + e.globalPos() - self.clickPosition)
+            self.clickPosition = e.globalPos()
+            e.accept()
+
+    def forgetpass(self, eve):
+>>>>>>> Stashed changes
         print('dsd')
 
     def mousePressEvent(self, event):
