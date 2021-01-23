@@ -42,14 +42,8 @@ class Login(QDialog):
         if  username == "" and password =="":
             self.password_note.setHidden(False)
 
-    def printValue2(self):
-        print("This is value")
-
-    def printValue2(self):
-        print("This is value")
-
-    def printValue3(self):
-        print("This is value")
+    def printX(self):
+        print("x")
 
 
 app=QApplication(sys.argv)
