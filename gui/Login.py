@@ -23,7 +23,6 @@ class Login(QDialog):
                     self.move(self.pos() + e.globalPos() - self.clickPosition)
                     self.clickPosition = e.globalPos()
                     e.accept()
-
         self.Header.mouseMoveEvent = moveWindow
 
     def forgetpass(self,eve):
