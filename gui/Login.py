@@ -19,7 +19,6 @@ class Login(QDialog):
         self.show()
         self.Header.mouseMoveEvent = self.moveWindow
 
-
     def moveWindow(self, e):
         if e.buttons() == Qt.LeftButton:
             self.move(self.pos() + e.globalPos() - self.clickPosition)
@@ -27,7 +26,6 @@ class Login(QDialog):
             e.accept()
 
     def forgetpass(self, eve):
-
         print('dsd')
 
     def mousePressEvent(self, event):
