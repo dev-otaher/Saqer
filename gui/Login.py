@@ -52,6 +52,7 @@ class Login(QDialog):
         print("This is value")
 
 
+    print('hello')
 
 app=QApplication(sys.argv)
 mainwindow=Login()
