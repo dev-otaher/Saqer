@@ -43,7 +43,7 @@ class Loding(QtWidgets.QMainWindow):
         dots += "."
         if dots == "....":
             dots = ""
-        self.Loding.setText("Loding" + dots)
+        self.Loading.setText("Loading" + dots)
 
 
 app = QtWidgets.QApplication(sys.argv)
