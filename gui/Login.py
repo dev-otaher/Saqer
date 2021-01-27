@@ -1,23 +1,28 @@
 import sys
-from PyQt5.QtWidgets import QDialog, QApplication, QLabel
+from PyQt5.QtWidgets import QDialog, QApplication
 from PyQt5.uic import loadUi
 from PyQt5 import QtCore
-from PyQt5.QtCore  import Qt
+from PyQt5.QtCore import Qt
+from Saqer.gui import ForgetPassword
 
 
+#each interface defined in a class
 class Login(QDialog):
 
+    #cnstructor of the class
     def __init__(self):
         super(Login, self).__init__()
-        loadUi("LoginPage.ui",self)
-        self.login.clicked.connect(self.loginfun)
+        loadUi("./Interfaces files/LoginPage.ui", self)
+        self.login.clicked.connect(self.loginfunc)
         self.password_note.setHidden(True)
-        self.closewindow.clicked.connect(lambda: self.close())
+        self.closewindow.clicked.connect(lambda: exit())
         self.minmizewindow.clicked.connect(lambda: self.showMinimized())
-        self.setWindowFlags(QtCore.Qt.WindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint))
         self.Fpassword.mousePressEvent = self.forgetpass
-        self.show()
         self.Header.mouseMoveEvent = self.moveWindow
+        self.setWindowFlags(QtCore.Qt.WindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint))
+        self.show()
+
+        # Function for moving the window anywhere in the screen
 
     def moveWindow(self, e):
         if e.buttons() == Qt.LeftButton:
@@ -25,39 +30,23 @@ class Login(QDialog):
             self.clickPosition = e.globalPos()
             e.accept()
 
-    def forgetpass(self, eve):
-        print('dsd')
+        # It runs the forget password window
 
+    def forgetpass(self, eve):
+        ForgetPassword.ForgetPassword()
+
+    #Used to move the screen
     def mousePressEvent(self, event):
         self.clickPosition = event.globalPos()
 
-
-    def windowFilePath(self):
-        print('hello!')
-
-    def loginfun(self):
+    def loginfunc(self):
         username = self.username.text()
         password = self.password.text()
-
-        if  username == "" and password =="":
+        if username == "" and password == "":
             self.password_note.setHidden(False)
 
-
-    def printValue(self):
-        print("This is value")
-
-    def printValue2(self):
-        print("This is value")
-
-    def printValue3(self):
-        print("This is value")
-
-
-    print('hello')
 
 
 app=QApplication(sys.argv)
 mainwindow=Login()
 sys.exit(app.exec_())
-
-
