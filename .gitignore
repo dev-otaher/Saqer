@@ -2,3 +2,4 @@ venv
 .idea
 db/serviceAccountKey.json
 *.pyc
+db/fbConfig.json
