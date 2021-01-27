@@ -53,17 +53,24 @@ class Login(QDialog):
                     config = json.load(file)
                 firebase = pyrebase.initialize_app(config)
                 auth = firebase.auth()
-                self.password_note.text = "Welcome, " + auth.sign_in_with_email_and_password(username, password)["displayName"]
-                # self.password_note.setHidden(False)
-                print("Success")
-            except requests.exceptions.HTTPError:
+                db = firebase.database()
+                user = auth.sign_in_with_email_and_password(username, password)
+                isAdmin = db.child("users").child(str(user["localId"])).child("isAdmin").get()
+                if isAdmin.val() == "True":
+                    print("Is admin...")
+                else:
+                    print("Is instructor...")
+            except requests.exceptions.HTTPError as e:
+                print(e)
                 # print(json.loads(e.args[1])["error"]["message"])
                 self.password_note.setHidden(False)
             except Exception as e:
                 print(e)
                 print("Something went wrong! Could not login.")
 
-
-app=QApplication(sys.argv)
-mainwindow = Login()
-sys.exit(app.exec_())
+try:
+    app=QApplication(sys.argv)
+    mainwindow = Login()
+    sys.exit(app.exec_())
+except Exception as e:
+    print(e)
