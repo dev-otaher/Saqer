@@ -3,7 +3,7 @@ from PyQt5.uic import loadUi
 from PyQt5 import QtCore
 from PyQt5.QtCore import Qt
 import re
-from Saqer.gui import ForgetPassSuccess
+from gui import ForgetPassSuccess
 
 
 #The forget password window class
