@@ -21,7 +21,7 @@ class Login(QDialog):
 
 class Loding(QtWidgets.QMainWindow):
     def __init__(self):
-        super(Loding, self).__init__()
+        super(Loading, self).__init__()
         uic.loadUi("Loding.ui", self)
         self.setWindowFlag(Qt.FramelessWindowHint)
         self.setAttribute(Qt.WA_TranslucentBackground)
