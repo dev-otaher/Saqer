@@ -17,32 +17,30 @@ class Login(QDialog):
         self.password_note.setHidden(True)
         self.closewindow.clicked.connect(lambda: exit())
         self.minmizewindow.clicked.connect(lambda: self.showMinimized())
-        self.Fpassword.mousePressEvent = self.forgetpass
+        self.Fpassword.mousePressEvent = self.forgetPassword
         self.Header.mouseMoveEvent = self.moveWindow
         self.setWindowFlags(QtCore.Qt.WindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint))
         self.show()
 
-        # Function for moving the window anywhere in the screen
-
+    # Move window around
     def moveWindow(self, e):
         if e.buttons() == Qt.LeftButton:
             self.move(self.pos() + e.globalPos() - self.clickPosition)
             self.clickPosition = e.globalPos()
             e.accept()
 
-        # It runs the forget password window
-
-    def forgetpass(self, eve):
+    # Opens forget password window
+    def forgetPassword(self, eve):
         ForgetPassword.ForgetPassword()
 
-    #Used to move the screen
+    # Allows window to be clickable
     def mousePressEvent(self, event):
         self.clickPosition = event.globalPos()
 
     def loginfunc(self):
         username = self.username.text()
         password = self.password.text()
-        if username == "" and password == "":
+        if username == "" or password == "":
             self.password_note.setHidden(False)
 
 
