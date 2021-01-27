@@ -1,2 +1,4 @@
 venv
 .idea
+db/serviceAccountKey.json
+*.pyc

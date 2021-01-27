@@ -41,7 +41,7 @@
     <enum>Qt::RichText</enum>
    </property>
    <property name="pixmap">
-    <pixmap>images/SAQER1.png</pixmap>
+    <pixmap>../images/SAQER1.png</pixmap>
    </property>
    <property name="scaledContents">
     <bool>true</bool>
@@ -203,7 +203,7 @@ QLabel:pressed {
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap>images/SAQER2.png</pixmap>
+     <pixmap>../images/SAQER2.png</pixmap>
     </property>
     <property name="scaledContents">
      <bool>true</bool>
@@ -285,7 +285,7 @@ border-bottom: 2px solid rgb(85, 255, 255);
     <string/>
    </property>
    <property name="pixmap">
-    <pixmap>images/Background.png</pixmap>
+    <pixmap>../images/Background.png</pixmap>
    </property>
   </widget>
   <widget class="QFrame" name="Header">
