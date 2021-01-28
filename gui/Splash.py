@@ -36,7 +36,3 @@ class Loading(QtWidgets.QMainWindow):
             dots = ""
         self.i_Loading.setText("Loading" + dots)
 
-
-app = QtWidgets.QApplication(sys.argv)
-window = Loading()
-app.exec_()
