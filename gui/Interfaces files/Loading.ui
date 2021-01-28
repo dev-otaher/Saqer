@@ -102,7 +102,7 @@
         <set>Qt::AlignCenter</set>
        </property>
       </widget>
-      <widget class="QProgressBar" name="progressBar">
+      <widget class="QProgressBar" name="i_ProgressBar">
        <property name="geometry">
         <rect>
          <x>50</x>
@@ -128,7 +128,7 @@ QProgressBar::chunk{
         <number>24</number>
        </property>
       </widget>
-      <widget class="QLabel" name="Loding">
+      <widget class="QLabel" name="i_Loading">
        <property name="geometry">
         <rect>
          <x>120</x>
@@ -147,35 +147,10 @@ QProgressBar::chunk{
         <string notr="true">color: rgb(98, 114, 164);</string>
        </property>
        <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Loding...&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Loading...&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_credits">
-       <property name="geometry">
-        <rect>
-         <x>230</x>
-         <y>340</y>
-         <width>421</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Segoe UI</family>
-         <pointsize>12</pointsize>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color: rgb(98, 114, 164);</string>
-       </property>
-       <property name="text">
-        <string>&lt;strong&gt;Created By&lt;/strong&gt;: Saqer</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
       </widget>
      </widget>

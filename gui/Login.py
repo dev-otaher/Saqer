@@ -3,7 +3,7 @@ import sys
 
 import requests
 from PyQt5.QtWidgets import QDialog, QApplication
-from PyQt5.uic import loadUi
+from PyQt5 import uic
 from PyQt5 import QtCore
 from PyQt5.QtCore import Qt
 from gui import ForgetPassword
@@ -16,7 +16,7 @@ class Login(QDialog):
     #cnstructor of the class
     def __init__(self):
         super(Login, self).__init__()
-        loadUi("./Interfaces files/LoginPage.ui", self)
+        uic.loadUi("./Interfaces files/LoginPage.ui", self)
         self.login.clicked.connect(self.loginfunc)
         self.password_note.setHidden(True)
         self.closewindow.clicked.connect(lambda: exit())
