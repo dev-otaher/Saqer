@@ -34,7 +34,7 @@ class Loading(QtWidgets.QMainWindow):
         dots += "."
         if dots == "....":
             dots = ""
-        self.i_Loding.setText("Loading" + dots)
+        self.i_Loading.setText("Loading" + dots)
 
 
 app = QtWidgets.QApplication(sys.argv)

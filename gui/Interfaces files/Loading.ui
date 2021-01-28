@@ -128,7 +128,7 @@ QProgressBar::chunk{
         <number>24</number>
        </property>
       </widget>
-      <widget class="QLabel" name="i_Loding">
+      <widget class="QLabel" name="i_Loading">
        <property name="geometry">
         <rect>
          <x>120</x>
@@ -147,7 +147,7 @@ QProgressBar::chunk{
         <string notr="true">color: rgb(98, 114, 164);</string>
        </property>
        <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Loding...&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Loading...&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
