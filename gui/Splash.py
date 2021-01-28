@@ -19,10 +19,10 @@ class Login(QDialog):
         self.minmizewindow.clicked.connect(lambda: self.showMinimized())
 
 
-class Loding(QtWidgets.QMainWindow):
+class Loading(QtWidgets.QMainWindow):
     def __init__(self):
         super(Loading, self).__init__()
-        uic.loadUi("Loding.ui", self)
+        uic.loadUi("Loading.ui", self)
         self.setWindowFlag(Qt.FramelessWindowHint)
         self.setAttribute(Qt.WA_TranslucentBackground)
         self.timer = QTimer(self)
@@ -44,7 +44,7 @@ class Loding(QtWidgets.QMainWindow):
         if dots == "....":
             dots = ""
         self.Loading.setText("Loading" + dots)
-
+        print("")
 
 app = QtWidgets.QApplication(sys.argv)
 window = Loding()

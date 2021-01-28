@@ -128,7 +128,7 @@ QProgressBar::chunk{
         <number>24</number>
        </property>
       </widget>
-      <widget class="QLabel" name="Loding">
+      <widget class="QLabel" name="Loading">
        <property name="geometry">
         <rect>
          <x>120</x>
