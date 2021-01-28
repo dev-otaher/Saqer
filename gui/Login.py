@@ -42,9 +42,3 @@ class Login(QDialog):
         password = self.password.text()
         if username == "" or password == "":
             self.password_note.setHidden(False)
-
-
-
-app=QApplication(sys.argv)
-mainwindow=Login()
-sys.exit(app.exec_())
