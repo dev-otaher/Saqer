@@ -10,13 +10,13 @@ from gui import ForgetPassword
 import pyrebase
 
 
-#each interface defined in a class
+# each interface defined in a class
 class Login(QDialog):
 
-    #cnstructor of the class
+    # cnstructor of the class
     def __init__(self):
         super(Login, self).__init__()
-        uic.loadUi("./Interfaces files/LoginPage.ui", self)
+        uic.loadUi("gui/Interfaces files/LoginPage.ui", self)
         self.login.clicked.connect(self.loginfunc)
         self.password_note.setHidden(True)
         self.closewindow.clicked.connect(lambda: exit())
@@ -43,13 +43,13 @@ class Login(QDialog):
 
     def loginfunc(self):
         self.password_note.setHidden(True)
-        username = self.username.text()
+        username = self.username.text().strip()
         password = self.password.text()
         if username == "" or password == "":
             self.password_note.setHidden(False)
         else:
             try:
-                with open('../db/fbConfig.json') as file:
+                with open('db/fbConfig.json') as file:
                     config = json.load(file)
                 firebase = pyrebase.initialize_app(config)
                 auth = firebase.auth()

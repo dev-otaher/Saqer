@@ -1,3 +1,4 @@
+import os
 import sys
 from PyQt5 import QtWidgets, QtCore
 from PyQt5 import uic
@@ -9,11 +10,10 @@ from gui.Login import Login
 count = 0
 dots = ""
 
-
 class Loading(QtWidgets.QMainWindow):
     def __init__(self):
         super(Loading, self).__init__()
-        uic.loadUi("Interfaces files/Loading.ui", self)
+        uic.loadUi("gui/Interfaces files/Loading.ui", self)
         self.setWindowFlag(Qt.FramelessWindowHint)
         self.setAttribute(Qt.WA_TranslucentBackground)
         self.timer = QTimer(self)
@@ -35,4 +35,3 @@ class Loading(QtWidgets.QMainWindow):
         if dots == "....":
             dots = ""
         self.i_Loading.setText("Loading" + dots)
-
