@@ -8,8 +8,8 @@ class ForgetPassSuccess(QDialog):
 
     def __init__(self):
         super(ForgetPassSuccess, self).__init__()
-        loadUi("./Interfaces files/ForgetPasswordSuccess.ui", self)
-        self.Hide.clicked.connect(lambda: self.hide())
+        loadUi("gui/Interfaces files/ForgetPasswordSuccess.ui", self)
+        self.i_Hide.clicked.connect(lambda: self.hide())
         self.setWindowFlags(QtCore.Qt.WindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint))
         self.setWindowModality(Qt.ApplicationModal)
         self.show()
