@@ -1,5 +1,6 @@
 import json
 import sys
+import time
 
 import requests
 from PyQt5.QtWidgets import QDialog, QApplication
@@ -24,6 +25,7 @@ class Login(QDialog):
         self.Fpassword.mousePressEvent = self.forgetPassword
         self.Header.mouseMoveEvent = self.moveWindow
         self.setWindowFlags(QtCore.Qt.WindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint))
+
         self.show()
 
     # Move window around
