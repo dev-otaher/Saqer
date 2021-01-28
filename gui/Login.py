@@ -45,6 +45,6 @@ class Login(QDialog):
 
 
 
-# app=QApplication(sys.argv)
-# mainwindow=Login()
-# sys.exit(app.exec_())
+app=QApplication(sys.argv)
+mainwindow=Login()
+sys.exit(app.exec_())
