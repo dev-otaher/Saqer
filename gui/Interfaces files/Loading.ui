@@ -128,7 +128,7 @@ QProgressBar::chunk{
         <number>24</number>
        </property>
       </widget>
-      <widget class="QLabel" name="Loading">
+      <widget class="QLabel" name="Loding_Label">
        <property name="geometry">
         <rect>
          <x>120</x>
@@ -151,31 +151,6 @@ QProgressBar::chunk{
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_credits">
-       <property name="geometry">
-        <rect>
-         <x>230</x>
-         <y>340</y>
-         <width>421</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Segoe UI</family>
-         <pointsize>12</pointsize>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color: rgb(98, 114, 164);</string>
-       </property>
-       <property name="text">
-        <string>&lt;strong&gt;Created By&lt;/strong&gt;: Saqer</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
       </widget>
      </widget>

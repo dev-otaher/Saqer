@@ -2,32 +2,23 @@ import sys
 from PyQt5 import QtWidgets, QtCore
 from PyQt5 import uic
 from PyQt5.QtCore import Qt, QTimer
-from PyQt5.QtWidgets import QDialog
+
+
+from gui.Login import Login
 
 count = 0
 dots = ""
 
 
-class Login(QDialog):
-    def __init__(self):
-        super(Login, self).__init__()
-        uic.loadUi("LoginPage.ui", self)
-        self.setWindowFlag(Qt.FramelessWindowHint)
-        self.setWindowFlag(QtCore.Qt.WindowStaysOnTopHint)
-        self.password_note.setHidden(True)
-        self.closewindow.clicked.connect(lambda: self.close())
-        self.minmizewindow.clicked.connect(lambda: self.showMinimized())
-
-
 class Loading(QtWidgets.QMainWindow):
     def __init__(self):
         super(Loading, self).__init__()
-        uic.loadUi("Loading.ui", self)
+        uic.loadUi("Interfaces files/Loading.ui", self)
         self.setWindowFlag(Qt.FramelessWindowHint)
         self.setAttribute(Qt.WA_TranslucentBackground)
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.progress)
-        self.timer.start(150)
+        self.timer.start(25)
         self.show()
 
     def progress(self):
@@ -43,8 +34,9 @@ class Loading(QtWidgets.QMainWindow):
         dots += "."
         if dots == "....":
             dots = ""
-        self.Loading.setText("Loading" + dots)
+        self.Loding_Label.setText("Loading" + dots)
+
 
 app = QtWidgets.QApplication(sys.argv)
-window = Loding()
+window = Loading()
 app.exec_()
