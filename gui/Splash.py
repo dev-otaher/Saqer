@@ -24,7 +24,7 @@ class Loading(QtWidgets.QMainWindow):
     def progress(self):
         global count
         global dots
-        self.progressBar.setValue(count)
+        self.i_ProgressBar.setValue(count)
         if count > 100:
             self.timer.stop()
             self.main = Login()
@@ -34,7 +34,7 @@ class Loading(QtWidgets.QMainWindow):
         dots += "."
         if dots == "....":
             dots = ""
-        self.Loding_Label.setText("Loading" + dots)
+        self.i_Loding.setText("Loading" + dots)
 
 
 app = QtWidgets.QApplication(sys.argv)
