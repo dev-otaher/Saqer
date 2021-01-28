@@ -67,10 +67,3 @@ class Login(QDialog):
             except Exception as e:
                 print(e)
                 print("Something went wrong! Could not login.")
-
-try:
-    app=QApplication(sys.argv)
-    mainwindow = Login()
-    sys.exit(app.exec_())
-except Exception as e:
-    print(e)
