@@ -33,9 +33,7 @@ class ForgetPassword(QDialog):
         pattern = r"\"?([-a-zA-Z0-9_.`?{}]+@\w+\.\w+)\"?"
         re.compile(pattern)
         email = self.email.text()
-        if email == "":
-            self.password_note.setHidden(False)
-        elif not re.match(pattern,email):
+        if email == "" or not re.match(pattern,email):
             self.password_note.setHidden(False)
         else:
             ForgetPassSuccess.ForgetPassSuccess()
