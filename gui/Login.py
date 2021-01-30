@@ -14,7 +14,7 @@ import pyrebase
 # each interface defined in a class
 class Login(QDialog):
 
-    # cnstructor of the class
+    # class constructor
     def __init__(self):
         super(Login, self).__init__()
         uic.loadUi("gui/Interfaces files/LoginPage.ui", self)
@@ -25,7 +25,6 @@ class Login(QDialog):
         self.Fpassword.mousePressEvent = self.forgetPassword
         self.Header.mouseMoveEvent = self.moveWindow
         self.setWindowFlags(QtCore.Qt.WindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint))
-
         self.show()
 
     # Move window around
