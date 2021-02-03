@@ -2,3 +2,4 @@ venv
 .idea
 db/serviceAccountKey.json
 *.pyc
+gui/__pycache__/
