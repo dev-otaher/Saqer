@@ -13,7 +13,7 @@ dots = ""
 class Loading(QtWidgets.QMainWindow):
     def __init__(self):
         super(Loading, self).__init__()
-        uic.loadUi("gui/Interfaces files/Loading.ui", self)
+        uic.loadUi("gui/interfaces/Splash.ui", self)
         self.setWindowFlag(Qt.FramelessWindowHint)
         self.setAttribute(Qt.WA_TranslucentBackground)
         self.timer = QTimer(self)

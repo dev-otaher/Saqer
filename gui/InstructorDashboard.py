@@ -12,7 +12,7 @@ class InstructorDashboard(QDialog):
     #cnstructor of the class
     def __init__(self):
         super(InstructorDashboard, self).__init__()
-        uic.loadUi("gui/Interfaces files/Instructor_Dashboard.ui", self)
+        uic.loadUi("gui/interfaces/InstructorDashboard.ui", self)
         self.setWindowFlags(QtCore.Qt.WindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint))
         self.i_closewindow.clicked.connect(lambda: exit())
         self.i_minmizewindow.clicked.connect(lambda: self.showMinimized())

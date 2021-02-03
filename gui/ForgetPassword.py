@@ -9,7 +9,7 @@ from gui import ForgetPassSuccess
 class ForgetPassword(QDialog):
     def __init__(self):
         super(ForgetPassword, self).__init__()
-        loadUi("gui/Interfaces files/ForgetPassword.ui", self)
+        loadUi("gui/interfaces/ForgetPassword.ui", self)
         self.i_send.clicked.connect(self.sendEmail)
         self.i_close.clicked.connect(lambda: self.hide())
         self.i_password_note.setHidden(True)

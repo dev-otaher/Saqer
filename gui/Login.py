@@ -15,7 +15,7 @@ class Login(QDialog):
     def __init__(self):
 
         super(Login, self).__init__()
-        uic.loadUi("gui/Interfaces files/LoginPage.ui", self)
+        uic.loadUi("gui/interfaces/Login.ui", self)
         self.i_login.clicked.connect(self.loginfunc)
         self.i_password_note.setHidden(True)
         self.i_closewindow.clicked.connect(lambda: exit())
