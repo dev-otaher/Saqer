@@ -48,7 +48,7 @@ class Login(QDialog):
             self.i_password_note.setHidden(False)
         else:
             try:
-                with open('../db/fbConfig.json') as file:
+                with open('db/fbConfig.json') as file:
                     config = json.load(file)
                 firebase = pyrebase.initialize_app(config)
                 auth = firebase.auth()
@@ -58,8 +58,9 @@ class Login(QDialog):
                 if isAdmin.val() == "True":
                     print("Is admin...")
                 else:
+                    print("Is instructor...")
+                    Instructor_Dashboard.Instructor_Dash()
                     self.destroy()
-                    # print("Is instructor...")
             except requests.exceptions.HTTPError as e:
                 print(e)
                 # print(json.loads(e.args[1])["error"]["message"])

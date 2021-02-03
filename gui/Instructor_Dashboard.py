@@ -12,7 +12,6 @@ class Instructor_Dash(QDialog):
 
     #cnstructor of the class
     def __init__(self):
-
         super(Instructor_Dash, self).__init__()
         uic.loadUi("gui/Interfaces files/Instructor_Dashboard.ui", self)
         self.setWindowFlags(QtCore.Qt.WindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint))
@@ -31,8 +30,6 @@ class Instructor_Dash(QDialog):
         self.i_Courses.horizontalHeaderItem(1).setText("Class Title")
         self.i_Courses.horizontalHeaderItem(2).setText("Date & Time")
         self.i_Courses.doubleClicked.connect(self.on_click)
-
-
         self.filldata()
         self.show()
 
