@@ -9,12 +9,12 @@ from gui import ForgetPassSuccess
 class ForgetPassword(QDialog):
     def __init__(self):
         super(ForgetPassword, self).__init__()
-        loadUi("./Interfaces files/ForgetPassword.ui", self)
-        self.send.clicked.connect(self.sendEmail)
-        self.close.clicked.connect(lambda: self.hide())
-        self.password_note.setHidden(True)
+        loadUi("gui/Interfaces files/ForgetPassword.ui", self)
+        self.i_send.clicked.connect(self.sendEmail)
+        self.i_close.clicked.connect(lambda: self.hide())
+        self.i_password_note.setHidden(True)
         self.setWindowFlags(QtCore.Qt.WindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint ))
-        self.Header.mouseMoveEvent = self.moveWindow
+        self.i_Header.mouseMoveEvent = self.moveWindow
         self.setWindowModality(Qt.ApplicationModal)
         self.show()
 
@@ -32,9 +32,9 @@ class ForgetPassword(QDialog):
     def sendEmail(self):
         pattern = r"\"?([-a-zA-Z0-9_.`?{}]+@\w+\.\w+)\"?"
         re.compile(pattern)
-        email = self.email.text()
+        email = self.i_email.text()
         if email == "" or not re.match(pattern,email):
-            self.password_note.setHidden(False)
+            self.i_password_note.setHidden(False)
         else:
             ForgetPassSuccess.ForgetPassSuccess()
             self.destroy()
