@@ -1,16 +1,16 @@
 import json
-import sys
-
 import requests
-from PyQt5.QtWidgets import QDialog, QApplication
+from PyQt5.QtWidgets import QDialog
 from PyQt5 import uic
 from PyQt5 import QtCore
 from PyQt5.QtCore import Qt
 from gui import ForgetPassword
 import pyrebase
-import os
+from gui import Instructor_Dashboard
+from PyQt5.QtWidgets import QApplication
+import sys
 
-#each interface defined in a class
+
 class Login(QDialog):
 
     #cnstructor of the class
@@ -48,6 +48,8 @@ class Login(QDialog):
         password = self.i_password.text()
         if username == "" or password == "":
             self.i_password_note.setHidden(False)
+            InstructorDash = Instructor_Dashboard.Instructor_Dash()
+
         else:
             try:
                 with open('../db/fbConfig.json') as file:
@@ -60,7 +62,8 @@ class Login(QDialog):
                 if isAdmin.val() == "True":
                     print("Is admin...")
                 else:
-                    print("Is instructor...")
+                    self.destroy()
+                    # print("Is instructor...")
             except requests.exceptions.HTTPError as e:
                 print(e)
                 # print(json.loads(e.args[1])["error"]["message"])
@@ -68,5 +71,4 @@ class Login(QDialog):
             except Exception as e:
                 print(e)
                 print("Something went wrong! Could not login.")
-
 

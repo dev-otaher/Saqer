@@ -1,6 +1,5 @@
 import pyrebase
 import json
-
 import requests
 
 username = "meow1@gmail.com"
