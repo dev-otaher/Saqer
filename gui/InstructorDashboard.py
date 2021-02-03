@@ -8,11 +8,10 @@ import sys
 from gui import Login
 
 #each interface defined in a class
-class Instructor_Dash(QDialog):
-
+class InstructorDashboard(QDialog):
     #cnstructor of the class
     def __init__(self):
-        super(Instructor_Dash, self).__init__()
+        super(InstructorDashboard, self).__init__()
         uic.loadUi("gui/Interfaces files/Instructor_Dashboard.ui", self)
         self.setWindowFlags(QtCore.Qt.WindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint))
         self.i_closewindow.clicked.connect(lambda: exit())
@@ -33,9 +32,7 @@ class Instructor_Dash(QDialog):
         self.filldata()
         self.show()
 
-
-        # Move window around
-
+    # Move window around
     def moveWindow(self, e):
         if e.buttons() == Qt.LeftButton:
             self.move(self.pos() + e.globalPos() - self.clickPosition)
@@ -60,17 +57,13 @@ class Instructor_Dash(QDialog):
         self.destroy()
 
     def filldata(self):
-        classes = [{"Name":"CS411","Title":"Data Structure", "Time":"1:00 - 3:00 PM"}, {"Name":"CIS432","Title":"Shit", "Time":"1:00 - 3:00 PM"}]
+        classes = [{"Name":"CS411","Title":"Data Structure", "Time":"1:00 - 3:00 PM"}, {"Name":"CIS432","Title":"Operating Systems", "Time":"1:00 - 3:00 PM"}]
         row = 0
         self.i_Courses.setRowCount(len(classes))
-
-
-
         for person in classes:
             self.i_Courses.setItem(row, 0, QtWidgets.QTableWidgetItem(person["Name"]))
             self.i_Courses.setItem(row, 1, QtWidgets.QTableWidgetItem(str(person["Title"])))
             self.i_Courses.setItem(row, 2, QtWidgets.QTableWidgetItem(person["Time"]))
-                                
             row = row+1
 
     def on_click(self, index):

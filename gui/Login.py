@@ -7,7 +7,7 @@ from PyQt5 import QtCore
 from PyQt5.QtCore import Qt
 from gui import ForgetPassword
 import pyrebase
-from gui import Instructor_Dashboard
+from gui.InstructorDashboard import InstructorDashboard
 
 class Login(QDialog):
 
@@ -58,9 +58,8 @@ class Login(QDialog):
                 if isAdmin.val() == "True":
                     print("Is admin...")
                 else:
-                    print("Is instructor...")
-                    Instructor_Dashboard.Instructor_Dash()
                     self.destroy()
+                    InstructorDashboard()
             except requests.exceptions.HTTPError as e:
                 print(e)
                 # print(json.loads(e.args[1])["error"]["message"])
