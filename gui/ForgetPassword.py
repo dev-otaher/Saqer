@@ -5,6 +5,7 @@ from PyQt5.QtCore import Qt
 import json
 from gui import ForgetPassSuccess
 import pyrebase
+import re
 
 
 class ForgetPassword(QDialog):
@@ -34,7 +35,7 @@ class ForgetPassword(QDialog):
         try:
             pattern = r"\"?([-a-zA-Z0-9_.`?{}]+@\w+\.\w+)\"?"
             re.compile(pattern)
-            email = self.email.text().strip()
+            email = self.i_email.text().strip()
             if email == "" or not re.match(pattern,email):
                 self.i_password_note.setHidden(False)
             else:
@@ -47,4 +48,5 @@ class ForgetPassword(QDialog):
                 self.destroy()
         except Exception as e:
             # if there's error in the email authentication show error message
+            print(e)
             self.password_note.setHidden(False)
