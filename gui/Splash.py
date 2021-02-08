@@ -1,3 +1,4 @@
+import os
 import sys
 from PyQt5 import QtWidgets, QtCore
 from PyQt5 import uic
@@ -8,7 +9,6 @@ from gui.Login import Login
 
 count = 0
 dots = ""
-
 
 class Loading(QtWidgets.QMainWindow):
     def __init__(self):
@@ -35,4 +35,3 @@ class Loading(QtWidgets.QMainWindow):
         if dots == "....":
             dots = ""
         self.i_Loading.setText("Loading" + dots)
-

@@ -13,5 +13,3 @@ class ForgetPassSuccess(QDialog):
         self.setWindowFlags(QtCore.Qt.WindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint))
         self.setWindowModality(Qt.ApplicationModal)
         self.show()
-
-

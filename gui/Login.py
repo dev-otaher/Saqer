@@ -11,9 +11,8 @@ from gui.InstructorDashboard import InstructorDashboard
 
 class Login(QDialog):
 
-    #cnstructor of the class
+    # class constructor
     def __init__(self):
-
         super(Login, self).__init__()
         uic.loadUi("gui/interfaces/Login.ui", self)
         self.i_login.clicked.connect(self.loginfunc)
