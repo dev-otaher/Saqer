@@ -2,23 +2,25 @@ from PyQt5.QtWidgets import QDialog
 from PyQt5.uic import loadUi
 from PyQt5 import QtCore
 from PyQt5.QtCore import Qt
-import re
+import json
 from gui import ForgetPassSuccess
+import pyrebase
+import re
 
 
 class ForgetPassword(QDialog):
     def __init__(self):
         super(ForgetPassword, self).__init__()
-        loadUi("./Interfaces files/ForgetPassword.ui", self)
-        self.send.clicked.connect(self.sendEmail)
-        self.close.clicked.connect(lambda: self.hide())
-        self.password_note.setHidden(True)
+        loadUi("gui/interfaces/ForgetPassword.ui", self)
+        self.i_send.clicked.connect(self.sendEmail)
+        self.i_close.clicked.connect(lambda: self.hide())
+        self.i_password_note.setHidden(True)
         self.setWindowFlags(QtCore.Qt.WindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint ))
-        self.Header.mouseMoveEvent = self.moveWindow
+        self.i_Header.mouseMoveEvent = self.moveWindow
         self.setWindowModality(Qt.ApplicationModal)
         self.show()
 
-    #move window around
+    # Move window around
     def moveWindow(self, e):
         if e.buttons() == Qt.LeftButton:
             self.move(self.pos() + e.globalPos() - self.clickPosition)
@@ -28,13 +30,23 @@ class ForgetPassword(QDialog):
     def mousePressEvent(self, event):
         self.clickPosition = event.globalPos()
 
-    #This function runs when the 'Send' button clicked
+    # This function runs when the 'Send' button clicked
     def sendEmail(self):
-        pattern = r"\"?([-a-zA-Z0-9_.`?{}]+@\w+\.\w+)\"?"
-        re.compile(pattern)
-        email = self.email.text()
-        if email == "" or not re.match(pattern,email):
+        try:
+            pattern = r"\"?([-a-zA-Z0-9_.`?{}]+@\w+\.\w+)\"?"
+            re.compile(pattern)
+            email = self.i_email.text().strip()
+            if email == "" or not re.match(pattern,email):
+                self.i_password_note.setHidden(False)
+            else:
+                with open('db/fbConfig.json') as file:
+                  config = json.load(file)
+                firebase = pyrebase.initialize_app(config)
+                auth = firebase.auth()
+                auth.send_password_reset_email(email)
+                ForgetPassSuccess.ForgetPassSuccess()
+                self.destroy()
+        except Exception as e:
+            # if there's error in the email authentication show error message
+            print(e)
             self.password_note.setHidden(False)
-        else:
-            ForgetPassSuccess.ForgetPassSuccess()
-            self.destroy()

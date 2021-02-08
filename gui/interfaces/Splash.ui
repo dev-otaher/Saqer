@@ -52,56 +52,6 @@
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
       </property>
-      <widget class="QLabel" name="AppName">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>90</y>
-         <width>661</width>
-         <height>91</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Segoe UI</family>
-         <pointsize>40</pointsize>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color: rgb(56, 219, 208);</string>
-       </property>
-       <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;SAQER&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-      <widget class="QLabel" name="App_description">
-       <property name="geometry">
-        <rect>
-         <x>120</x>
-         <y>170</y>
-         <width>421</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Segoe UI</family>
-         <pointsize>12</pointsize>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color: rgb(98, 114, 164);</string>
-       </property>
-       <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt; font-weight:600;&quot;&gt;ATTENDANCE &amp;amp; BEHAVIOR SYSTEM&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
       <widget class="QProgressBar" name="i_ProgressBar">
        <property name="geometry">
         <rect>
@@ -113,7 +63,8 @@
        </property>
        <property name="styleSheet">
         <string notr="true">QProgressBar{
-	background-color: rgb(98, 114, 164);
+	background-color:rgb(40, 120, 120);
+	color: rgb(49, 147, 147);
 	color: rgb(56, 56, 56);
 	border-style:none;
 	border-radius:10px;
@@ -121,7 +72,7 @@
 }
 QProgressBar::chunk{
 	border-radius:10px; 
-	background-color: qlineargradient(spread:pad, x1:0, y1:0.488591, x2:0.989474, y2:0.54, stop:0 rgba(56, 219, 208, 255), stop:1 rgba(20, 145, 255, 255));
+	background-color: qlineargradient(spread:pad, x1:0, y1:0.488591, x2:0.989474, y2:0.54, stop:0 #38DBD0, stop:1#38DBD0);
 }</string>
        </property>
        <property name="value">
@@ -144,7 +95,7 @@ QProgressBar::chunk{
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(98, 114, 164);</string>
+        <string notr="true">color: #38DBD0;</string>
        </property>
        <property name="text">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Loading...&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -153,6 +104,45 @@ QProgressBar::chunk{
         <set>Qt::AlignCenter</set>
        </property>
       </widget>
+      <widget class="QLabel" name="label">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>0</y>
+         <width>651</width>
+         <height>381</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="pixmap">
+        <pixmap>../images/Background.png</pixmap>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_2">
+       <property name="geometry">
+        <rect>
+         <x>220</x>
+         <y>50</y>
+         <width>221</width>
+         <height>211</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="pixmap">
+        <pixmap>../images/SAQER1.png</pixmap>
+       </property>
+       <property name="scaledContents">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <zorder>label</zorder>
+      <zorder>i_ProgressBar</zorder>
+      <zorder>i_Loading</zorder>
+      <zorder>label_2</zorder>
      </widget>
     </item>
    </layout>
