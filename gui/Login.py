@@ -1,7 +1,5 @@
 import json
 import sys
-import time
-
 import requests
 from PyQt5.QtWidgets import QDialog, QApplication
 from PyQt5 import uic
@@ -9,21 +7,20 @@ from PyQt5 import QtCore
 from PyQt5.QtCore import Qt
 from gui import ForgetPassword
 import pyrebase
+from gui.InstructorDashboard import InstructorDashboard
 
-
-# each interface defined in a class
 class Login(QDialog):
 
     # class constructor
     def __init__(self):
         super(Login, self).__init__()
-        uic.loadUi("gui/Interfaces files/LoginPage.ui", self)
-        self.login.clicked.connect(self.loginfunc)
-        self.password_note.setHidden(True)
-        self.closewindow.clicked.connect(lambda: exit())
-        self.minmizewindow.clicked.connect(lambda: self.showMinimized())
-        self.Fpassword.mousePressEvent = self.forgetPassword
-        self.Header.mouseMoveEvent = self.moveWindow
+        uic.loadUi("gui/interfaces/Login.ui", self)
+        self.i_login.clicked.connect(self.loginfunc)
+        self.i_password_note.setHidden(True)
+        self.i_closewindow.clicked.connect(lambda: exit())
+        self.i_minmizewindow.clicked.connect(lambda: self.showMinimized())
+        self.i_Fpassword.mousePressEvent = self.forgetPassword
+        self.i_Header.mouseMoveEvent = self.moveWindow
         self.setWindowFlags(QtCore.Qt.WindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint))
         self.show()
 
@@ -43,11 +40,11 @@ class Login(QDialog):
         self.clickPosition = event.globalPos()
 
     def loginfunc(self):
-        self.password_note.setHidden(True)
-        username = self.username.text().strip()
-        password = self.password.text()
+        self.i_password_note.setHidden(True)
+        username = self.i_username.text()
+        password = self.i_password.text()
         if username == "" or password == "":
-            self.password_note.setHidden(False)
+            self.i_password_note.setHidden(False)
         else:
             try:
                 with open('db/fbConfig.json') as file:
@@ -60,11 +57,12 @@ class Login(QDialog):
                 if isAdmin.val() == "True":
                     print("Is admin...")
                 else:
-                    print("Is instructor...")
+                    self.destroy()
+                    InstructorDashboard()
             except requests.exceptions.HTTPError as e:
                 print(e)
                 # print(json.loads(e.args[1])["error"]["message"])
-                self.password_note.setHidden(False)
+                self.i_password_note.setHidden(False)
             except Exception as e:
                 print(e)
                 print("Something went wrong! Could not login.")

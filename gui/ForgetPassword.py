@@ -10,12 +10,12 @@ import pyrebase
 class ForgetPassword(QDialog):
     def __init__(self):
         super(ForgetPassword, self).__init__()
-        loadUi("./Interfaces files/ForgetPassword.ui", self)
-        self.send.clicked.connect(self.sendEmail)
-        self.close.clicked.connect(lambda: self.hide())
-        self.password_note.setHidden(True)
-        self.setWindowFlags(QtCore.Qt.WindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint))
-        self.Header.mouseMoveEvent = self.moveWindow
+        loadUi("gui/interfaces/ForgetPassword.ui", self)
+        self.i_send.clicked.connect(self.sendEmail)
+        self.i_close.clicked.connect(lambda: self.hide())
+        self.i_password_note.setHidden(True)
+        self.setWindowFlags(QtCore.Qt.WindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint ))
+        self.i_Header.mouseMoveEvent = self.moveWindow
         self.setWindowModality(Qt.ApplicationModal)
         self.show()
 
@@ -32,20 +32,19 @@ class ForgetPassword(QDialog):
     # This function runs when the 'Send' button clicked
     def sendEmail(self):
         try:
-            # get the email text
+            pattern = r"\"?([-a-zA-Z0-9_.`?{}]+@\w+\.\w+)\"?"
+            re.compile(pattern)
             email = self.email.text().strip()
-            # open the firebase credentials and initialize the app
-            # and instantiate the authentication service
-            with open('db/fbConfig.json') as file:
-                config = json.load(file)
-            firebase = pyrebase.initialize_app(config)
-
-            auth = firebase.auth()
-            # if the email is successfully entered then send
-            # the password reset steps and show success message
-            auth.send_password_reset_email(email)
-            ForgetPassSuccess.ForgetPassSuccess()
-            self.destroy()
+            if email == "" or not re.match(pattern,email):
+                self.i_password_note.setHidden(False)
+            else:
+                with open('db/fbConfig.json') as file:
+                  config = json.load(file)
+                firebase = pyrebase.initialize_app(config)
+                auth = firebase.auth()
+                auth.send_password_reset_email(email)
+                ForgetPassSuccess.ForgetPassSuccess()
+                self.destroy()
         except Exception as e:
             # if there's error in the email authentication show error message
             self.password_note.setHidden(False)
