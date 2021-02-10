@@ -7,7 +7,7 @@ from PyQt5 import QtCore
 from PyQt5.QtCore import Qt
 from gui import ForgetPassword
 import pyrebase
-from gui import Instructor_Dashboard
+from gui.Instructor_Dashboard import InstructorDashboard
 
 class Login(QDialog):
 
@@ -16,31 +16,31 @@ class Login(QDialog):
 
         super(Login, self).__init__()
         uic.loadUi("gui/Interfaces files/LoginPage.ui", self)
-        self.i_login.clicked.connect(self.loginfunc)
+        self.i_login.clicked.connect(self.login)
         self.i_password_note.setHidden(True)
         self.i_closewindow.clicked.connect(lambda: exit())
         self.i_minmizewindow.clicked.connect(lambda: self.showMinimized())
-        self.i_Fpassword.mousePressEvent = self.forgetPassword
-        self.i_Header.mouseMoveEvent = self.moveWindow
+        self.i_Fpassword.mousePressEvent = self.forget_password
+        self.i_Header.mouseMoveEvent = self.move_window
         self.setWindowFlags(QtCore.Qt.WindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint))
         self.show()
 
     # Move window around
-    def moveWindow(self, e):
+    def move_window(self, e):
         if e.buttons() == Qt.LeftButton:
             self.move(self.pos() + e.globalPos() - self.clickPosition)
             self.clickPosition = e.globalPos()
             e.accept()
 
     # Opens forget password window
-    def forgetPassword(self, eve):
+    def forget_password(self, eve):
         ForgetPassword.ForgetPassword()
 
     # Allows window to be clickable
     def mousePressEvent(self, event):
         self.clickPosition = event.globalPos()
 
-    def loginfunc(self):
+    def login(self):
         self.i_password_note.setHidden(True)
         username = self.i_username.text()
         password = self.i_password.text()
@@ -48,7 +48,7 @@ class Login(QDialog):
             self.i_password_note.setHidden(False)
         else:
             try:
-                with open('../db/fbConfig.json') as file:
+                with open('db/fbConfig.json') as file:
                     config = json.load(file)
                 firebase = pyrebase.initialize_app(config)
                 auth = firebase.auth()
@@ -57,9 +57,10 @@ class Login(QDialog):
                 isAdmin = db.child("users").child(str(user["localId"])).child("isAdmin").get()
                 if isAdmin.val() == "True":
                     print("Is admin...")
+
                 else:
                     self.destroy()
-                    # print("Is instructor...")
+                    InstructorDashboard()
             except requests.exceptions.HTTPError as e:
                 print(e)
                 # print(json.loads(e.args[1])["error"]["message"])
