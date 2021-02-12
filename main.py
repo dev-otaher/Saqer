@@ -6,7 +6,7 @@ from gui import Loading, InstructorDashboard
 
 try:
     app = QApplication(sys.argv)
-    mainwindow = InstructorDashboard.InstructorDashboard()
+    mainwindow = Loading.Loading()
     sys.exit(app.exec_())
 except Exception as e:
     print(e)
