@@ -3,18 +3,18 @@ from PyQt5.uic import loadUi
 from PyQt5 import QtCore
 from PyQt5.QtCore import Qt
 import re
-from gui import ForgetPassSuccess
+from gui import Success
 
 
 class ForgetPassword(QDialog):
     def __init__(self):
         super(ForgetPassword, self).__init__()
-        loadUi("gui/Interfaces files/ForgetPassword.ui", self)
+        loadUi("gui/interfaces/ForgetPassword.ui", self)
         self.i_send.clicked.connect(self.send_email)
         self.i_close.clicked.connect(lambda: self.hide())
-        self.i_password_note.setHidden(True)
+        self.i_email_note.setHidden(True)
         self.setWindowFlags(QtCore.Qt.WindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint ))
-        self.i_Header.mouseMoveEvent = self.move_window
+        self.i_header.mouseMoveEvent = self.move_window
         self.setWindowModality(Qt.ApplicationModal)
         self.show()
 
@@ -34,7 +34,7 @@ class ForgetPassword(QDialog):
         re.compile(pattern)
         email = self.i_email.text()
         if email == "" or not re.match(pattern,email):
-            self.i_password_note.setHidden(False)
+            self.i_email_note.setHidden(False)
         else:
-            ForgetPassSuccess.ForgetPassSuccess()
+            Success.Success("We've sent your password through email.")
             self.destroy()

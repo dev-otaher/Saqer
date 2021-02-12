@@ -7,7 +7,7 @@ from PyQt5 import QtCore
 from PyQt5.QtCore import Qt
 from gui import ForgetPassword
 import pyrebase
-from gui.Instructor_Dashboard import InstructorDashboard
+from gui.InstructorDashboard import InstructorDashboard
 
 class Login(QDialog):
 
@@ -15,13 +15,13 @@ class Login(QDialog):
     def __init__(self):
 
         super(Login, self).__init__()
-        uic.loadUi("gui/Interfaces files/LoginPage.ui", self)
+        uic.loadUi("gui/interfaces/Login.ui", self)
         self.i_login.clicked.connect(self.login)
         self.i_password_note.setHidden(True)
-        self.i_closewindow.clicked.connect(lambda: exit())
-        self.i_minmizewindow.clicked.connect(lambda: self.showMinimized())
-        self.i_Fpassword.mousePressEvent = self.forget_password
-        self.i_Header.mouseMoveEvent = self.move_window
+        self.i_close.clicked.connect(lambda: exit())
+        self.i_minmize.clicked.connect(lambda: self.showMinimized())
+        self.i_forget_pass.mousePressEvent = self.forget_password
+        self.i_header.mouseMoveEvent = self.move_window
         self.setWindowFlags(QtCore.Qt.WindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint))
         self.show()
 
@@ -34,7 +34,11 @@ class Login(QDialog):
 
     # Opens forget password window
     def forget_password(self, eve):
-        ForgetPassword.ForgetPassword()
+        try:
+
+            ForgetPassword.ForgetPassword()
+        except Exception as e:
+            print(e)
 
     # Allows window to be clickable
     def mousePressEvent(self, event):

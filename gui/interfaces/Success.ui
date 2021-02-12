@@ -16,7 +16,7 @@
   <property name="styleSheet">
    <string notr="true">background-color: #383838</string>
   </property>
-  <widget class="QLabel" name="label">
+  <widget class="QLabel" name="i_background">
    <property name="geometry">
     <rect>
      <x>0</x>
@@ -35,7 +35,7 @@
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QLabel" name="sucess">
+  <widget class="QLabel" name="i_success">
    <property name="geometry">
     <rect>
      <x>140</x>
@@ -59,7 +59,7 @@
     <string>Success!</string>
    </property>
   </widget>
-  <widget class="QLabel" name="message">
+  <widget class="QLabel" name="i_message">
    <property name="geometry">
     <rect>
      <x>20</x>
@@ -80,7 +80,7 @@
     <string notr="true">color:white;</string>
    </property>
    <property name="text">
-    <string>We've sent your password through email.</string>
+    <string/>
    </property>
    <property name="textFormat">
     <enum>Qt::PlainText</enum>
@@ -92,7 +92,7 @@
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QLabel" name="check_logo">
+  <widget class="QLabel" name="i_logo">
    <property name="geometry">
     <rect>
      <x>140</x>
@@ -111,7 +111,7 @@
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QFrame" name="Header_2">
+  <widget class="QFrame" name="i_footer">
    <property name="geometry">
     <rect>
      <x>0</x>
@@ -130,7 +130,7 @@
     <enum>QFrame::Raised</enum>
    </property>
   </widget>
-  <widget class="QFrame" name="Header1">
+  <widget class="QFrame" name="i_header">
    <property name="geometry">
     <rect>
      <x>0</x>
@@ -149,7 +149,7 @@
     <enum>QFrame::Raised</enum>
    </property>
   </widget>
-  <widget class="QPushButton" name="i_Hide">
+  <widget class="QPushButton" name="i_hide">
    <property name="geometry">
     <rect>
      <x>140</x>

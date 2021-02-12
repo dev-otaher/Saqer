@@ -11,7 +11,7 @@ dots = ""
 class Loading(QtWidgets.QMainWindow):
     def __init__(self):
         super(Loading, self).__init__()
-        uic.loadUi("gui/Interfaces files/Loading.ui", self)
+        uic.loadUi("gui/interfaces/Loading.ui", self)
         self.setWindowFlag(Qt.FramelessWindowHint)
         self.setAttribute(Qt.WA_TranslucentBackground)
         self.timer = QTimer(self)
@@ -22,7 +22,7 @@ class Loading(QtWidgets.QMainWindow):
     def progress(self):
         global count
         global dots
-        self.i_ProgressBar.setValue(count)
+        self.i_progress_bar.setValue(count)
         if count > 100:
             self.timer.stop()
             self.main = Login()
@@ -32,5 +32,5 @@ class Loading(QtWidgets.QMainWindow):
         dots += "."
         if dots == "....":
             dots = ""
-        self.i_Loading.setText("Loading" + dots)
+        self.i_loading.setText("Loading" + dots)
 

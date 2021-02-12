@@ -1,8 +1,12 @@
 from PyQt5.QtWidgets import QApplication
 import sys
-from gui import Splash
+from gui import Loading, InstructorDashboard
 
-app = QApplication(sys.argv)
-mainwindow = Splash.Loading()
-sys.exit(app.exec_())
 
+
+try:
+    app = QApplication(sys.argv)
+    mainwindow = InstructorDashboard.InstructorDashboard()
+    sys.exit(app.exec_())
+except Exception as e:
+    print(e)
