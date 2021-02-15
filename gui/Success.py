@@ -4,12 +4,13 @@ from PyQt5 import QtCore
 from PyQt5.QtCore import Qt
 
 
-class ForgetPassSuccess(QDialog):
+class Success(QDialog):
 
-    def __init__(self):
-        super(ForgetPassSuccess, self).__init__()
-        loadUi("gui/interfaces/ForgetPasswordSuccess.ui", self)
-        self.i_Hide.clicked.connect(lambda: self.hide())
+    def __init__(self, msg:str):
+        super(Success, self).__init__()
+        loadUi("gui/interfaces/Success.ui", self)
+        self.i_hide.clicked.connect(lambda: self.hide())
         self.setWindowFlags(QtCore.Qt.WindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint))
         self.setWindowModality(Qt.ApplicationModal)
+        self.i_message.setText(msg)
         self.show()
