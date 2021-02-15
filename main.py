@@ -3,7 +3,6 @@ import sys
 from gui import Loading, InstructorDashboard
 
 
-
 try:
     app = QApplication(sys.argv)
     mainwindow = Loading.Loading()

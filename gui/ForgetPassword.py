@@ -4,6 +4,8 @@ from PyQt5 import QtCore
 from PyQt5.QtCore import Qt
 import re
 from gui import Success
+import json
+import pyrebase
 
 
 class ForgetPassword(QDialog):
@@ -28,13 +30,23 @@ class ForgetPassword(QDialog):
     def mousePressEvent(self, event):
         self.clickPosition = event.globalPos()
 
-    #This function runs when the 'Send' button clicked
+    # This function runs when the 'Send' button clicked
     def send_email(self):
-        pattern = r"\"?([-a-zA-Z0-9_.`?{}]+@\w+\.\w+)\"?"
-        re.compile(pattern)
-        email = self.i_email.text()
-        if email == "" or not re.match(pattern,email):
+        try:
+            pattern = r"\"?([-a-zA-Z0-9_.`?{}]+@\w+\.\w+)\"?"
+            re.compile(pattern)
+            email = self.i_email.text().strip()
+            if email == "" or not re.match(pattern, email):
+                self.i_email_note.setHidden(False)
+            else:
+                with open('db/fbConfig.json') as file:
+                  config = json.load(file)
+                firebase = pyrebase.initialize_app(config)
+                auth = firebase.auth()
+                auth.send_password_reset_email(email)
+                Success.Success("We've sent your password through email.")
+                self.destroy()
+        except Exception as e:
+            # if there's error in the email authentication show error message
+            print(e)
             self.i_email_note.setHidden(False)
-        else:
-            Success.Success("We've sent your password through email.")
-            self.destroy()

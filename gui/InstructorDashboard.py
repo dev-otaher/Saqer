@@ -8,7 +8,6 @@ from PyQt5.QtGui import QCursor, QColor
 import sys
 from gui import Login
 
-
 #each interface defined in a class
 class InstructorDashboard(QDialog):
     #cnstructor of the class
@@ -58,7 +57,6 @@ class InstructorDashboard(QDialog):
 
     def logout(self, eve):
         try:
-
             Login.Login()
             self.destroy()
         except Exception as e:
@@ -185,8 +183,3 @@ class InstructorDashboard(QDialog):
                 print(state)
         except Exception as e:
             print(e)
-
-
-# app = QApplication(sys.argv)
-# mainwindow = InstructorDashboard()
-# sys.exit(app.exec_())

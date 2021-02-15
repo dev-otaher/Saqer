@@ -11,7 +11,7 @@ from gui.InstructorDashboard import InstructorDashboard
 
 class Login(QDialog):
 
-    #cnstructor of the class
+    # constructor of the class
     def __init__(self):
 
         super(Login, self).__init__()
@@ -35,7 +35,6 @@ class Login(QDialog):
     # Opens forget password window
     def forget_password(self, eve):
         try:
-
             ForgetPassword.ForgetPassword()
         except Exception as e:
             print(e)
@@ -61,7 +60,6 @@ class Login(QDialog):
                 isAdmin = db.child("users").child(str(user["localId"])).child("isAdmin").get()
                 if isAdmin.val() == "True":
                     print("Is admin...")
-
                 else:
                     self.destroy()
                     InstructorDashboard()

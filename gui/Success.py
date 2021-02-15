@@ -14,5 +14,3 @@ class Success(QDialog):
         self.setWindowModality(Qt.ApplicationModal)
         self.i_message.setText(msg)
         self.show()
-
-
