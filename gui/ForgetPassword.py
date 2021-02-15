@@ -2,26 +2,26 @@ from PyQt5.QtWidgets import QDialog
 from PyQt5.uic import loadUi
 from PyQt5 import QtCore
 from PyQt5.QtCore import Qt
-import json
-from gui import ForgetPassSuccess
-import pyrebase
 import re
+from gui import Success
+import json
+import pyrebase
 
 
 class ForgetPassword(QDialog):
     def __init__(self):
         super(ForgetPassword, self).__init__()
         loadUi("gui/interfaces/ForgetPassword.ui", self)
-        self.i_send.clicked.connect(self.sendEmail)
+        self.i_send.clicked.connect(self.send_email)
         self.i_close.clicked.connect(lambda: self.hide())
-        self.i_password_note.setHidden(True)
+        self.i_email_note.setHidden(True)
         self.setWindowFlags(QtCore.Qt.WindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint ))
-        self.i_Header.mouseMoveEvent = self.moveWindow
+        self.i_header.mouseMoveEvent = self.move_window
         self.setWindowModality(Qt.ApplicationModal)
         self.show()
 
-    # Move window around
-    def moveWindow(self, e):
+    #move window around
+    def move_window(self, e):
         if e.buttons() == Qt.LeftButton:
             self.move(self.pos() + e.globalPos() - self.clickPosition)
             self.clickPosition = e.globalPos()
@@ -31,22 +31,22 @@ class ForgetPassword(QDialog):
         self.clickPosition = event.globalPos()
 
     # This function runs when the 'Send' button clicked
-    def sendEmail(self):
+    def send_email(self):
         try:
             pattern = r"\"?([-a-zA-Z0-9_.`?{}]+@\w+\.\w+)\"?"
             re.compile(pattern)
             email = self.i_email.text().strip()
-            if email == "" or not re.match(pattern,email):
-                self.i_password_note.setHidden(False)
+            if email == "" or not re.match(pattern, email):
+                self.i_email_note.setHidden(False)
             else:
                 with open('db/fbConfig.json') as file:
                   config = json.load(file)
                 firebase = pyrebase.initialize_app(config)
                 auth = firebase.auth()
                 auth.send_password_reset_email(email)
-                ForgetPassSuccess.ForgetPassSuccess()
+                Success.Success("We've sent your password through email.")
                 self.destroy()
         except Exception as e:
             # if there's error in the email authentication show error message
             print(e)
-            self.password_note.setHidden(False)
+            self.i_email_note.setHidden(False)

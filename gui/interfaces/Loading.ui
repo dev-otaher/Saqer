@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>LodingScreen</class>
- <widget class="QMainWindow" name="LodingScreen">
+ <class>i_main_container</class>
+ <widget class="QMainWindow" name="i_main_container">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -52,7 +52,7 @@
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
       </property>
-      <widget class="QProgressBar" name="i_ProgressBar">
+      <widget class="QProgressBar" name="i_progress_bar">
        <property name="geometry">
         <rect>
          <x>50</x>
@@ -79,7 +79,7 @@ QProgressBar::chunk{
         <number>24</number>
        </property>
       </widget>
-      <widget class="QLabel" name="i_Loading">
+      <widget class="QLabel" name="i_loading">
        <property name="geometry">
         <rect>
          <x>120</x>
@@ -104,7 +104,7 @@ QProgressBar::chunk{
         <set>Qt::AlignCenter</set>
        </property>
       </widget>
-      <widget class="QLabel" name="label">
+      <widget class="QLabel" name="i_background">
        <property name="geometry">
         <rect>
          <x>10</x>
@@ -120,7 +120,7 @@ QProgressBar::chunk{
         <pixmap>../images/Background.png</pixmap>
        </property>
       </widget>
-      <widget class="QLabel" name="label_2">
+      <widget class="QLabel" name="i_logo">
        <property name="geometry">
         <rect>
          <x>220</x>
@@ -139,10 +139,10 @@ QProgressBar::chunk{
         <bool>true</bool>
        </property>
       </widget>
-      <zorder>label</zorder>
-      <zorder>i_ProgressBar</zorder>
-      <zorder>i_Loading</zorder>
-      <zorder>label_2</zorder>
+      <zorder>i_background</zorder>
+      <zorder>i_progress_bar</zorder>
+      <zorder>i_loading</zorder>
+      <zorder>i_logo</zorder>
      </widget>
     </item>
    </layout>

@@ -11,35 +11,39 @@ from gui.InstructorDashboard import InstructorDashboard
 
 class Login(QDialog):
 
-    # class constructor
+    # constructor of the class
     def __init__(self):
+
         super(Login, self).__init__()
         uic.loadUi("gui/interfaces/Login.ui", self)
-        self.i_login.clicked.connect(self.loginfunc)
+        self.i_login.clicked.connect(self.login)
         self.i_password_note.setHidden(True)
-        self.i_closewindow.clicked.connect(lambda: exit())
-        self.i_minmizewindow.clicked.connect(lambda: self.showMinimized())
-        self.i_Fpassword.mousePressEvent = self.forgetPassword
-        self.i_Header.mouseMoveEvent = self.moveWindow
+        self.i_close.clicked.connect(lambda: exit())
+        self.i_minmize.clicked.connect(lambda: self.showMinimized())
+        self.i_forget_pass.mousePressEvent = self.forget_password
+        self.i_header.mouseMoveEvent = self.move_window
         self.setWindowFlags(QtCore.Qt.WindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint))
         self.show()
 
     # Move window around
-    def moveWindow(self, e):
+    def move_window(self, e):
         if e.buttons() == Qt.LeftButton:
             self.move(self.pos() + e.globalPos() - self.clickPosition)
             self.clickPosition = e.globalPos()
             e.accept()
 
     # Opens forget password window
-    def forgetPassword(self, eve):
-        ForgetPassword.ForgetPassword()
+    def forget_password(self, eve):
+        try:
+            ForgetPassword.ForgetPassword()
+        except Exception as e:
+            print(e)
 
     # Allows window to be clickable
     def mousePressEvent(self, event):
         self.clickPosition = event.globalPos()
 
-    def loginfunc(self):
+    def login(self):
         self.i_password_note.setHidden(True)
         username = self.i_username.text()
         password = self.i_password.text()
