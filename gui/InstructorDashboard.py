@@ -109,7 +109,6 @@ class InstructorDashboard(QDialog):
                 rest2.setForeground(QColor(255, 255, 255))
                 rest3.setForeground(QColor(255, 255, 255))
 
-
                 self.i_classes_table.setItem(row, 0, atten)
                 self.i_classes_table.setItem(row, 1, behv)
                 self.i_classes_table.setItem(row, 2, rest)
