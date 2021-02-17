@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import QDialog
 from PyQt5.uic import loadUi
 from PyQt5 import QtCore
 from PyQt5.QtCore import Qt
-
+from gui import InstructorDashboard
 
 class SaveRecordingMsg(QDialog):
 
@@ -14,7 +14,6 @@ class SaveRecordingMsg(QDialog):
         self.i_yes.clicked.connect(self.save_recording)
         self.i_no.clicked.connect(lambda: self.hide())
         self.show()
-
 
     def save_recording(self):
         pass

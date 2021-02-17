@@ -35,6 +35,10 @@ class InstructorDashboard(QDialog):
         self.i_courses_table.clicked.connect(self.once_clicked)
         self.i_save.clicked.connect(self.save)
         self.fill_data()
+        self.i_end_session.setEnabled(False)
+        self.i_end_session.setStyleSheet("QPushButton {border-radius: 25px;background-color: "
+                                         "#727272;color:#ffffff}QPushButton:hover {background-color: "
+                                         "#23b2a8; color: rgb(255, 255, 255);} QPushButton:pressed { background-color: #38DBD0; }")
         self.show()
 
     # Move window around
@@ -52,6 +56,11 @@ class InstructorDashboard(QDialog):
 
     def start_recording(self):
         print('test start recording')
+        self.i_end_session.setEnabled(True)
+        self.i_end_session.setStyleSheet("QPushButton {border-radius: 25px;background-color: "
+                                         "#38DBD0;color:#ffffff}QPushButton:hover {background-color: "
+                                         "#23b2a8; color: rgb(255, 255, 255);} QPushButton:pressed { background-color: #38DBD0; }")
+
 
     def view_reports(self):
         self.i_choices.setCurrentWidget(self.i_view_report_sec)
