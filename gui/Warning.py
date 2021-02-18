@@ -4,15 +4,16 @@ from PyQt5 import QtCore
 from PyQt5.QtCore import Qt
 from gui import InstructorDashboard
 
-class SaveRecordingMsg(QDialog):
+class Warning(QDialog):
 
-    def __init__(self):
-        super(SaveRecordingMsg, self).__init__()
+    def __init__(self, msg):
+        super(Warning, self).__init__()
         loadUi("gui/interfaces/SaveRecordingMsg.ui", self)
         self.setWindowFlags(QtCore.Qt.WindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint))
         self.setWindowModality(Qt.ApplicationModal)
         self.i_yes.clicked.connect(self.save_recording)
         self.i_no.clicked.connect(lambda: self.hide())
+        self.i_message.setText(msg)
         self.show()
 
     def save_recording(self):

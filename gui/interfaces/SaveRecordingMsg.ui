@@ -56,7 +56,7 @@
     <string notr="true">color: #38dbd0</string>
    </property>
    <property name="text">
-    <string>Save Class Recording?</string>
+    <string/>
    </property>
   </widget>
   <widget class="QLabel" name="i_logo">

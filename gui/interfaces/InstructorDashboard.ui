@@ -786,79 +786,39 @@ QTableWidget::section{
      </widget>
     </widget>
     <widget class="QWidget" name="i_start_session_sec">
-     <widget class="QLabel" name="i_title_start">
+     <widget class="QStackedWidget" name="i_video_sec">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>10</y>
-        <width>211</width>
-        <height>21</height>
+        <x>0</x>
+        <y>0</y>
+        <width>881</width>
+        <height>731</height>
        </rect>
       </property>
-      <property name="font">
-       <font>
-        <family>RB</family>
-        <pointsize>14</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
+      <property name="currentIndex">
+       <number>0</number>
       </property>
-      <property name="styleSheet">
-       <string notr="true">color: #38DBD0;</string>
-      </property>
-      <property name="text">
-       <string>Choose Course</string>
-      </property>
-     </widget>
-     <widget class="QComboBox" name="comboBox">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>40</y>
-        <width>241</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>RB</family>
-        <pointsize>10</pointsize>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">color: #38DBD0;</string>
-      </property>
-      <item>
-       <property name="text">
-        <string>Hello</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>Hello2</string>
-       </property>
-      </item>
-     </widget>
-     <widget class="QPushButton" name="i_start">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>90</y>
-        <width>91</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>RB</family>
-        <pointsize>12</pointsize>
-       </font>
-      </property>
-      <property name="cursor">
-       <cursorShape>PointingHandCursor</cursorShape>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QPushButton {
+      <widget class="QWidget" name="i_choose_course">
+       <widget class="QPushButton" name="i_start">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>90</y>
+          <width>91</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>RB</family>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
 	border-radius: 12px;
 	background-color: #38DBD0;
 	color:rgb(255, 255, 255);
@@ -873,28 +833,84 @@ QPushButton:hover {
 QPushButton:pressed {
 	background-color: #38DBD0;
 }</string>
-      </property>
-      <property name="text">
-       <string>Start</string>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>30</width>
-        <height>30</height>
-       </size>
-      </property>
-      <property name="checkable">
-       <bool>false</bool>
-      </property>
-      <property name="autoDefault">
-       <bool>true</bool>
-      </property>
-      <property name="default">
-       <bool>false</bool>
-      </property>
-      <property name="flat">
-       <bool>false</bool>
-      </property>
+        </property>
+        <property name="text">
+         <string>Start</string>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>30</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="checkable">
+         <bool>false</bool>
+        </property>
+        <property name="autoDefault">
+         <bool>true</bool>
+        </property>
+        <property name="default">
+         <bool>false</bool>
+        </property>
+        <property name="flat">
+         <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="i_title_start">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>10</y>
+          <width>211</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>RB</family>
+          <pointsize>14</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: #38DBD0;</string>
+        </property>
+        <property name="text">
+         <string>Choose Course</string>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="comboBox">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>40</y>
+          <width>241</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>RB</family>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: #38DBD0;</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>Hello</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Hello2</string>
+         </property>
+        </item>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="i_video_holder"/>
      </widget>
     </widget>
     <widget class="QWidget" name="i_end_session_sec">
