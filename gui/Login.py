@@ -8,6 +8,7 @@ from PyQt5.QtCore import Qt
 from gui import ForgetPassword
 import pyrebase
 from gui.InstructorDashboard import InstructorDashboard
+from gui.AdminDashboard import AdminDashboard
 
 class Login(QDialog):
 
@@ -60,6 +61,8 @@ class Login(QDialog):
                 isAdmin = db.child("users").child(str(user["localId"])).child("isAdmin").get()
                 if isAdmin.val() == "True":
                     print("Is admin...")
+                    AdminDashboard()
+
                 else:
                     self.destroy()
                     InstructorDashboard()
