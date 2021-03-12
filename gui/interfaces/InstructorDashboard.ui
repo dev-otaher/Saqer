@@ -208,7 +208,7 @@ QPushButton:pressed {
        </rect>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="i_courses">
        <widget class="QTableWidget" name="i_courses_table">
@@ -786,29 +786,131 @@ QTableWidget::section{
      </widget>
     </widget>
     <widget class="QWidget" name="i_start_session_sec">
-     <widget class="QLabel" name="i_title_start">
+     <widget class="QStackedWidget" name="i_video_sec">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>10</y>
-        <width>211</width>
-        <height>21</height>
+        <x>0</x>
+        <y>0</y>
+        <width>881</width>
+        <height>731</height>
        </rect>
       </property>
-      <property name="font">
-       <font>
-        <family>RB</family>
-        <pointsize>14</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
+      <property name="currentIndex">
+       <number>0</number>
       </property>
-      <property name="styleSheet">
-       <string notr="true">color: #38DBD0;</string>
-      </property>
-      <property name="text">
-       <string>Start Session</string>
-      </property>
+      <widget class="QWidget" name="i_choose_course">
+       <widget class="QPushButton" name="i_start">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>90</y>
+          <width>91</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>RB</family>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+	border-radius: 12px;
+	background-color: #38DBD0;
+	color:rgb(255, 255, 255);
+
+}
+
+QPushButton:hover {
+	background-color: #23b2a8;
+	color: rgb(255, 255, 255);
+}
+
+QPushButton:pressed {
+	background-color: #38DBD0;
+}</string>
+        </property>
+        <property name="text">
+         <string>Start</string>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>30</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="checkable">
+         <bool>false</bool>
+        </property>
+        <property name="autoDefault">
+         <bool>true</bool>
+        </property>
+        <property name="default">
+         <bool>false</bool>
+        </property>
+        <property name="flat">
+         <bool>false</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="i_title_start">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>10</y>
+          <width>211</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>RB</family>
+          <pointsize>14</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: #38DBD0;</string>
+        </property>
+        <property name="text">
+         <string>Choose Course</string>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="comboBox">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>40</y>
+          <width>241</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>RB</family>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: #38DBD0;</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>Hello</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Hello2</string>
+         </property>
+        </item>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="i_video_holder"/>
      </widget>
     </widget>
     <widget class="QWidget" name="i_end_session_sec">
@@ -833,7 +935,185 @@ QTableWidget::section{
        <string notr="true">color: #38DBD0;</string>
       </property>
       <property name="text">
-       <string>End Session</string>
+       <string>Recheck Attendnace</string>
+      </property>
+     </widget>
+     <widget class="QTableWidget" name="i_attendnace_table_2">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>40</y>
+        <width>871</width>
+        <height>641</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>RB</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="cursor" stdset="0">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::ClickFocus</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QHeaderView::section{background-color:#38DBD0; color:#383838}
+QTableWidget::item {
+		
+	selection-background-color: #38DBD0;
+    color: white;
+  	width: 100%;
+}
+
+
+QTableWidget::section{
+
+  border-collapse: collapse;
+  border-radius: 1em;
+  overflow: hidden;
+}
+</string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <property name="sizeAdjustPolicy">
+       <enum>QAbstractScrollArea::AdjustIgnored</enum>
+      </property>
+      <property name="autoScroll">
+       <bool>true</bool>
+      </property>
+      <property name="editTriggers">
+       <set>QAbstractItemView::NoEditTriggers</set>
+      </property>
+      <property name="showDropIndicator" stdset="0">
+       <bool>true</bool>
+      </property>
+      <property name="selectionMode">
+       <enum>QAbstractItemView::SingleSelection</enum>
+      </property>
+      <property name="selectionBehavior">
+       <enum>QAbstractItemView::SelectRows</enum>
+      </property>
+      <property name="textElideMode">
+       <enum>Qt::ElideLeft</enum>
+      </property>
+      <property name="gridStyle">
+       <enum>Qt::SolidLine</enum>
+      </property>
+      <attribute name="horizontalHeaderHighlightSections">
+       <bool>false</bool>
+      </attribute>
+      <attribute name="verticalHeaderVisible">
+       <bool>false</bool>
+      </attribute>
+      <attribute name="verticalHeaderHighlightSections">
+       <bool>true</bool>
+      </attribute>
+      <column>
+       <property name="text">
+        <string>New Column</string>
+       </property>
+       <property name="font">
+        <font>
+         <family>RB</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="foreground">
+        <brush brushstyle="NoBrush">
+         <color alpha="255">
+          <red>0</red>
+          <green>0</green>
+          <blue>0</blue>
+         </color>
+        </brush>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>New Column</string>
+       </property>
+       <property name="font">
+        <font>
+         <family>RB</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>New Column</string>
+       </property>
+       <property name="font">
+        <font>
+         <family>RB</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+      </column>
+     </widget>
+     <widget class="QPushButton" name="i_save_recheck">
+      <property name="geometry">
+       <rect>
+        <x>790</x>
+        <y>700</y>
+        <width>91</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>RB</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	border-radius: 15px;
+	background-color: #38DBD0;
+	color:rgb(255, 255, 255);
+
+}
+
+QPushButton:hover {
+	background-color: #23b2a8;
+	color: rgb(255, 255, 255);
+}
+
+QPushButton:pressed {
+	background-color: #38DBD0;
+}</string>
+      </property>
+      <property name="text">
+       <string>Save</string>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>30</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="checkable">
+       <bool>false</bool>
+      </property>
+      <property name="autoDefault">
+       <bool>true</bool>
+      </property>
+      <property name="default">
+       <bool>false</bool>
+      </property>
+      <property name="flat">
+       <bool>false</bool>
       </property>
      </widget>
     </widget>

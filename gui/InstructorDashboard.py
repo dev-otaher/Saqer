@@ -6,7 +6,8 @@ from PyQt5.QtCore import Qt, QVariant
 import sqlite3
 from PyQt5.QtGui import QCursor, QColor
 import sys
-from gui import Login
+from gui import Login, Warning
+
 
 #each interface defined in a class
 class InstructorDashboard(QDialog):
@@ -20,7 +21,9 @@ class InstructorDashboard(QDialog):
         self.i_stacked_widget.setCurrentWidget(self.i_courses)
         self.i_view_reports.clicked.connect(self.view_reports)
         self.i_start_session.clicked.connect(self.start_session)
+        self.i_start.clicked.connect(self.start_recording)
         self.i_end_session.clicked.connect(self.end_session)
+        self.i_save_recheck.clicked.connect(self.save_attendance)
         self.i_header.mouseMoveEvent = self.move_window
         self.i_logout.mousePressEvent = self.logout
         self.i_courses_table.setColumnWidth(0,289)
@@ -32,6 +35,10 @@ class InstructorDashboard(QDialog):
         self.i_courses_table.clicked.connect(self.once_clicked)
         self.i_save.clicked.connect(self.save)
         self.fill_data()
+        self.i_end_session.setEnabled(False)
+        self.i_end_session.setStyleSheet("QPushButton {border-radius: 25px;background-color: "
+                                         "#727272;color:#ffffff}QPushButton:hover {background-color: "
+                                         "#23b2a8; color: rgb(255, 255, 255);} QPushButton:pressed { background-color: #38DBD0; }")
         self.show()
 
     # Move window around
@@ -46,6 +53,16 @@ class InstructorDashboard(QDialog):
 
     def start_session(self):
         self.i_choices.setCurrentWidget(self.i_start_session_sec)
+        self.i_video_sec.setCurrentWidget(self.i_choose_course)
+
+    def start_recording(self):
+        print('test start recording')
+        self.i_end_session.setEnabled(True)
+        self.i_end_session.setStyleSheet("QPushButton {border-radius: 25px;background-color: "
+                                         "#38DBD0;color:#ffffff}QPushButton:hover {background-color: "
+                                         "#23b2a8; color: rgb(255, 255, 255);} QPushButton:pressed { background-color: #38DBD0; }")
+        self.i_video_sec.setCurrentWidget(self.i_video_holder)
+
 
     def view_reports(self):
         self.i_choices.setCurrentWidget(self.i_view_report_sec)
@@ -53,10 +70,15 @@ class InstructorDashboard(QDialog):
         self.i_title.setText("View Reports - Courses")
 
     def end_session(self):
+        Warning.Warning("Save Class Recording?")
         self.i_choices.setCurrentWidget(self.i_end_session_sec)
+
+    def save_attendance(self):
+        print('save attendance test')
 
     def logout(self, eve):
         try:
+
             Login.Login()
             self.destroy()
         except Exception as e:
@@ -109,17 +131,18 @@ class InstructorDashboard(QDialog):
                 rest2.setForeground(QColor(255, 255, 255))
                 rest3.setForeground(QColor(255, 255, 255))
 
+
                 self.i_classes_table.setItem(row, 0, atten)
                 self.i_classes_table.setItem(row, 1, behv)
                 self.i_classes_table.setItem(row, 2, rest)
                 self.i_classes_table.setItem(row, 3, rest2)
                 self.i_classes_table.setItem(row, 4, rest3)
                 row = row + 1
-            self.i_classes_table.clicked.connect(self.test)
+            self.i_classes_table.clicked.connect(self.show_behaviour)
         except Exception as e:
             print(e)
 
-    def test(self, index):
+    def show_behaviour(self, index):
         column = index.column()
         row = index.row()
         if column == 1:
@@ -182,3 +205,4 @@ class InstructorDashboard(QDialog):
                 print(state)
         except Exception as e:
             print(e)
+
