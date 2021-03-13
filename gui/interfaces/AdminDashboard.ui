@@ -365,6 +365,9 @@ QPushButton:pressed {
       </property>
      </widget>
      <widget class="QLineEdit" name="i_video_path">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>30</x>
