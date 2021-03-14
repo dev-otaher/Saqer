@@ -5,7 +5,7 @@ from threading import Thread
 
 import cv2
 from PyQt5 import uic, QtCore
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QThread
 from PyQt5.QtWidgets import QDialog
 from PyQt5.QtWidgets import QFileDialog
 from imutils.video import FPS
@@ -34,6 +34,7 @@ class AdminDashboard(QDialog):
         self.i_video_note.setHidden(True)
         self.i_progress_label.setHidden(True)
         self.i_progress_bar.setHidden(True)
+        self.mytheard = AttendanceThread()
 
         self.show()
 
@@ -62,36 +63,10 @@ class AdminDashboard(QDialog):
             else:
                 self.i_progress_label.setHidden(False)
                 self.i_progress_bar.setHidden(False)
-
-                movie = cv2.VideoCapture(path)
-                fps, interval, total_frames = movie.get(5), 0.10, movie.get(7)
-                CPUs, duration = cpu_count()-2, total_frames / fps
-                chunk_size = duration / CPUs
-
-                timer = FPS()
-                timer.start()
-                processes = []
-                for i in range(CPUs):
-                    r = Recognizer(path,
-                                   64,
-                                   "db/model/deploy.prototxt",
-                                   "db/model/res10_300x300_ssd_iter_140000.caffemodel",
-                                   "db/model/openface_nn4.small2.v1.t7",
-                                   "db/model/recognizer_12.03.2021_14.56.27.pickle",
-                                   "db/model/labels_12.03.2021_14.56.27.pickle")
-                    t = Thread(target=r.pick_frames, args=(interval, i * chunk_size, (i + 1) * chunk_size))
-                    t.start()
-                    p = multiprocessing.Process(target=r.xyz)
-                    p.start()
-                    processes.append(p)
-
-                for process in processes:
-                    process.join()
-                timer.stop()
-                Warning(timer.elapsed())
+                self.mytheard.path = path
+                self.mytheard.start()
         except Exception as e:
             print(e)
-            Warning(str(e))
 
     def logout(self):
         try:
@@ -99,3 +74,42 @@ class AdminDashboard(QDialog):
             self.destroy()
         except Exception as e:
             print(e)
+
+
+class AttendanceThread(QThread):
+    def __init__(self, path=""):
+        super(AttendanceThread, self).__init__()
+        self.path = path
+
+    def run(self):
+        try:
+            print("Started...")
+            movie = cv2.VideoCapture(self.path)
+            fps, interval, total_frames = movie.get(5), 0.10, movie.get(7)
+            CPUs, duration = cpu_count()-2, total_zframes / fps
+            chunk_size = duration / CPUs
+
+            timer = FPS()
+            timer.start()
+            processes = []
+            for i in range(CPUs):
+                r = Recognizer(self.path,
+                               64,
+                               "db/model/deploy.prototxt",
+                               "db/model/res10_300x300_ssd_iter_140000.caffemodel",
+                               "db/model/openface_nn4.small2.v1.t7",
+                               "db/model/recognizer_12.03.2021_14.56.27.pickle",
+                               "db/model/labels_12.03.2021_14.56.27.pickle")
+                t = Thread(target=r.pick_frames, args=(interval, i * chunk_size, (i + 1) * chunk_size))
+                t.start()
+                p = multiprocessing.Process(target=r.xyz)
+                p.start()
+                processes.append(p)
+
+            for process in processes:
+                process.join()
+            timer.stop()
+            Warning(timer.elapsed())
+        except Exception as e:
+            print(e)
+            Warning(str(e))
