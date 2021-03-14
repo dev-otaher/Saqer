@@ -86,7 +86,7 @@ class AttendanceThread(QThread):
             print("Started...")
             movie = cv2.VideoCapture(self.path)
             fps, interval, total_frames = movie.get(5), 0.10, movie.get(7)
-            CPUs, duration = cpu_count()-2, total_zframes / fps
+            CPUs, duration = cpu_count()-2, total_frames / fps
             chunk_size = duration / CPUs
 
             timer = FPS()
