@@ -1,23 +1,27 @@
 import pickle
 import time
+from multiprocessing import Process, Queue, Pipe
 from threading import Thread
 
 import cv2
 import face_recognition
 import imutils
 import numpy as np
+from PyQt5.QtCore import QThread, pyqtSignal, QObject
 from imutils import paths
 from imutils.video import VideoStream
 from modules.frames_queue import Movie
+from PyQt5 import QtCore
 
 
 class Recognizer(Movie):
-    def __init__(self, path, qsize, protoPath, modelPath, embedderPath, recognizerPath, lePath, confidence=0.6):
-        super().__init__(path, qsize=qsize)
+    def __init__(self, path, qsize, protoPath, modelPath, embedderPath, recognizerPath, lePath, to_emitter: Pipe, confidence=0.6):
+        Movie.__init__(self, path, qsize=qsize)
         self.protoPath, self.modelPath = protoPath, modelPath
         self.embedderPath = embedderPath
         self.recognizer = pickle.loads(open(recognizerPath, 'rb').read())
         self.label_encoder = pickle.loads(open(lePath, 'rb').read())
+        self.to_emitter = to_emitter
         self.confidence = confidence
 
     def get_locations(self, frame):
@@ -78,10 +82,6 @@ class Recognizer(Movie):
         return (name, p)
 
     def xyz(self):
-
-        # self.recognizer = pickle.loads(open(recognizerPath, 'rb').read())
-        # self.label_encoder = pickle.loads(open(lePath, 'rb').read())
-        # self.confidence = confidence
         while self.more():
             frame = imutils.resize(self.read(), width=1080)
             locations = self.get_locations(frame)
@@ -97,6 +97,8 @@ class Recognizer(Movie):
                     cv2.rectangle(frame, (startX, startY), (endX, endY), (0, 255, 0), 2)
                     cv2.putText(frame, text, (startX, y - 50), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 0, 0), 2)
             self.save_img(frame, "db/frames/")
+            self.to_emitter[1].send(1)
+            # self.emit(QtCore.PYQT_SIGNAL("done"), 1)
             # cv2.imshow('Frame', frame)
             # key = cv2.waitKey(1) & 0xFF
             # # if the 'q' key was pressed, break from the loop

@@ -1,3 +1,5 @@
+import time
+from multiprocessing import Process, Queue, Pipe
 import multiprocessing
 from functools import partial
 from multiprocessing import cpu_count
@@ -5,12 +7,14 @@ from threading import Thread
 
 import cv2
 from PyQt5 import uic, QtCore
-from PyQt5.QtCore import Qt, QThread
+from PyQt5.QtCore import Qt, QThread, pyqtSignal
 from PyQt5.QtWidgets import QDialog
 from PyQt5.QtWidgets import QFileDialog
 from imutils.video import FPS
 
 from gui import Login
+from modules.AttendanceThread import AttendanceThread
+from modules.Emitter import Emitter
 from modules.Recognizer import Recognizer
 
 
@@ -29,14 +33,29 @@ class AdminDashboard(QDialog):
         self.i_train_model.clicked.connect(partial(self.goto, self.i_train_sec))
         self.i_offline_atten.clicked.connect(partial(self.goto, self.i_offline_sec))
         self.i_settings.clicked.connect(partial(self.goto, self.i_settings_sec))
+
         self.i_choose_video.clicked.connect(self.choose_video)
         self.i_start.clicked.connect(self.start_offline_attendance)
+
         self.i_video_note.setHidden(True)
         self.i_progress_label.setHidden(True)
         self.i_progress_bar.setHidden(True)
-        self.mytheard = AttendanceThread()
+
+        child_pipe = Pipe()
+
+        self.attendance_thread = AttendanceThread(child_pipe)
+        self.attendance_thread.signal.connect(self.set_bar_max)
+
+        self.emitter = Emitter(child_pipe)
+        self.emitter.start()
 
         self.show()
+
+    def set_bar_max(self, val):
+        self.i_progress_bar.setMaximum(val)
+        print( self.i_progress_bar.maximum())
+
+
 
     def move_window(self, e):
         if e.buttons() == Qt.LeftButton:
@@ -57,14 +76,23 @@ class AdminDashboard(QDialog):
     def start_offline_attendance(self):
         try:
             self.i_video_note.setHidden(True)
-            path = self.i_video_path.text()
+            # path = self.i_video_path.text()
+            path = "D:\Playground\Python\FaceAttendance - Parallelism\class_videos\\1k - 2.MOV"
             if path == "":
                 self.i_video_note.setHidden(False)
             else:
                 self.i_progress_label.setHidden(False)
                 self.i_progress_bar.setHidden(False)
-                self.mytheard.path = path
-                self.mytheard.start()
+                self.attendance_thread.path = path
+                self.attendance_thread.start()
+                self.emitter.update_available.connect(self.update_progress)
+                print("Bar max =", self.i_progress_bar.maximum())
+        except Exception as e:
+            print(e)
+
+    def update_progress(self, val):
+        try:
+            self.i_progress_bar.setValue(self.i_progress_bar.value() + val)
         except Exception as e:
             print(e)
 
@@ -76,40 +104,4 @@ class AdminDashboard(QDialog):
             print(e)
 
 
-class AttendanceThread(QThread):
-    def __init__(self, path=""):
-        super(AttendanceThread, self).__init__()
-        self.path = path
 
-    def run(self):
-        try:
-            print("Started...")
-            movie = cv2.VideoCapture(self.path)
-            fps, interval, total_frames = movie.get(5), 0.10, movie.get(7)
-            CPUs, duration = cpu_count()-2, total_frames / fps
-            chunk_size = duration / CPUs
-
-            timer = FPS()
-            timer.start()
-            processes = []
-            for i in range(CPUs):
-                r = Recognizer(self.path,
-                               64,
-                               "db/model/deploy.prototxt",
-                               "db/model/res10_300x300_ssd_iter_140000.caffemodel",
-                               "db/model/openface_nn4.small2.v1.t7",
-                               "db/model/recognizer_12.03.2021_14.56.27.pickle",
-                               "db/model/labels_12.03.2021_14.56.27.pickle")
-                t = Thread(target=r.pick_frames, args=(interval, i * chunk_size, (i + 1) * chunk_size))
-                t.start()
-                p = multiprocessing.Process(target=r.xyz)
-                p.start()
-                processes.append(p)
-
-            for process in processes:
-                process.join()
-            timer.stop()
-            Warning(timer.elapsed())
-        except Exception as e:
-            print(e)
-            Warning(str(e))
