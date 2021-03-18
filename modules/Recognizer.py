@@ -1,27 +1,19 @@
 import pickle
-import time
-from multiprocessing import Process, Queue, Pipe
+from multiprocessing import Pipe
 from multiprocessing.process import current_process
-from threading import Thread
-
 import cv2
-import face_recognition
 import imutils
 import numpy as np
-from PyQt5.QtCore import QThread, pyqtSignal, QObject
-from imutils import paths
-from imutils.video import VideoStream
 from modules.frames_queue import Movie
-from PyQt5 import QtCore
 
 
 class Recognizer(Movie):
-    def __init__(self, path, qsize, protoPath, modelPath, embedderPath, recognizerPath, lePath, to_emitter: Pipe, confidence=0.6):
-        Movie.__init__(self, path, qsize=qsize)
-        self.protoPath, self.modelPath = protoPath, modelPath
-        self.embedderPath = embedderPath
-        self.recognizer = pickle.loads(open(recognizerPath, 'rb').read())
-        self.label_encoder = pickle.loads(open(lePath, 'rb').read())
+    def __init__(self, path, qsize, proto_path, model_path, embedder_path, recognizer_path, le_path, to_emitter: Pipe, confidence=0.6):
+        Movie.__init__(self, path=path, qsize=qsize)
+        self.proto_path, self.model_path = proto_path, model_path
+        self.embedder_path = embedder_path
+        self.recognizer = pickle.loads(open(recognizer_path, 'rb').read())
+        self.label_encoder = pickle.loads(open(le_path, 'rb').read())
         self.to_emitter = to_emitter
         self.confidence = confidence
 
@@ -33,10 +25,9 @@ class Recognizer(Movie):
             cv2.resize(f_copy, (300, 300)), 1.0, (w, h),
             (104.0, 177.0, 123.0), swapRB=False, crop=False)
 
-        detector = cv2.dnn.readNetFromCaffe(self.protoPath, self.modelPath)
+        detector = cv2.dnn.readNetFromCaffe(self.proto_path, self.model_path)
         detector.setInput(f_blob)
         detections = detector.forward()
-
         locations = []
         for i in range(0, detections.shape[2]):
             confidence = detections[0, 0, i, 2]
@@ -59,7 +50,7 @@ class Recognizer(Movie):
     def encode(self, face):
         faceBlob = cv2.dnn.blobFromImage(face, 1.0 / 255,
                                          (96, 96), (0, 0, 0), swapRB=True, crop=False)
-        embedder = cv2.dnn.readNetFromTorch(self.embedderPath)
+        embedder = cv2.dnn.readNetFromTorch(self.embedder_path)
         embedder.setInput(faceBlob)
         vec = embedder.forward()
         return vec
@@ -82,7 +73,7 @@ class Recognizer(Movie):
             name = self.label_encoder.classes_[j]
         return (name, p)
 
-    def xyz(self):
+    def run(self):
         while self.more():
             frame = imutils.resize(self.read(), width=1080)
             locations = self.get_locations(frame)
@@ -100,53 +91,3 @@ class Recognizer(Movie):
             self.save_img(frame, "db/frames/")
             self.to_emitter[1].send(1)
             print(f"{current_process().name} emitted a signal...")
-            # self.emit(QtCore.PYQT_SIGNAL("done"), 1)
-            # cv2.imshow('Frame', frame)
-            # key = cv2.waitKey(1) & 0xFF
-            # # if the 'q' key was pressed, break from the loop
-            # if key == ord('q'):
-            #     break
-
-
-# if __name__ == '__main__':
-#     recognizer = Recognizer("../model/deploy.prototxt",
-#                             "../model/res10_300x300_ssd_iter_140000.caffemodel",
-#                             "../model/openface_nn4.small2.v1.t7",
-#                             "output/recognizer_12.03.2021_14.56.27.pickle",
-#                             "output/labels_12.03.2021_14.56.27.pickle",
-#                             0.8)
-#     path = "../class_videos/1k - 2.MOV"
-#     movie = cv2.VideoCapture(path)
-#     fps = movie.get(5)
-#     # interval = 1 / fps
-#     interval = 0.1
-#
-#     vs = Movie(path)
-#     t = Thread(target=vs.pick_frames, args=(interval,))
-#     t.start()
-#     time.sleep(2.0)
-#
-#     while vs.more():
-#         frame = imutils.resize(vs.read(), width=1080)
-#         locations = recognizer.get_locations(frame)
-#         # cv2.imshow("frame", recognizer.draw_box_over_faces(frame, locations))
-#         for loc in locations:
-#             face = recognizer.get_face(frame, loc)
-#             if face is not None:
-#                 encoding = recognizer.encode(face)
-#                 name, p = recognizer.recognize(encoding)
-#                 text = '{}: {:.2f}%'.format(name, p * 100)
-#                 (startX, startY, endX, endY) = loc
-#                 y = startY - 10 if startY - 10 > 10 else startY + 10
-#                 cv2.rectangle(frame, (startX, startY), (endX, endY), (0, 255, 0), 2)
-#                 cv2.putText(frame, text, (startX, y-50), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 0, 0), 2)
-#         cv2.imshow('Frame', frame)
-#         key = cv2.waitKey(1) & 0xFF
-#         # if the 'q' key was pressed, break from the loop
-#         if key == ord('q'):
-#             break
-            # t.join(0.1)
-            # break
-
-        # cv2.imshow("frame", encoder.encode(frame))
-        # cv2.waitKey(0)

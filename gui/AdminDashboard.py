@@ -1,22 +1,13 @@
-import time
-from multiprocessing import Process, Queue, Pipe
-import multiprocessing
+from multiprocessing import Pipe
 from functools import partial
-from multiprocessing import cpu_count
-from threading import Thread
-
-import cv2
 from PyQt5 import uic, QtCore
-from PyQt5.QtCore import Qt, QThread, pyqtSignal
+from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QDialog
 from PyQt5.QtWidgets import QFileDialog
-from imutils.video import FPS
 
 from gui import Login
 from modules.AttendanceThread import AttendanceThread
 from modules.Emitter import Emitter
-from modules.Recognizer import Recognizer
-
 
 class AdminDashboard(QDialog):
     def __init__(self):
@@ -29,10 +20,7 @@ class AdminDashboard(QDialog):
         self.i_minmize.clicked.connect(lambda: self.showMinimized())
         self.i_logout.mousePressEvent = self.logout
 
-        self.i_register_student.clicked.connect(partial(self.goto, self.i_register_sec))
-        self.i_train_model.clicked.connect(partial(self.goto, self.i_train_sec))
-        self.i_offline_atten.clicked.connect(partial(self.goto, self.i_offline_sec))
-        self.i_settings.clicked.connect(partial(self.goto, self.i_settings_sec))
+        self.initialize_header()
 
         self.i_choose_video.clicked.connect(self.choose_video)
         self.i_start.clicked.connect(self.start_offline_attendance)
@@ -47,14 +35,18 @@ class AdminDashboard(QDialog):
         self.attendance_thread.signal.connect(self.set_bar_max)
 
         self.emitter = Emitter(child_pipe)
-        self.emitter.start()
         self.emitter.update_available.connect(self.update_progress)
 
         self.show()
 
+    def initialize_header(self):
+        self.i_register_student.clicked.connect(partial(self.goto, self.i_register_sec))
+        self.i_train_model.clicked.connect(partial(self.goto, self.i_train_sec))
+        self.i_offline_atten.clicked.connect(partial(self.goto, self.i_offline_sec))
+        self.i_settings.clicked.connect(partial(self.goto, self.i_settings_sec))
+
     def set_bar_max(self, val):
         self.i_progress_bar.setMaximum(val)
-        print(self.i_progress_bar.maximum())
 
     def move_window(self, e):
         if e.buttons() == Qt.LeftButton:
@@ -83,9 +75,9 @@ class AdminDashboard(QDialog):
                 self.i_progress_label.setHidden(False)
                 self.i_progress_bar.setHidden(False)
                 self.i_progress_bar.setValue(0)
+                self.emitter.start()
                 self.attendance_thread.path = path
                 self.attendance_thread.start()
-
         except Exception as e:
             print(e)
 
@@ -97,8 +89,11 @@ class AdminDashboard(QDialog):
 
     def logout(self):
         try:
+            print("logout")
             Login.Login()
+            print("logout2")
             self.destroy()
+            print("logout3")
         except Exception as e:
             print(e)
 

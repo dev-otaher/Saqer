@@ -4,8 +4,8 @@ from PyQt5.QtCore import QThread, pyqtSignal
 
 
 class Emitter(QThread):
-    """ Emitter waits for data from the capitalization process and emits a signal for the UI to update its text. """
-    update_available = pyqtSignal(int)  # Signal indicating new UI data is available.
+    """ Emitter waits for data from the process and emits a signal for the UI to update its progress bar. """
+    update_available = pyqtSignal(int)  # Signal indicating a frame is processed.
     def __init__(self, child_pipe: Pipe):
         super().__init__()
         self.child_pipe = child_pipe
@@ -15,7 +15,6 @@ class Emitter(QThread):
             try:
                 val = self.child_pipe[0].recv()
             except EOFError:
-                print("EOFError")
                 break
             except Exception as e:
                 print(e)

@@ -1,63 +1,45 @@
 import multiprocessing
+from os import cpu_count
 from threading import Thread
-
-import cv2
 from PyQt5.QtCore import pyqtSignal, QThread
 from imutils.video import FPS
-
+from modules.FileVideoStreamInfo import FileVideoStreamInfo
 from modules.Recognizer import Recognizer
 
 
 class AttendanceThread(QThread):
     signal = pyqtSignal(int)
-    def __init__(self, child_pipe: multiprocessing.Pipe, parent=None, path=""):
-        super(AttendanceThread, self).__init__(parent)
+
+    def __init__(self, child_pipe: multiprocessing.Pipe, path=""):
+        super(AttendanceThread, self).__init__(parent=None)
         self.path = path
         self.child_pipe = child_pipe
 
     def run(self):
         try:
-            print("Started...")
-            movie = cv2.VideoCapture(self.path)
-            fps, interval, total_frames = movie.get(5), 1.0, movie.get(7)
-            # CPUs, duration = cpu_count()-2, total_frames / fps
-            CPUs, duration = 4, total_frames / fps
+            vs_info = FileVideoStreamInfo(self.path)
+            fps, total_frames, duration = vs_info.get_fps(), vs_info.get_total_frames(), vs_info.get_duration(True)
+            CPUs, interval = cpu_count() - 2, 0.50
             chunk_size = duration / CPUs
+            qsize = 128 // CPUs
             total_picked_frames = duration / interval
             self.signal.emit(int(total_picked_frames))
 
             timer = FPS()
             timer.start()
-            processes = []
             for i in range(CPUs):
                 r = Recognizer(self.path,
-                               64,
+                               qsize,
                                "db/model/deploy.prototxt",
                                "db/model/res10_300x300_ssd_iter_140000.caffemodel",
                                "db/model/openface_nn4.small2.v1.t7",
                                "db/model/recognizer_12.03.2021_14.56.27.pickle",
                                "db/model/labels_12.03.2021_14.56.27.pickle",
-                               to_emitter = self.child_pipe)
-                t = Thread(target=r.pick_frames, args=(interval, i * chunk_size, (i + 1) * chunk_size))
-                t.start()
-                p = multiprocessing.Process(target=r.xyz)
-                p.start()
-                processes.append(p)
-
-            # for process in processes:
-            #     process.join()
-
+                               to_emitter=self.child_pipe)
+                Thread(target=r.pick_frames, args=(interval, i * chunk_size, (i + 1) * chunk_size)).start()
+                multiprocessing.Process(target=r.run).start()
             timer.stop()
             Warning(timer.elapsed())
         except Exception as e:
             print(e)
             Warning(str(e))
-
-
-# from multiprocessing import Pool
-# def f(x):
-#     return x*x
-# 
-# if __name__ == '__main__':
-#     with Pool(5) as p:
-#         print(p.map(f, [1, 2, 3]))

@@ -1,33 +1,18 @@
-import datetime
 import time
-from math import ceil, floor
+from math import ceil
 from multiprocessing.process import current_process
-from queue import Queue
-from threading import Thread
 import cv2
 import face_recognition as fr
 import itertools as it
-
-import imutils
 import numpy
-from imutils.video.filevideostream import FileVideoStream
-from imutils.video.fps import FPS
-from tqdm.notebook import tqdm
+from modules.FileVideoStream import FileVideoStream
 
 class Movie(FileVideoStream):
     def __init__(self, path: str, qsize=128):
-        super().__init__(path, queue_size=qsize)
+        super().__init__(queue_size=qsize)
         # self.stream = self.get_stream(path)
         self.path = path
         self._scounter = 0
-        self.img = cv2.imread('helpers/D2C6C14D-8EB5-41B8-87E4-BB48E19EF329.jpeg')
-        # self.fps = self.stream.get(5)
-        # self.total_frames = self.stream.get(7)
-        # self.progressBar = tqdm(
-        #     total=floor(totalFrames / (interval * fps)),
-        #     desc="Saving",
-        #     bar_format='{l_bar}{bar}| Elapsed: {elapsed}'
-        # )
 
     # def start_picking(self, args=()):
     #     print("start_picking")
@@ -42,7 +27,6 @@ class Movie(FileVideoStream):
             if self.stopped:
                 break
             if not self.Q.full():
-                # print (current_process().name)
                 frameId = ceil(start * fps)
                 stream.set(1, frameId)
                 ret, frame = stream.read()
@@ -51,7 +35,6 @@ class Movie(FileVideoStream):
                     self.stopped = True
                     break
                 self.Q.put(frame)
-
                 start += interval
             else:
                 time.sleep(0.1)

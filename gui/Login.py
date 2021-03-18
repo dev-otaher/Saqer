@@ -7,15 +7,14 @@ from PyQt5 import QtCore
 from PyQt5.QtCore import Qt
 from gui import ForgetPassword
 import pyrebase
-from gui.InstructorDashboard import InstructorDashboard
-from gui.AdminDashboard import AdminDashboard
+
 
 class Login(QDialog):
 
     # constructor of the class
     def __init__(self):
-
         super(Login, self).__init__()
+        print("x")
         uic.loadUi("gui/interfaces/Login.ui", self)
         self.i_login.clicked.connect(self.login)
         self.i_password_note.setHidden(True)
@@ -61,10 +60,12 @@ class Login(QDialog):
                 isAdmin = db.child("users").child(str(user["localId"])).child("isAdmin").get()
                 if isAdmin.val() == "True":
                     print("Is admin...")
+                    from gui.AdminDashboard import AdminDashboard
                     AdminDashboard()
 
                 else:
                     self.destroy()
+                    from gui.InstructorDashboard import InstructorDashboard
                     InstructorDashboard()
             except requests.exceptions.HTTPError as e:
                 print(e)
