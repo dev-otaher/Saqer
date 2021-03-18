@@ -48,14 +48,13 @@ class AdminDashboard(QDialog):
 
         self.emitter = Emitter(child_pipe)
         self.emitter.start()
+        self.emitter.update_available.connect(self.update_progress)
 
         self.show()
 
     def set_bar_max(self, val):
         self.i_progress_bar.setMaximum(val)
-        print( self.i_progress_bar.maximum())
-
-
+        print(self.i_progress_bar.maximum())
 
     def move_window(self, e):
         if e.buttons() == Qt.LeftButton:
@@ -83,10 +82,10 @@ class AdminDashboard(QDialog):
             else:
                 self.i_progress_label.setHidden(False)
                 self.i_progress_bar.setHidden(False)
+                self.i_progress_bar.setValue(0)
                 self.attendance_thread.path = path
                 self.attendance_thread.start()
-                self.emitter.update_available.connect(self.update_progress)
-                print("Bar max =", self.i_progress_bar.maximum())
+
         except Exception as e:
             print(e)
 

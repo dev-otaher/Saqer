@@ -19,13 +19,12 @@ class AttendanceThread(QThread):
         try:
             print("Started...")
             movie = cv2.VideoCapture(self.path)
-            fps, interval, total_frames = movie.get(5), 0.5, movie.get(7)
+            fps, interval, total_frames = movie.get(5), 1.0, movie.get(7)
             # CPUs, duration = cpu_count()-2, total_frames / fps
             CPUs, duration = 4, total_frames / fps
             chunk_size = duration / CPUs
-
-            print(total_frames)
-            self.signal.emit(int(total_frames))
+            total_picked_frames = duration / interval
+            self.signal.emit(int(total_picked_frames))
 
             timer = FPS()
             timer.start()

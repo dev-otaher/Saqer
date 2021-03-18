@@ -1,6 +1,7 @@
 import pickle
 import time
 from multiprocessing import Process, Queue, Pipe
+from multiprocessing.process import current_process
 from threading import Thread
 
 import cv2
@@ -98,6 +99,7 @@ class Recognizer(Movie):
                     cv2.putText(frame, text, (startX, y - 50), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 0, 0), 2)
             self.save_img(frame, "db/frames/")
             self.to_emitter[1].send(1)
+            print(f"{current_process().name} emitted a signal...")
             # self.emit(QtCore.PYQT_SIGNAL("done"), 1)
             # cv2.imshow('Frame', frame)
             # key = cv2.waitKey(1) & 0xFF
