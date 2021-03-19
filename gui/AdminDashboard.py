@@ -19,7 +19,6 @@ class AdminDashboard(QDialog):
         child_pipe = Pipe()
         self.attendance_thread = AttendanceThread(child_pipe)
         self.emitter = Emitter(child_pipe)
-        self.attendance_thread.max_signal.connect(self.set_bar_max)
         self.emitter.update_available.connect(self.update_progress)
         self.show()
 
@@ -76,6 +75,7 @@ class AdminDashboard(QDialog):
                 self.i_progress_label.setHidden(False)
                 self.i_progress_bar.setHidden(False)
                 self.i_progress_bar.setValue(0)
+                self.attendance_thread.max_signal.connect(self.set_bar_max)
                 self.emitter.start()
                 self.attendance_thread.path = path
                 self.attendance_thread.start()

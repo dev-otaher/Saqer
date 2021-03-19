@@ -396,9 +396,6 @@ border-bottom: 2px solid rgb(85, 255, 255);
       </property>
      </widget>
      <widget class="QLabel" name="i_video_note">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
       <property name="geometry">
        <rect>
         <x>30</x>
@@ -414,8 +411,7 @@ border-bottom: 2px solid rgb(85, 255, 255);
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">color:#ff0000;
-</string>
+       <string notr="true">color:#ff0000</string>
       </property>
       <property name="text">
        <string>*There is no video specified</string>

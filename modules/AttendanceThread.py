@@ -19,7 +19,7 @@ class AttendanceThread(QThread):
         try:
             vs_info = FileVideoStreamInfo(self.path)
             fps, total_frames, duration = vs_info.get_fps(), vs_info.get_total_frames(), vs_info.get_duration(True)
-            CPUs, interval = cpu_count() - 2, 0.50
+            CPUs, interval = cpu_count() - 2, 5
             chunk_size = duration / CPUs
             qsize = 128 // CPUs
             total_picked_frames = duration / interval
