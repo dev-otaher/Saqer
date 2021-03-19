@@ -8,7 +8,7 @@ from modules.Recognizer import Recognizer
 
 
 class AttendanceThread(QThread):
-    signal = pyqtSignal(int)
+    max_signal = pyqtSignal(int)
 
     def __init__(self, child_pipe: multiprocessing.Pipe, path=""):
         super(AttendanceThread, self).__init__(parent=None)
@@ -23,7 +23,7 @@ class AttendanceThread(QThread):
             chunk_size = duration / CPUs
             qsize = 128 // CPUs
             total_picked_frames = duration / interval
-            self.signal.emit(int(total_picked_frames))
+            self.max_signal.emit(int(total_picked_frames))
 
             timer = FPS()
             timer.start()
@@ -36,7 +36,7 @@ class AttendanceThread(QThread):
                                "db/model/recognizer_12.03.2021_14.56.27.pickle",
                                "db/model/labels_12.03.2021_14.56.27.pickle",
                                to_emitter=self.child_pipe)
-                Thread(target=r.pick_frames, args=(interval, i * chunk_size, (i + 1) * chunk_size)).start()
+                Thread(target=r.vs.pick_frames, args=(interval, i * chunk_size, (i + 1) * chunk_size)).start()
                 multiprocessing.Process(target=r.run).start()
             timer.stop()
             Warning(timer.elapsed())

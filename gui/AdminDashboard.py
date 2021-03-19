@@ -14,36 +14,37 @@ class AdminDashboard(QDialog):
         super(AdminDashboard, self).__init__()
         uic.loadUi("gui/interfaces/AdminDashboard.ui", self)
         self.setWindowFlags(QtCore.Qt.WindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint))
-        self.i_header.mouseMoveEvent = self.move_window
+        self.connect_widgets()
+        self.hide_widgets()
+        child_pipe = Pipe()
+        self.attendance_thread = AttendanceThread(child_pipe)
+        self.emitter = Emitter(child_pipe)
+        self.attendance_thread.max_signal.connect(self.set_bar_max)
+        self.emitter.update_available.connect(self.update_progress)
+        self.show()
 
+    def connect_widgets(self):
+        self.connect_header()
+        self.connect_side_widgets()
+        self.i_choose_video.clicked.connect(self.choose_video)
+        self.i_start.clicked.connect(self.start_offline_attendance)
+
+    def connect_header(self):
+        self.i_header.mouseMoveEvent = self.move_window
         self.i_close.clicked.connect(lambda: exit())
         self.i_minmize.clicked.connect(lambda: self.showMinimized())
         self.i_logout.mousePressEvent = self.logout
 
-        self.initialize_header()
-
-        self.i_choose_video.clicked.connect(self.choose_video)
-        self.i_start.clicked.connect(self.start_offline_attendance)
-
-        self.i_video_note.setHidden(True)
-        self.i_progress_label.setHidden(True)
-        self.i_progress_bar.setHidden(True)
-
-        child_pipe = Pipe()
-
-        self.attendance_thread = AttendanceThread(child_pipe)
-        self.attendance_thread.signal.connect(self.set_bar_max)
-
-        self.emitter = Emitter(child_pipe)
-        self.emitter.update_available.connect(self.update_progress)
-
-        self.show()
-
-    def initialize_header(self):
+    def connect_side_widgets(self):
         self.i_register_student.clicked.connect(partial(self.goto, self.i_register_sec))
         self.i_train_model.clicked.connect(partial(self.goto, self.i_train_sec))
         self.i_offline_atten.clicked.connect(partial(self.goto, self.i_offline_sec))
         self.i_settings.clicked.connect(partial(self.goto, self.i_settings_sec))
+
+    def hide_widgets(self):
+        self.i_video_note.setHidden(True)
+        self.i_progress_label.setHidden(True)
+        self.i_progress_bar.setHidden(True)
 
     def set_bar_max(self, val):
         self.i_progress_bar.setMaximum(val)
@@ -67,8 +68,8 @@ class AdminDashboard(QDialog):
     def start_offline_attendance(self):
         try:
             self.i_video_note.setHidden(True)
-            # path = self.i_video_path.text()
-            path = "D:\Playground\Python\FaceAttendance - Parallelism\class_videos\\1k - 2.MOV"
+            path = self.i_video_path.text()
+            # path = "D:\Playground\Python\FaceAttendance - Parallelism\class_videos\\1k - 2.MOV"
             if path == "":
                 self.i_video_note.setHidden(False)
             else:
@@ -89,11 +90,8 @@ class AdminDashboard(QDialog):
 
     def logout(self):
         try:
-            print("logout")
             Login.Login()
-            print("logout2")
             self.destroy()
-            print("logout3")
         except Exception as e:
             print(e)
 
