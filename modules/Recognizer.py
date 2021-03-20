@@ -16,8 +16,8 @@ class Recognizer:
         self.embedder_path = embedder_path
         self.recognizer = pickle.loads(open(recognizer_path, 'rb').read())
         self.label_encoder = pickle.loads(open(le_path, 'rb').read())
-        self.to_emitter = to_emitter
         self.confidence = confidence
+        self.to_emitter = to_emitter
 
     def get_locations(self, frame):
         f_copy = frame.copy()
