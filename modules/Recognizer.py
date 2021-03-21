@@ -5,11 +5,13 @@ import cv2
 import imutils
 import numpy as np
 
+from modules.AttendanceTaker import AttendanceTaker
 from modules.FileVideoStream import FileVideoStream
 
 
 class Recognizer:
-    def __init__(self, path, qsize, proto_path, model_path, embedder_path, recognizer_path, le_path, to_emitter: Pipe, confidence=0.6):
+    def __init__(self, path, qsize, proto_path, model_path, embedder_path, recognizer_path, le_path, to_emitter: Pipe,
+                 confidence=0.6):
         self.vs = FileVideoStream(path, qsize)
         self.proto_path = proto_path
         self.model_path = model_path
@@ -18,6 +20,7 @@ class Recognizer:
         self.label_encoder = pickle.loads(open(le_path, 'rb').read())
         self.confidence = confidence
         self.to_emitter = to_emitter
+
 
     def get_locations(self, frame):
         f_copy = frame.copy()
@@ -73,18 +76,21 @@ class Recognizer:
             name = self.label_encoder.classes_[j]
         else:
             name = self.label_encoder.classes_[j]
-        return (name, p)
+        return name, p
 
     def run(self):
+        taker = AttendanceTaker().populate_std_list()
         while self.vs.more():
             frame = imutils.resize(self.vs.read(), width=1080)
             locations = self.get_locations(frame)
-            # cv2.imshow("frame", recognizer.draw_box_over_faces(frame, locations))
             for loc in locations:
                 face = self.get_face(frame, loc)
                 if face is not None:
                     encoding = self.encode(face)
                     name, p = self.recognize(encoding)
+                    std_id = taker.get_id_by_name(name)
+                    if std_id is not None:
+                        taker.increment(taker.get_std_by_id(std_id))
                     text = '{}: {:.2f}%'.format(name, p * 100)
                     (startX, startY, endX, endY) = loc
                     y = startY - 10 if startY - 10 > 10 else startY + 10
@@ -92,3 +98,5 @@ class Recognizer:
                     cv2.putText(frame, text, (startX, y - 50), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 0, 0), 2)
             self.vs.save_frame(frame, "db/frames/")
             self.to_emitter[1].send(1)
+        print(current_process().name, "sending list...")
+        self.to_emitter[1].send(taker.students)

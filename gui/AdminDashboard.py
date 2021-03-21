@@ -1,5 +1,7 @@
 from multiprocessing import Pipe
 from functools import partial
+from typing import List
+
 from PyQt5 import uic, QtCore
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QDialog
@@ -8,6 +10,8 @@ from PyQt5.QtWidgets import QFileDialog
 from gui import Login
 from modules.AttendanceThread import AttendanceThread
 from modules.Emitter import Emitter
+from modules.Student import Student
+
 
 class AdminDashboard(QDialog):
     def __init__(self):
@@ -20,6 +24,7 @@ class AdminDashboard(QDialog):
         self.attendance_thread = AttendanceThread(child_pipe)
         self.emitter = Emitter(child_pipe)
         self.emitter.update_available.connect(self.update_progress)
+        self.emitter.std_list_signal.connect(self.print_std_list)
         self.show()
 
     def connect_widgets(self):
@@ -67,8 +72,8 @@ class AdminDashboard(QDialog):
     def start_offline_attendance(self):
         try:
             self.i_video_note.setHidden(True)
-            path = self.i_video_path.text()
-            # path = "D:\Playground\Python\FaceAttendance - Parallelism\class_videos\\1k - 2.MOV"
+            # path = self.i_video_path.text()
+            path = "D:\Playground\Python\FaceAttendance - Parallelism\class_videos\\1k - 2.MOV"
             if path == "":
                 self.i_video_note.setHidden(False)
             else:
@@ -87,6 +92,12 @@ class AdminDashboard(QDialog):
             self.i_progress_bar.setValue(self.i_progress_bar.value() + val)
         except Exception as e:
             print(e)
+
+    def print_std_list(self, ls: List[Student]):
+        for std in ls:
+            print(std.name, std.appear_counter)
+
+
 
     def logout(self):
         try:
