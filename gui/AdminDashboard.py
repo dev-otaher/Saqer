@@ -26,10 +26,19 @@ class AdminDashboard(QDialog):
         self.i_offline_atten.clicked.connect(self.offline_attendance)
         self.i_settings.clicked.connect(self.settings)
         self.i_video_note.setHidden(True)
-        self.i_progress_label.setHidden(True)
-        self.i_progress_bar.setHidden(True)
+        self.i_folder_note.setHidden(True)
+        self.i_pickle_note.setHidden(True)
+        self.i_offline_prolabel.setHidden(True)
+        self.i_offline_progress.setHidden(True)
+        self.i_train_prolabel.setHidden(True)
+        self.i_train_progress.setHidden(True)
         self.i_choose_video.clicked.connect(self.choose_video)
+        self.i_choose_folder.clicked.connect(self.choose_folder)
+        self.i_choose_file.clicked.connect(self.choose_pickle)
         self.i_start.clicked.connect(self.start_offline_attendance)
+        self.i_extract.clicked.connect(self.extract_encodings)
+        self.i_train.clicked.connect(self.train_encodings)
+
         self.i_logout.mousePressEvent = self.logout
         self.show()
 
@@ -40,6 +49,7 @@ class AdminDashboard(QDialog):
             self.clickPosition = e.globalPos()
             e.accept()
 
+
     def mousePressEvent(self, event):
         self.clickPosition = event.globalPos()
 
@@ -47,8 +57,10 @@ class AdminDashboard(QDialog):
     def register_student(self):
         self.i_choices.setCurrentWidget(self.i_register_sec)
 
+
     def train_model(self):
         self.i_choices.setCurrentWidget(self.i_train_sec)
+
 
     def offline_attendance(self):
         self.i_choices.setCurrentWidget(self.i_offline_sec)
@@ -57,9 +69,21 @@ class AdminDashboard(QDialog):
     def settings(self):
         self.i_choices.setCurrentWidget(self.i_settings_sec)
 
+
     def choose_video(self):
         video_path = QFileDialog.getOpenFileName(self,'Choose Video', '', 'Video (*.mp4 , *.mkv)')
         self.i_video_path.setText(video_path[0])
+
+
+    def choose_folder(self):
+        folder_path = QFileDialog.getExistingDirectory(self,'Choose Folder')
+        self.i_folder_path.setText(folder_path)
+
+
+    def choose_pickle(self):
+        pickle_path = QFileDialog.getOpenFileName(self,'Choose Pickle', '', 'Pickle (*.pickle)')
+        self.i_pickle_path.setText(pickle_path[0])
+
 
     def start_offline_attendance(self):
         video_path = self.i_video_path.text()
@@ -70,12 +94,33 @@ class AdminDashboard(QDialog):
             self.i_video_note.setHidden(False)
         else:
             self.i_video_note.setHidden(True)
-            self.i_progress_label.setHidden(False)
-            self.i_progress_bar.setHidden(False)
+            self.i_offline_progress.setHidden(False)
+            self.i_offline_label.setHidden(False)
+
+
+    def extract_encodings(self):
+        folder_path = self.i_folder_path.text()
+        validating_folder = folder_path.find('')
+
+        if self.i_folder_path.text() == '':
+            self.i_folder_note.setHidden(False)
+        else:
+            self.i_folder_note.setHidden(True)
+
+
+    def train_encodings(self):
+        pickle_path = self.i_pickle_path.text()
+        validating_pickle = pickle_path.find('.pickle')
+
+        if validating_pickle == -1:
+            self.i_pickle_note.setHidden(False)
+        else:
+            self.i_pickle_note.setHidden(True)
+            self.i_train_prolabel.setHidden(False)
+            self.i_train_progress.setHidden(False)
 
     def logout(self, eve):
         try:
-
             Login.Login()
             self.destroy()
         except Exception as e:

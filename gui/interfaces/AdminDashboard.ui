@@ -224,6 +224,427 @@ QPushButton:pressed {
        <string>Train FR Model</string>
       </property>
      </widget>
+     <widget class="QLabel" name="label">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>60</y>
+        <width>131</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>RB</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: #38DBD0;</string>
+      </property>
+      <property name="text">
+       <string>Extract Encodings</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="i_choose_folder">
+      <property name="geometry">
+       <rect>
+        <x>410</x>
+        <y>100</y>
+        <width>131</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>RB</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	border-radius: 12px;
+	background-color: #38DBD0;
+	color:rgb(255, 255, 255);
+
+}
+
+QPushButton:hover {
+	background-color: #23b2a8;
+	color: rgb(255, 255, 255);
+}
+
+QPushButton:pressed {
+	background-color: #38DBD0;
+}</string>
+      </property>
+      <property name="text">
+       <string>Choose Folder</string>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>30</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="checkable">
+       <bool>false</bool>
+      </property>
+      <property name="autoDefault">
+       <bool>true</bool>
+      </property>
+      <property name="default">
+       <bool>false</bool>
+      </property>
+      <property name="flat">
+       <bool>false</bool>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="i_folder_path">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>100</y>
+        <width>351</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>RB</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: #38DBD0;
+border: none;
+border-bottom: 2px solid rgb(85, 255, 255);
+</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+      </property>
+      <property name="placeholderText">
+       <string>Images Folder Path...</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="i_extract">
+      <property name="geometry">
+       <rect>
+        <x>550</x>
+        <y>100</y>
+        <width>131</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>RB</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	border-radius: 12px;
+	background-color: #38DBD0;
+	color:rgb(255, 255, 255);
+
+}
+
+QPushButton:hover {
+	background-color: #23b2a8;
+	color: rgb(255, 255, 255);
+}
+
+QPushButton:pressed {
+	background-color: #38DBD0;
+}</string>
+      </property>
+      <property name="text">
+       <string>Extract</string>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>30</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="checkable">
+       <bool>false</bool>
+      </property>
+      <property name="autoDefault">
+       <bool>true</bool>
+      </property>
+      <property name="default">
+       <bool>false</bool>
+      </property>
+      <property name="flat">
+       <bool>false</bool>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="i_choose_file">
+      <property name="geometry">
+       <rect>
+        <x>410</x>
+        <y>240</y>
+        <width>131</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>RB</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	border-radius: 12px;
+	background-color: #38DBD0;
+	color:rgb(255, 255, 255);
+
+}
+
+QPushButton:hover {
+	background-color: #23b2a8;
+	color: rgb(255, 255, 255);
+}
+
+QPushButton:pressed {
+	background-color: #38DBD0;
+}</string>
+      </property>
+      <property name="text">
+       <string>Choose File</string>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>30</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="checkable">
+       <bool>false</bool>
+      </property>
+      <property name="autoDefault">
+       <bool>true</bool>
+      </property>
+      <property name="default">
+       <bool>false</bool>
+      </property>
+      <property name="flat">
+       <bool>false</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_2">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>200</y>
+        <width>131</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>RB</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: #38DBD0;</string>
+      </property>
+      <property name="text">
+       <string>Choose Encodings</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="i_pickle_path">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>240</y>
+        <width>351</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>RB</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: #38DBD0;
+border: none;
+border-bottom: 2px solid rgb(85, 255, 255);
+</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+      </property>
+      <property name="placeholderText">
+       <string>Pickle File Path...</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="i_train">
+      <property name="geometry">
+       <rect>
+        <x>550</x>
+        <y>240</y>
+        <width>131</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>RB</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	border-radius: 12px;
+	background-color: #38DBD0;
+	color:rgb(255, 255, 255);
+
+}
+
+QPushButton:hover {
+	background-color: #23b2a8;
+	color: rgb(255, 255, 255);
+}
+
+QPushButton:pressed {
+	background-color: #38DBD0;
+}</string>
+      </property>
+      <property name="text">
+       <string>Train</string>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>30</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="checkable">
+       <bool>false</bool>
+      </property>
+      <property name="autoDefault">
+       <bool>true</bool>
+      </property>
+      <property name="default">
+       <bool>false</bool>
+      </property>
+      <property name="flat">
+       <bool>false</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="i_folder_note">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>150</y>
+        <width>211</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>RB</family>
+        <pointsize>11</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color:#ff0000</string>
+      </property>
+      <property name="text">
+       <string>*There is no folder selected</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="i_pickle_note">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>290</y>
+        <width>211</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>RB</family>
+        <pointsize>11</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color:#ff0000</string>
+      </property>
+      <property name="text">
+       <string>*There is no pickle file selected</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="i_train_prolabel">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>700</y>
+        <width>81</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>RB</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color:#38DBD0</string>
+      </property>
+      <property name="text">
+       <string>Progress:</string>
+      </property>
+     </widget>
+     <widget class="QProgressBar" name="i_train_progress">
+      <property name="geometry">
+       <rect>
+        <x>110</x>
+        <y>707</y>
+        <width>761</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QProgressBar{
+	background-color:rgb(40, 120, 120);
+	color: rgb(49, 147, 147);
+	color: rgb(56, 56, 56);
+	border-style:none;
+	border-radius:10px;
+	text-align:center;
+}
+QProgressBar::chunk{
+	border-radius:10px; 
+	background-color: qlineargradient(spread:pad, x1:0, y1:0.488591, x2:0.989474, y2:0.54, stop:0 #38DBD0, stop:1#38DBD0);
+}</string>
+      </property>
+      <property name="value">
+       <number>24</number>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="i_offline_sec">
      <widget class="QLabel" name="i_offline_label">
@@ -414,11 +835,11 @@ border-bottom: 2px solid rgb(85, 255, 255);
        <string>*There is no video specified</string>
       </property>
      </widget>
-     <widget class="QProgressBar" name="i_progress_bar">
+     <widget class="QProgressBar" name="i_offline_progress">
       <property name="geometry">
        <rect>
         <x>110</x>
-        <y>700</y>
+        <y>707</y>
         <width>761</width>
         <height>23</height>
        </rect>
@@ -441,11 +862,11 @@ QProgressBar::chunk{
        <number>24</number>
       </property>
      </widget>
-     <widget class="QLabel" name="i_progress_label">
+     <widget class="QLabel" name="i_offline_prolabel">
       <property name="geometry">
        <rect>
         <x>30</x>
-        <y>693</y>
+        <y>700</y>
         <width>81</width>
         <height>31</height>
        </rect>
