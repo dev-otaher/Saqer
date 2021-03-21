@@ -4,3 +4,7 @@ db/serviceAccountKey.json
 *.pyc
 gui/__pycache__/
 *.mp4
+*.prototxt
+*.pickle
+*.t7
+*.caffemodel
