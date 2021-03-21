@@ -32,7 +32,7 @@ class AdminDashboard(QDialog):
         self.i_header.mouseMoveEvent = self.move_window
         self.i_close.clicked.connect(lambda: exit())
         self.i_minmize.clicked.connect(lambda: self.showMinimized())
-        self.i_logout.mousePressEvent = self.logout
+        self.i_logout.clicked.connect(self.logout)
 
     def connect_side_widgets(self):
         self.i_register_student.clicked.connect(partial(self.goto, self.i_register_sec))
