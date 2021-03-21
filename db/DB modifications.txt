@@ -1,0 +1,43 @@
+"attendence" (
+	"id"	
+	"student_id"
+	"class_id"
+	"status"
+)
+
+"behavior" (
+	"id"
+	"class_id"
+	"happy"
+	"sad"
+	"neutral"
+)
+
+"class" (
+	"id"
+	"title"
+	"course_id"
+	"date"
+	"time"
+	"instructor_id"
+)
+
+"course" (
+	"id"
+	"code"
+	"title"
+)
+
+"settings" (
+	"face_confidence"	INTEGER DEFAULT 50,
+	"p_threshold"	INTEGER DEFAULT 50,
+	"images_per_student"	INTEGER DEFAULT 30
+)
+
+"student" (
+	"uni_id"
+	"name"
+)
+
+delete "student_photos" table
+
