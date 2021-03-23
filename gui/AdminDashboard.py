@@ -8,7 +8,7 @@ from PyQt5.QtGui import QCursor, QColor
 import sys
 from gui import Login, Warning
 from PyQt5.QtCore import Qt, QTimer
-
+import re
 
 
 #each interface defined in a class
@@ -21,10 +21,10 @@ class AdminDashboard(QDialog):
         self.i_header.mouseMoveEvent = self.move_window
         self.i_close.clicked.connect(lambda: exit())
         self.i_minmize.clicked.connect(lambda: self.showMinimized())
-        self.i_register_student.clicked.connect(self.register_student)
-        self.i_train_model.clicked.connect(self.train_model)
-        self.i_offline_atten.clicked.connect(self.offline_attendance)
-        self.i_settings.clicked.connect(self.settings)
+        self.i_register_student.clicked.connect(self.register_student_wid)
+        self.i_train_model.clicked.connect(self.train_model_wid)
+        self.i_offline_atten.clicked.connect(self.offline_attendance_wid)
+        self.i_settings.clicked.connect(self.settings_wid)
         self.i_video_note.setHidden(True)
         self.i_folder_note.setHidden(True)
         self.i_pickle_note.setHidden(True)
@@ -38,7 +38,11 @@ class AdminDashboard(QDialog):
         self.i_start.clicked.connect(self.start_offline_attendance)
         self.i_extract.clicked.connect(self.extract_encodings)
         self.i_train.clicked.connect(self.train_encodings)
-
+        self.i_id_note.setHidden(True)
+        self.i_name_note.setHidden(True)
+        self.i_path_note.setHidden(True)
+        self.i_choose_pic.clicked.connect(self.choose_pictures)
+        self.i_register.clicked.connect(self.register_student)
         self.i_logout.mousePressEvent = self.logout
         self.show()
 
@@ -54,19 +58,19 @@ class AdminDashboard(QDialog):
         self.clickPosition = event.globalPos()
 
 
-    def register_student(self):
+    def register_student_wid(self):
         self.i_choices.setCurrentWidget(self.i_register_sec)
 
 
-    def train_model(self):
+    def train_model_wid(self):
         self.i_choices.setCurrentWidget(self.i_train_sec)
 
 
-    def offline_attendance(self):
+    def offline_attendance_wid(self):
         self.i_choices.setCurrentWidget(self.i_offline_sec)
 
 
-    def settings(self):
+    def settings_wid(self):
         self.i_choices.setCurrentWidget(self.i_settings_sec)
 
 
@@ -118,6 +122,43 @@ class AdminDashboard(QDialog):
             self.i_pickle_note.setHidden(True)
             self.i_train_prolabel.setHidden(False)
             self.i_train_progress.setHidden(False)
+
+    def choose_pictures(self):
+        folder_path = QFileDialog.getExistingDirectory(self, 'Choose Folder')
+        self.i_student_pic.setText(folder_path)
+
+    def register_student(self):
+
+
+        # university id must be 10 digits validation
+        pattern = r"^\d{10}$"
+        re.compile(pattern)
+        university_id = self.i_university_id.text().strip()
+        if university_id == "" or not re.match(pattern, university_id):
+            self.i_id_note.setHidden(False)
+        else:
+            self.i_id_note.setHidden(True)
+
+
+        # student name shouldn't accept numbers validation
+        pattern2 = r"[a-zA-Z][a-zA-Z\\s]"
+        re.compile(pattern2)
+        student_name = self.i_student_name.text().strip()
+        if student_name == "" or not re.match(pattern2, student_name):
+            self.i_name_note.setHidden(False)
+        else:
+            self.i_name_note.setHidden(True)
+
+
+        if self.i_student_pic.text() == "":
+            self.i_path_note.setHidden(False)
+        else:
+            self.i_path_note.setHidden(True)
+
+
+
+
+
 
     def logout(self, eve):
         try:
