@@ -39,6 +39,7 @@ class AttendanceThread(QThread):
                 Thread(target=r.vs.pick_frames, args=(interval, i * chunk_size, (i + 1) * chunk_size)).start()
                 multiprocessing.Process(target=r.run).start()
             timer.stop()
+            print(timer.elapsed())
             Warning(timer.elapsed())
         except Exception as e:
             print(e)

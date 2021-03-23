@@ -88,7 +88,7 @@ class Recognizer:
                 if face is not None:
                     encoding = self.encode(face)
                     name, p = self.recognize(encoding)
-                    std_id = taker.get_id_by_name(name)
+                    std_id = taker.get_id_by_name(name) # for testing only
                     if std_id is not None:
                         taker.increment(taker.get_std_by_id(std_id))
                     text = '{}: {:.2f}%'.format(name, p * 100)

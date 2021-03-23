@@ -1,13 +1,14 @@
 from typing import List
 
 from modules.Student import Student
+from modules.Students import Students
 
 
 class AttendanceTaker:
     def __init__(self, class_id="", date=""):
         self.class_id = class_id
         self.date = date
-        self.students: List[Student]
+        self.students: Students
 
     def populate_std_list(self):
         omar = Student("2170007761", "Omar")
@@ -28,7 +29,3 @@ class AttendanceTaker:
 
     def increment(self, std: Student):
         std.appear_counter += 1
-
-if __name__ == '__main__':
-    taker = AttendanceTaker().populate_std_list()
-    print(taker.get_std_by_id("2170007761").name)

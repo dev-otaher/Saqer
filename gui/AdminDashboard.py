@@ -94,8 +94,9 @@ class AdminDashboard(QDialog):
             print(e)
 
     def print_std_list(self, ls: List[Student]):
-        for std in ls:
-            print(std.name, std.appear_counter)
+        pass
+        # for std in ls:
+        #     print(std.name, std.appear_counter)
 
 
 
