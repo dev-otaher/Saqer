@@ -1,14 +1,16 @@
 from multiprocessing import Pipe
+from sqlite3 import Error
 from typing import List
 
 from PyQt5.QtWidgets import QFileDialog
 from qtpy import QtWidgets
 
 from modules.AttendanceThread import AttendanceThread
+from modules.DBHelper import DBHelper
 from modules.Emitter import Emitter
 from modules.Student import Student
 from modules.Students import Students
-
+from gui.Warning import Warning
 
 class OfflineAttendance:
     def __init__(self, parent_gui):
@@ -21,10 +23,13 @@ class OfflineAttendance:
         self.emitter.update_available.connect(self.update_progress)
         self.emitter.new_list.connect(self.combine_std_lists)
         self.students = Students()
+        self.db = DBHelper()
+        self.db_conn = DBHelper().create_db_connection("db/saqer.db")
 
     def connect_widgets(self):
         self.parent.i_choose_video.clicked.connect(self.choose_video)
         self.parent.i_start.clicked.connect(self.start_offline_attendance)
+        self.parent.i_save_recheck.clicked.connect(self.save_data)
 
     def hide_widgets(self):
         self.parent.i_video_note.setHidden(True)
@@ -97,4 +102,15 @@ class OfflineAttendance:
             self.parent.i_recheck_table.setCellWidget(0, 3, checkbox)
 
     def save_data(self):
-        pass
+        try:
+            sql = '''INSERT INTO attendance (student_id, status)
+                            VALUES (?, ?)'''
+            cur = self.db_conn.cursor()
+            for r in range(self.parent.i_recheck_table.rowCount()):
+                id = self.parent.i_recheck_table.item(r, 0).text()
+                status = self.parent.i_recheck_table.cellWidget(r, 3).isChecked()
+                cur.execute(sql, (id, status))
+                self.db_conn.commit()
+        except Error as e:
+            Warning(str(e))
+            print(e)

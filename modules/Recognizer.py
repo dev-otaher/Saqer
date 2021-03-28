@@ -96,7 +96,7 @@ class Recognizer:
                     y = startY - 10 if startY - 10 > 10 else startY + 10
                     cv2.rectangle(frame, (startX, startY), (endX, endY), (0, 255, 0), 2)
                     cv2.putText(frame, text, (startX, y - 50), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 0, 0), 2)
-            self.vs.save_frame(frame, "db/frames/")
+            # self.vs.save_frame(frame, "db/frames/")
             self.to_emitter[1].send(1)
         # print(current_process().name, "sending list...")
         self.to_emitter[1].send(taker.students)

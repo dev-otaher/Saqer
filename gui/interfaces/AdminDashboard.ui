@@ -255,9 +255,9 @@ QPushButton:pressed {
      <widget class="QLabel" name="i_offline_label">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>20</x>
         <y>0</y>
-        <width>491</width>
+        <width>191</width>
         <height>31</height>
        </rect>
       </property>
@@ -279,7 +279,7 @@ QPushButton:pressed {
      <widget class="QPushButton" name="i_choose_video">
       <property name="geometry">
        <rect>
-        <x>540</x>
+        <x>600</x>
         <y>70</y>
         <width>131</width>
         <height>31</height>
@@ -336,7 +336,7 @@ QPushButton:pressed {
      <widget class="QPushButton" name="i_start">
       <property name="geometry">
        <rect>
-        <x>680</x>
+        <x>740</x>
         <y>70</y>
         <width>131</width>
         <height>31</height>
@@ -396,10 +396,10 @@ QPushButton:pressed {
       </property>
       <property name="geometry">
        <rect>
-        <x>30</x>
-        <y>50</y>
-        <width>491</width>
-        <height>51</height>
+        <x>20</x>
+        <y>80</y>
+        <width>571</width>
+        <height>21</height>
        </rect>
       </property>
       <property name="font">
@@ -424,8 +424,8 @@ border-bottom: 2px solid rgb(85, 255, 255);
      <widget class="QLabel" name="i_video_note">
       <property name="geometry">
        <rect>
-        <x>30</x>
-        <y>120</y>
+        <x>20</x>
+        <y>54</y>
         <width>211</width>
         <height>16</height>
        </rect>
@@ -446,10 +446,10 @@ border-bottom: 2px solid rgb(85, 255, 255);
      <widget class="QProgressBar" name="i_progress_bar">
       <property name="geometry">
        <rect>
-        <x>110</x>
+        <x>100</x>
         <y>700</y>
-        <width>591</width>
-        <height>23</height>
+        <width>631</width>
+        <height>30</height>
        </rect>
       </property>
       <property name="styleSheet">
@@ -473,8 +473,8 @@ QProgressBar::chunk{
      <widget class="QLabel" name="i_progress_label">
       <property name="geometry">
        <rect>
-        <x>30</x>
-        <y>693</y>
+        <x>20</x>
+        <y>698</y>
         <width>81</width>
         <height>31</height>
        </rect>
@@ -495,7 +495,7 @@ QProgressBar::chunk{
      <widget class="QTableWidget" name="i_recheck_table">
       <property name="geometry">
        <rect>
-        <x>30</x>
+        <x>20</x>
         <y>150</y>
         <width>851</width>
         <height>521</height>
@@ -620,9 +620,9 @@ QTableWidget::section{
      <widget class="QPushButton" name="i_save_recheck">
       <property name="geometry">
        <rect>
-        <x>720</x>
+        <x>740</x>
         <y>700</y>
-        <width>91</width>
+        <width>131</width>
         <height>30</height>
        </rect>
       </property>
