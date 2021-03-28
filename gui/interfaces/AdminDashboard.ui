@@ -114,26 +114,52 @@ QPushButton:pressed {
      <string>-</string>
     </property>
    </widget>
-   <widget class="QLabel" name="i_logout">
+   <widget class="QPushButton" name="i_logout">
     <property name="geometry">
      <rect>
-      <x>1118</x>
-      <y>11</y>
-      <width>21</width>
-      <height>21</height>
+      <x>1112</x>
+      <y>10</y>
+      <width>31</width>
+      <height>23</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>RB</family>
+      <pointsize>11</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
     </property>
     <property name="cursor">
      <cursorShape>PointingHandCursor</cursorShape>
     </property>
+    <property name="toolTip">
+     <string>Logout</string>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton {
+	border-radius: 8px;
+	background-color: none;
+	color: #383838
+}
+</string>
+    </property>
     <property name="text">
      <string/>
     </property>
-    <property name="pixmap">
-     <pixmap>../images/logout.png</pixmap>
+    <property name="icon">
+     <iconset>
+      <normaloff>../images/logout.png</normaloff>../images/logout.png</iconset>
     </property>
-    <property name="scaledContents">
-     <bool>true</bool>
+    <property name="iconSize">
+     <size>
+      <width>21</width>
+      <height>21</height>
+     </size>
     </property>
    </widget>
   </widget>
@@ -171,7 +197,7 @@ QPushButton:pressed {
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="i_register_sec">
      <widget class="QLabel" name="i_register_label">
@@ -224,13 +250,13 @@ QPushButton:pressed {
        <string>Train FR Model</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label">
+     <widget class="QPushButton" name="i_extract">
       <property name="geometry">
        <rect>
-        <x>30</x>
-        <y>60</y>
+        <x>550</x>
+        <y>100</y>
         <width>131</width>
-        <height>21</height>
+        <height>31</height>
        </rect>
       </property>
       <property name="font">
@@ -239,11 +265,46 @@ QPushButton:pressed {
         <pointsize>12</pointsize>
        </font>
       </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
       <property name="styleSheet">
-       <string notr="true">color: #38DBD0;</string>
+       <string notr="true">QPushButton {
+	border-radius: 12px;
+	background-color: #38DBD0;
+	color:rgb(255, 255, 255);
+
+}
+
+QPushButton:hover {
+	background-color: #23b2a8;
+	color: rgb(255, 255, 255);
+}
+
+QPushButton:pressed {
+	background-color: #38DBD0;
+}</string>
       </property>
       <property name="text">
-       <string>Extract Encodings</string>
+       <string>Extract</string>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>30</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="checkable">
+       <bool>false</bool>
+      </property>
+      <property name="autoDefault">
+       <bool>true</bool>
+      </property>
+      <property name="default">
+       <bool>false</bool>
+      </property>
+      <property name="flat">
+       <bool>false</bool>
       </property>
      </widget>
      <widget class="QPushButton" name="i_choose_folder">
@@ -283,91 +344,6 @@ QPushButton:pressed {
       </property>
       <property name="text">
        <string>Choose Folder</string>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>30</width>
-        <height>30</height>
-       </size>
-      </property>
-      <property name="checkable">
-       <bool>false</bool>
-      </property>
-      <property name="autoDefault">
-       <bool>true</bool>
-      </property>
-      <property name="default">
-       <bool>false</bool>
-      </property>
-      <property name="flat">
-       <bool>false</bool>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="i_folder_path">
-      <property name="geometry">
-       <rect>
-        <x>30</x>
-        <y>100</y>
-        <width>351</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>RB</family>
-        <pointsize>12</pointsize>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">color: #38DBD0;
-border: none;
-border-bottom: 2px solid rgb(85, 255, 255);
-</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
-      </property>
-      <property name="placeholderText">
-       <string>Images Folder Path...</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="i_extract">
-      <property name="geometry">
-       <rect>
-        <x>550</x>
-        <y>100</y>
-        <width>131</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>RB</family>
-        <pointsize>12</pointsize>
-       </font>
-      </property>
-      <property name="cursor">
-       <cursorShape>PointingHandCursor</cursorShape>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QPushButton {
-	border-radius: 12px;
-	background-color: #38DBD0;
-	color:rgb(255, 255, 255);
-
-}
-
-QPushButton:hover {
-	background-color: #23b2a8;
-	color: rgb(255, 255, 255);
-}
-
-QPushButton:pressed {
-	background-color: #38DBD0;
-}</string>
-      </property>
-      <property name="text">
-       <string>Extract</string>
       </property>
       <property name="iconSize">
        <size>
@@ -445,6 +421,83 @@ QPushButton:pressed {
        <bool>false</bool>
       </property>
      </widget>
+     <widget class="QLabel" name="i_folder_note">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>150</y>
+        <width>211</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>RB</family>
+        <pointsize>11</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color:#ff0000</string>
+      </property>
+      <property name="text">
+       <string>*There is no folder selected</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="i_folder_path">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>100</y>
+        <width>351</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>RB</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: #38DBD0;
+border: none;
+border-bottom: 2px solid rgb(85, 255, 255);
+</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+      </property>
+      <property name="placeholderText">
+       <string>Images Folder Path...</string>
+      </property>
+     </widget>
+     <widget class="QProgressBar" name="i_train_progress">
+      <property name="geometry">
+       <rect>
+        <x>110</x>
+        <y>707</y>
+        <width>761</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QProgressBar{
+	background-color:rgb(40, 120, 120);
+	color: rgb(49, 147, 147);
+	color: rgb(56, 56, 56);
+	border-style:none;
+	border-radius:10px;
+	text-align:center;
+}
+QProgressBar::chunk{
+	border-radius:10px; 
+	background-color: qlineargradient(spread:pad, x1:0, y1:0.488591, x2:0.989474, y2:0.54, stop:0 #38DBD0, stop:1#38DBD0);
+}</string>
+      </property>
+      <property name="value">
+       <number>24</number>
+      </property>
+     </widget>
      <widget class="QLabel" name="label_2">
       <property name="geometry">
        <rect>
@@ -465,6 +518,28 @@ QPushButton:pressed {
       </property>
       <property name="text">
        <string>Choose Encodings</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="i_pickle_note">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>290</y>
+        <width>211</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>RB</family>
+        <pointsize>11</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color:#ff0000</string>
+      </property>
+      <property name="text">
+       <string>*There is no pickle file selected</string>
       </property>
      </widget>
      <widget class="QLineEdit" name="i_pickle_path">
@@ -552,48 +627,26 @@ QPushButton:pressed {
        <bool>false</bool>
       </property>
      </widget>
-     <widget class="QLabel" name="i_folder_note">
+     <widget class="QLabel" name="label">
       <property name="geometry">
        <rect>
         <x>30</x>
-        <y>150</y>
-        <width>211</width>
-        <height>16</height>
+        <y>60</y>
+        <width>131</width>
+        <height>21</height>
        </rect>
       </property>
       <property name="font">
        <font>
         <family>RB</family>
-        <pointsize>11</pointsize>
+        <pointsize>12</pointsize>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">color:#ff0000</string>
+       <string notr="true">color: #38DBD0;</string>
       </property>
       <property name="text">
-       <string>*There is no folder selected</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="i_pickle_note">
-      <property name="geometry">
-       <rect>
-        <x>30</x>
-        <y>290</y>
-        <width>211</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>RB</family>
-        <pointsize>11</pointsize>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">color:#ff0000</string>
-      </property>
-      <property name="text">
-       <string>*There is no pickle file selected</string>
+       <string>Extract Encodings</string>
       </property>
      </widget>
      <widget class="QLabel" name="i_train_prolabel">
@@ -618,41 +671,14 @@ QPushButton:pressed {
        <string>Progress:</string>
       </property>
      </widget>
-     <widget class="QProgressBar" name="i_train_progress">
-      <property name="geometry">
-       <rect>
-        <x>110</x>
-        <y>707</y>
-        <width>761</width>
-        <height>23</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QProgressBar{
-	background-color:rgb(40, 120, 120);
-	color: rgb(49, 147, 147);
-	color: rgb(56, 56, 56);
-	border-style:none;
-	border-radius:10px;
-	text-align:center;
-}
-QProgressBar::chunk{
-	border-radius:10px; 
-	background-color: qlineargradient(spread:pad, x1:0, y1:0.488591, x2:0.989474, y2:0.54, stop:0 #38DBD0, stop:1#38DBD0);
-}</string>
-      </property>
-      <property name="value">
-       <number>24</number>
-      </property>
-     </widget>
     </widget>
     <widget class="QWidget" name="i_offline_sec">
      <widget class="QLabel" name="i_offline_label">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>20</x>
         <y>0</y>
-        <width>491</width>
+        <width>191</width>
         <height>31</height>
        </rect>
       </property>
@@ -674,7 +700,7 @@ QProgressBar::chunk{
      <widget class="QPushButton" name="i_choose_video">
       <property name="geometry">
        <rect>
-        <x>410</x>
+        <x>600</x>
         <y>70</y>
         <width>131</width>
         <height>31</height>
@@ -731,7 +757,7 @@ QPushButton:pressed {
      <widget class="QPushButton" name="i_start">
       <property name="geometry">
        <rect>
-        <x>550</x>
+        <x>740</x>
         <y>70</y>
         <width>131</width>
         <height>31</height>
@@ -786,12 +812,15 @@ QPushButton:pressed {
       </property>
      </widget>
      <widget class="QLineEdit" name="i_video_path">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="geometry">
        <rect>
-        <x>30</x>
-        <y>50</y>
-        <width>351</width>
-        <height>51</height>
+        <x>20</x>
+        <y>80</y>
+        <width>571</width>
+        <height>21</height>
        </rect>
       </property>
       <property name="font">
@@ -816,8 +845,8 @@ border-bottom: 2px solid rgb(85, 255, 255);
      <widget class="QLabel" name="i_video_note">
       <property name="geometry">
        <rect>
-        <x>30</x>
-        <y>120</y>
+        <x>20</x>
+        <y>54</y>
         <width>211</width>
         <height>16</height>
        </rect>
@@ -835,13 +864,13 @@ border-bottom: 2px solid rgb(85, 255, 255);
        <string>*There is no video specified</string>
       </property>
      </widget>
-     <widget class="QProgressBar" name="i_offline_progress">
+     <widget class="QProgressBar" name="i_progress_bar">
       <property name="geometry">
        <rect>
-        <x>110</x>
-        <y>707</y>
-        <width>761</width>
-        <height>23</height>
+        <x>100</x>
+        <y>700</y>
+        <width>631</width>
+        <height>30</height>
        </rect>
       </property>
       <property name="styleSheet">
@@ -859,14 +888,14 @@ QProgressBar::chunk{
 }</string>
       </property>
       <property name="value">
-       <number>24</number>
+       <number>0</number>
       </property>
      </widget>
-     <widget class="QLabel" name="i_offline_prolabel">
+     <widget class="QLabel" name="i_progress_label">
       <property name="geometry">
        <rect>
-        <x>30</x>
-        <y>700</y>
+        <x>20</x>
+        <y>698</y>
         <width>81</width>
         <height>31</height>
        </rect>
@@ -882,6 +911,188 @@ QProgressBar::chunk{
       </property>
       <property name="text">
        <string>Progress:</string>
+      </property>
+     </widget>
+     <widget class="QTableWidget" name="i_recheck_table">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>150</y>
+        <width>851</width>
+        <height>521</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>RB</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="cursor" stdset="0">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::ClickFocus</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QHeaderView::section{background-color:#38DBD0; color:#383838}
+QTableWidget::item {
+	selection-background-color: #38DBD0;
+    color: white;
+  	width: 100%;
+}
+
+
+QTableWidget::section{
+
+  border-collapse: collapse;
+  border-radius: 1em;
+  overflow: hidden;
+}
+</string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <property name="sizeAdjustPolicy">
+       <enum>QAbstractScrollArea::AdjustIgnored</enum>
+      </property>
+      <property name="autoScroll">
+       <bool>true</bool>
+      </property>
+      <property name="editTriggers">
+       <set>QAbstractItemView::NoEditTriggers</set>
+      </property>
+      <property name="showDropIndicator" stdset="0">
+       <bool>true</bool>
+      </property>
+      <property name="selectionMode">
+       <enum>QAbstractItemView::SingleSelection</enum>
+      </property>
+      <property name="selectionBehavior">
+       <enum>QAbstractItemView::SelectRows</enum>
+      </property>
+      <property name="textElideMode">
+       <enum>Qt::ElideLeft</enum>
+      </property>
+      <property name="gridStyle">
+       <enum>Qt::SolidLine</enum>
+      </property>
+      <attribute name="horizontalHeaderHighlightSections">
+       <bool>false</bool>
+      </attribute>
+      <attribute name="verticalHeaderVisible">
+       <bool>false</bool>
+      </attribute>
+      <attribute name="verticalHeaderHighlightSections">
+       <bool>true</bool>
+      </attribute>
+      <column>
+       <property name="text">
+        <string>ID</string>
+       </property>
+       <property name="font">
+        <font>
+         <family>RB</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="foreground">
+        <brush brushstyle="NoBrush">
+         <color alpha="255">
+          <red>0</red>
+          <green>0</green>
+          <blue>0</blue>
+         </color>
+        </brush>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Name</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>No. of Appear</string>
+       </property>
+       <property name="font">
+        <font>
+         <family>RB</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Present?</string>
+       </property>
+       <property name="font">
+        <font>
+         <family>RB</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+      </column>
+     </widget>
+     <widget class="QPushButton" name="i_save_recheck">
+      <property name="geometry">
+       <rect>
+        <x>740</x>
+        <y>700</y>
+        <width>131</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>RB</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	border-radius: 15px;
+	background-color: #38DBD0;
+	color:rgb(255, 255, 255);
+
+}
+
+QPushButton:hover {
+	background-color: #23b2a8;
+	color: rgb(255, 255, 255);
+}
+
+QPushButton:pressed {
+	background-color: #38DBD0;
+}</string>
+      </property>
+      <property name="text">
+       <string>Save</string>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>30</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="checkable">
+       <bool>false</bool>
+      </property>
+      <property name="autoDefault">
+       <bool>true</bool>
+      </property>
+      <property name="default">
+       <bool>false</bool>
+      </property>
+      <property name="flat">
+       <bool>false</bool>
       </property>
      </widget>
     </widget>
