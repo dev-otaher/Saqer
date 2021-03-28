@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QApplication
 import sys
-from gui.AdminDashboard import AdminDashboard
+from gui.admin.AdminDashboard import AdminDashboard
+from gui.admin.OfflineAttendance import OfflineAttendance
 
 if __name__ == '__main__':
     try:

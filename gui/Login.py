@@ -1,7 +1,6 @@
 import json
-import sys
 import requests
-from PyQt5.QtWidgets import QDialog, QApplication
+from PyQt5.QtWidgets import QDialog
 from PyQt5 import uic
 from PyQt5 import QtCore
 from PyQt5.QtCore import Qt
@@ -14,7 +13,6 @@ class Login(QDialog):
     # constructor of the class
     def __init__(self):
         super(Login, self).__init__()
-        print("x")
         uic.loadUi("gui/interfaces/Login.ui", self)
         self.i_login.clicked.connect(self.login)
         self.i_password_note.setHidden(True)
@@ -60,7 +58,7 @@ class Login(QDialog):
                 isAdmin = db.child("users").child(str(user["localId"])).child("isAdmin").get()
                 if isAdmin.val() == "True":
                     print("Is admin...")
-                    from gui.AdminDashboard import AdminDashboard
+                    from gui.admin.AdminDashboard import AdminDashboard
                     AdminDashboard()
 
                 else:

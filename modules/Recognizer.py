@@ -98,5 +98,5 @@ class Recognizer:
                     cv2.putText(frame, text, (startX, y - 50), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 0, 0), 2)
             self.vs.save_frame(frame, "db/frames/")
             self.to_emitter[1].send(1)
-        print(current_process().name, "sending list...")
+        # print(current_process().name, "sending list...")
         self.to_emitter[1].send(taker.students)

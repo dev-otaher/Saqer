@@ -78,7 +78,6 @@ class InstructorDashboard(QDialog):
 
     def logout(self, eve):
         try:
-
             Login.Login()
             self.destroy()
         except Exception as e:
