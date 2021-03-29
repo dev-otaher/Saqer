@@ -1,12 +1,13 @@
 from PyQt5.QtWidgets import QApplication
 import sys
-from gui import Loading, InstructorDashboard, AdminDashboard
+from gui.admin.AdminDashboard import AdminDashboard
+from gui.admin.OfflineAttendance import OfflineAttendance
 
-
-
-try:
-    app = QApplication(sys.argv)
-    mainwindow = AdminDashboard.AdminDashboard()
-    sys.exit(app.exec_())
-except Exception as e:
-    print(e)
+if __name__ == '__main__':
+    try:
+        app = QApplication(sys.argv)
+        mainwindow = AdminDashboard()
+        # mainwindow = Login()
+        sys.exit(app.exec_())
+    except Exception as e:
+        print(e)
