@@ -10,12 +10,12 @@ from imutils import paths
 
 class Encoder(QThread):
     update_available = pyqtSignal(int)
-    def __init__(self, protoPath, modelPath, embedderPath, confidence=0.6, filename="encodings.pickle"):
+    def __init__(self, protoPath, modelPath, embedderPath, confidence=0.6):
         super().__init__()
         self._detector = cv2.dnn.readNetFromCaffe(protoPath, modelPath)
         self._embedder = cv2.dnn.readNetFromTorch(embedderPath)
         self.confidence = confidence
-        self.file = filename
+        self.file = str()
         self.dataset_path = str()
 
     def get_location(self, frame):
@@ -82,13 +82,3 @@ class Encoder(QThread):
                     embeddings.append(embedding)
             self.update_available.emit(1)
         self.save_encodings({"names": names, "embeddings": embeddings})
-
-
-# if __name__ == '__main__':
-#     encoder = Encoder(protoPath="../model/deploy.prototxt",
-#                       modelPath="../model/res10_300x300_ssd_iter_140000.caffemodel",
-#                       embedderPath="../model/openface_nn4.small2.v1.t7",
-#                       filename="output")
-#
-#     images_path = list(paths.list_images("../dataset"))
-#     encoder.start(images_path)
