@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1200</width>
-    <height>800</height>
+    <height>799</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -564,9 +564,9 @@ QPushButton:pressed {
      <widget class="QPushButton" name="i_extract">
       <property name="geometry">
        <rect>
-        <x>550</x>
+        <x>570</x>
         <y>100</y>
-        <width>131</width>
+        <width>151</width>
         <height>31</height>
        </rect>
       </property>
@@ -623,7 +623,7 @@ QPushButton:pressed {
        <rect>
         <x>410</x>
         <y>100</y>
-        <width>131</width>
+        <width>151</width>
         <height>31</height>
        </rect>
       </property>
@@ -675,12 +675,12 @@ QPushButton:pressed {
        <bool>false</bool>
       </property>
      </widget>
-     <widget class="QPushButton" name="i_choose_file">
+     <widget class="QPushButton" name="i_choose_encodings">
       <property name="geometry">
        <rect>
         <x>410</x>
         <y>240</y>
-        <width>131</width>
+        <width>151</width>
         <height>31</height>
        </rect>
       </property>
@@ -711,7 +711,7 @@ QPushButton:pressed {
 }</string>
       </property>
       <property name="text">
-       <string>Choose File</string>
+       <string>Choose Encodings</string>
       </property>
       <property name="iconSize">
        <size>
@@ -755,6 +755,9 @@ QPushButton:pressed {
       </property>
      </widget>
      <widget class="QLineEdit" name="i_folder_path">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>30</x>
@@ -806,7 +809,7 @@ QProgressBar::chunk{
 }</string>
       </property>
       <property name="value">
-       <number>24</number>
+       <number>0</number>
       </property>
      </widget>
      <widget class="QLabel" name="label_2">
@@ -854,6 +857,9 @@ QProgressBar::chunk{
       </property>
      </widget>
      <widget class="QLineEdit" name="i_pickle_path">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>30</x>
@@ -884,9 +890,9 @@ border-bottom: 2px solid rgb(85, 255, 255);
      <widget class="QPushButton" name="i_train">
       <property name="geometry">
        <rect>
-        <x>550</x>
+        <x>570</x>
         <y>240</y>
-        <width>131</width>
+        <width>151</width>
         <height>31</height>
        </rect>
       </property>
