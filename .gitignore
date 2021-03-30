@@ -8,3 +8,6 @@ gui/__pycache__/
 *.pickle
 *.caffemodel
 *.t7
+*.jpg
+*.png
+*.jpeg
