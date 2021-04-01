@@ -27,7 +27,6 @@ class OfflineAttendance:
         self.db_conn = DBHelper().create_db_connection("db/saqer.db")
 
     def connect_widgets(self):
-        self.parent.i_choose_video.clicked.connect(self.choose_video)
         self.parent.i_start.clicked.connect(self.start_offline_attendance)
         self.parent.i_save_recheck.clicked.connect(self.save_data)
 
@@ -37,10 +36,6 @@ class OfflineAttendance:
         self.parent.i_progress_bar.setHidden(True)
         self.parent.i_recheck_table.setHidden(True)
         self.parent.i_save_recheck.setHidden(True)
-
-    def choose_video(self):
-        video_path = QFileDialog.getOpenFileName(self.parent, 'Choose Video...', '', 'Video (*.mp4 , *.mkv , *.MOV)')
-        self.parent.i_video_path.setText(video_path[0])
 
     def set_bar_max(self, val):
         self.parent.i_progress_bar.setMaximum(val)
@@ -97,7 +92,7 @@ class OfflineAttendance:
             self.parent.i_recheck_table.setItem(0, 1, QtWidgets.QTableWidgetItem(std.name))
             self.parent.i_recheck_table.setItem(0, 2, QtWidgets.QTableWidgetItem(str(std.appear_counter)))
             checkbox = QtWidgets.QCheckBox()
-            check_state: bool = std.appear_counter/self.parent.i_progress_bar.maximum() > 0.8
+            check_state: bool = std.appear_counter/self.parent.i_progress_bar.maximum() > 0.7
             checkbox.setChecked(check_state)
             self.parent.i_recheck_table.setCellWidget(0, 3, checkbox)
 

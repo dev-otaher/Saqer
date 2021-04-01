@@ -14,7 +14,9 @@ class AttendanceTaker:
         omar = Student("2170007761", "Omar")
         khalid = Student("2170007739", "Khalid")
         waleed = Student("2170003286", "Waleed")
-        self.students = [omar, khalid, waleed]
+        aamir = Student("2170007730", "Aamir")
+        abdo = Student("2170007260", "Abdo")
+        self.students = [omar, khalid, waleed, aamir, abdo]
         return self
 
     def get_std_by_id(self, std_id) -> Student:

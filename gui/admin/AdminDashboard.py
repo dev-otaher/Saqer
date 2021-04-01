@@ -1,9 +1,10 @@
 from functools import partial
 from PyQt5 import uic, QtCore
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QDialog, QFileDialog
 from gui import Login
 from gui.admin.OfflineAttendance import OfflineAttendance
+from gui.admin.TrainModel import TrainModel
 
 
 class AdminDashboard(QDialog):
@@ -13,11 +14,13 @@ class AdminDashboard(QDialog):
         self.setWindowFlags(QtCore.Qt.WindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint))
         self.connect_widgets()
         self.offline_attendance = OfflineAttendance(parent_gui=self)
+        self.train_model = TrainModel(parent_gui=self)
         self.show()
 
     def connect_widgets(self):
         self.connect_header()
         self.connect_side_widgets()
+        self.connect_browser_btns()
 
     def connect_header(self):
         self.i_header.mouseMoveEvent = self.move_window
@@ -31,6 +34,11 @@ class AdminDashboard(QDialog):
         self.i_offline_atten.clicked.connect(partial(self.goto, self.i_offline_sec))
         self.i_settings.clicked.connect(partial(self.goto, self.i_settings_sec))
 
+    def connect_browser_btns(self):
+        self.i_choose_folder.clicked.connect(self.browse_folder)
+        self.i_choose_encodings.clicked.connect(self.browse_file)
+        self.i_choose_video.clicked.connect(self.browse_file)
+
     def move_window(self, e):
         if e.buttons() == Qt.LeftButton:
             self.move(self.pos() + e.globalPos() - self.clickPosition)
@@ -42,6 +50,27 @@ class AdminDashboard(QDialog):
 
     def goto(self, widget):
         self.i_choices.setCurrentWidget(widget)
+
+    def browse_file(self):
+        btn_text = self.sender().text()
+        caption = filter = ""
+        if btn_text == "Choose Encodings":
+            caption = "Choose Encodigns..."
+            filter = "Pickle File (*.pickle)"
+        elif btn_text == "Choose Video":
+            caption = "Choose Video..."
+            filter = "Video (*.mp4 , *.mkv , *.MOV)"
+        path = QFileDialog.getOpenFileName(self, caption, '', filter)
+        if btn_text == "Choose Encodings":
+            self.i_pickle_path.setText(path[0])
+        elif btn_text == "Choose Video":
+            self.i_video_path.setText(path[0])
+
+    def browse_folder(self):
+        btn_text = self.sender().text()
+        if btn_text == "Choose Folder":
+            path = QFileDialog.getExistingDirectory(self, 'Choose Folder...')
+            self.i_folder_path.setText(path)
 
     def logout(self):
         try:

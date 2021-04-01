@@ -73,13 +73,14 @@ class Recognizer:
         j = np.argmax(preds)
         p = preds[j]
         if p > 0.65:
-            name = self.label_encoder.classes_[j]
+            id = self.label_encoder.classes_[j]
         else:
-            name = self.label_encoder.classes_[j]
-        return name, p
+            id = "Unknown"
+        return id, p
 
     def run(self):
         taker = AttendanceTaker().populate_std_list()
+        text = ""
         while self.vs.more():
             frame = imutils.resize(self.vs.read(), width=1080)
             locations = self.get_locations(frame)
@@ -87,16 +88,20 @@ class Recognizer:
                 face = self.get_face(frame, loc)
                 if face is not None:
                     encoding = self.encode(face)
-                    name, p = self.recognize(encoding)
-                    std_id = taker.get_id_by_name(name) # for testing only
-                    if std_id is not None:
-                        taker.increment(taker.get_std_by_id(std_id))
-                    text = '{}: {:.2f}%'.format(name, p * 100)
+                    id, p = self.recognize(encoding)
+                    if id is not None and id != "Unknown":
+                        std = taker.get_std_by_id(str(id))
+                        if std is not None:
+                            taker.increment(std)
+                            text = '{}: {:.2f}%'.format(std.name, p * 100)
+                        else:
+                            text = '{}: {:.2f}%'.format("NIL", p * 100)
+                    else:
+                        text = '{}: {:.2f}%'.format(id, p * 100)
                     (startX, startY, endX, endY) = loc
                     y = startY - 10 if startY - 10 > 10 else startY + 10
                     cv2.rectangle(frame, (startX, startY), (endX, endY), (0, 255, 0), 2)
                     cv2.putText(frame, text, (startX, y - 50), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 0, 0), 2)
-            # self.vs.save_frame(frame, "db/frames/")
+            self.vs.save_frame(frame, "db/frames/")
             self.to_emitter[1].send(1)
-        # print(current_process().name, "sending list...")
         self.to_emitter[1].send(taker.students)
