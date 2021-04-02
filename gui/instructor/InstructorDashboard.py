@@ -1,3 +1,5 @@
+from functools import partial
+
 from PyQt5.QtWidgets import QDialog
 from PyQt5 import uic,QtCore, QtGui
 from PyQt5 import QtWidgets
@@ -10,36 +12,47 @@ from gui import Login, Warning
 
 
 #each interface defined in a class
+from gui.instructor.ViewReports import ViewReports
+from modules.DBHelper import DBHelper
+
+
 class InstructorDashboard(QDialog):
     #cnstructor of the class
-    def __init__(self):
+    def __init__(self, UUID):
         super(InstructorDashboard, self).__init__()
         uic.loadUi("gui/interfaces/InstructorDashboard.ui", self)
         self.setWindowFlags(QtCore.Qt.WindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint))
+        self.connect_widgets()
+        self.UUID = UUID
+
+        self.i_start.clicked.connect(self.start_recording)
+        self.i_save_recheck.clicked.connect(self.save_attendance)
+        self.i_courses_table.clicked.connect(self.select_course)
+        # self.i_save.clicked.connect(self.save)
+        self.db = DBHelper()
+        self.view_reports = ViewReports(self)
+        self.disable_btn(self.i_end_session)
+        self.show()
+
+    def connect_widgets(self):
+        self.connect_header()
+        self.connect_side_widgets()
+
+    def connect_header(self):
+        self.i_header.mouseMoveEvent = self.move_window
         self.i_close.clicked.connect(lambda: exit())
         self.i_minmize.clicked.connect(lambda: self.showMinimized())
-        self.i_stacked_widget.setCurrentWidget(self.i_courses)
-        self.i_view_reports.clicked.connect(self.view_reports)
-        self.i_start_session.clicked.connect(self.start_session)
-        self.i_start.clicked.connect(self.start_recording)
-        self.i_end_session.clicked.connect(self.end_session)
-        self.i_save_recheck.clicked.connect(self.save_attendance)
-        self.i_header.mouseMoveEvent = self.move_window
-        self.i_logout.mousePressEvent = self.logout
-        self.i_courses_table.setColumnWidth(0,289)
-        self.i_courses_table.setColumnWidth(1,289)
-        self.i_courses_table.setColumnWidth(2,289)
-        self.i_courses_table.horizontalHeaderItem(0).setText("Class")
-        self.i_courses_table.horizontalHeaderItem(1).setText("Class Title")
-        self.i_courses_table.horizontalHeaderItem(2).setText("Date & Time")
-        self.i_courses_table.clicked.connect(self.once_clicked)
-        self.i_save.clicked.connect(self.save)
-        self.fill_data()
-        self.i_end_session.setEnabled(False)
-        self.i_end_session.setStyleSheet("QPushButton {border-radius: 25px;background-color: "
-                                         "#727272;color:#ffffff}QPushButton:hover {background-color: "
-                                         "#23b2a8; color: rgb(255, 255, 255);} QPushButton:pressed { background-color: #38DBD0; }")
-        self.show()
+        self.i_logout.clicked.connect(self.logout)
+
+    def connect_side_widgets(self):
+        self.i_view_reports.clicked.connect(partial(self.goto, self.i_choices, self.i_view_report_sec))
+        self.i_view_reports.clicked.connect(partial(self.goto, self.i_stacked_widget, self.i_courses))
+        self.i_start_session.clicked.connect(partial(self.goto, self.i_choices, self.i_start_session_sec))
+        self.i_end_session.clicked.connect(partial(self.goto, self.i_choices, self.i_end_session_sec))
+
+    @staticmethod
+    def goto(parent_widget, widget):
+        parent_widget.setCurrentWidget(widget)
 
     # Move window around
     def move_window(self, e):
@@ -52,17 +65,13 @@ class InstructorDashboard(QDialog):
         self.clickPosition = event.globalPos()
 
     def start_session(self):
-        self.i_choices.setCurrentWidget(self.i_start_session_sec)
-        self.i_video_sec.setCurrentWidget(self.i_choose_course)
+        self.goto(self.i_choices, self.i_start_session_sec)
+        self.goto(self.i_video_sec, self.i_choose_course)
 
     def start_recording(self):
-        print('test start recording')
-        self.i_end_session.setEnabled(True)
-        self.i_end_session.setStyleSheet("QPushButton {border-radius: 25px;background-color: "
-                                         "#38DBD0;color:#ffffff}QPushButton:hover {background-color: "
-                                         "#23b2a8; color: rgb(255, 255, 255);} QPushButton:pressed { background-color: #38DBD0; }")
-        self.i_video_sec.setCurrentWidget(self.i_video_holder)
-
+        self.disable_btn(self.i_start_session)
+        self.enable_btn(self.i_end_session)
+        self.goto(self.i_video_sec, self.i_video_holder)
 
     def view_reports(self):
         self.i_choices.setCurrentWidget(self.i_view_report_sec)
@@ -76,27 +85,16 @@ class InstructorDashboard(QDialog):
     def save_attendance(self):
         print('save attendance test')
 
-    def logout(self, eve):
+    def logout(self):
         try:
-
             Login.Login()
             self.destroy()
         except Exception as e:
             print(e)
 
-    def fill_data(self):
-
-        classes = [{"Name":"CS411","Title":"Data Structure", "Time":"1:00 - 3:00 PM"}, {"Name":"CIS432","Title":"Operating Systems", "Time":"1:00 - 3:00 PM"}]
-        row = 0
-        self.i_courses_table.setRowCount(len(classes))
-        for person in classes:
-            self.i_courses_table.setItem(row, 0, QtWidgets.QTableWidgetItem(person["Name"]))
-            self.i_courses_table.setItem(row, 1, QtWidgets.QTableWidgetItem(str(person["Title"])))
-            self.i_courses_table.setItem(row, 2, QtWidgets.QTableWidgetItem(person["Time"]))
-            row = row+1
-
-    def once_clicked(self, index):
+    def select_course(self, index):
         try:
+            print(index)
             row = index.row()
             column = index.column()
             self.i_title.setText("View Reports of: "+ self.i_courses_table.item (row, 1).text()+" "+self.i_courses_table.item (row, 2).text())
@@ -111,7 +109,6 @@ class InstructorDashboard(QDialog):
             self.i_classes_table.horizontalHeaderItem(2).setText("Attendance Date")
             self.i_classes_table.horizontalHeaderItem(3).setText("From")
             self.i_classes_table.horizontalHeaderItem(4).setText("To")
-
 
             classes = [{"Attendance1":"Attendance Reports" ,"Behaviour":"Behaviour Reports","Attendance": "09/01/2020", "From": "1:00 PM", "To": "03:00 PM"},
                        {"Attendance1":"Attendance Reports" ,"Behaviour":"Behaviour Reports","Attendance": "10/01/2020", "From": "8:00 PM", "To": "10:00 PM"},
@@ -196,13 +193,15 @@ class InstructorDashboard(QDialog):
 
                 row = row + 1
 
-    def save(self):
-        try:
-            for i in range(self.i_attendnace_table.rowCount()):
-                state = self.i_attendnace_table.cellWidget(i, 2).isChecked()
-                name = self.i_attendnace_table.item(i, 0).text()
-                print(name)
-                print(state)
-        except Exception as e:
-            print(e)
+    def enable_btn(self, btn):
+        btn.setEnabled(True)
+        self.i_end_session.setStyleSheet("QPushButton {border-radius: 25px;background-color: "
+                                         "#38DBD0;color:#ffffff}QPushButton:hover {background-color: "
+                                         "#23b2a8; color: rgb(255, 255, 255);} QPushButton:pressed { background-color: #38DBD0; }")
+
+    def disable_btn(self, btn):
+        btn.setEnabled(False)
+        btn.setStyleSheet("QPushButton {border-radius: 25px;background-color: "
+                                         "#727272;color:#ffffff}QPushButton:hover {background-color: "
+                                         "#23b2a8; color: rgb(255, 255, 255);} QPushButton:pressed { background-color: #38DBD0; }")
 
