@@ -21,8 +21,10 @@ class ViewReports:
 
     def hide_widgets(self):
         self.parent.i_save_recheck.setHidden(True)
-        # self.hide_first_column(self.parent.i_classes_table)
-        # self.hide_first_column(self.parent.i_courses_table)
+        self.hide_first_column(self.parent.i_classes_table)
+        self.hide_first_column(self.parent.i_courses_table)
+        self.hide_first_column(self.parent.i_attendance_table)
+        self.hide_first_column(self.parent.i_behaviour_table)
 
     def hide_first_column(self, table):
         table.setColumnHidden(0, True)
@@ -106,7 +108,7 @@ class ViewReports:
             cur = self.db_conn.cursor()
             cur.execute(sql, (class_id,))
             reports = cur.fetchall()
-
+            print(reports)
             if column == 1:
                 self.reset_table(self.parent.i_attendance_table)
                 for report in reports:
@@ -118,6 +120,12 @@ class ViewReports:
                 self.parent.goto(self.parent.i_stacked_widget, self.parent.i_attendance)
             elif column == 2:
                 self.reset_table(self.parent.i_behaviour_table)
+                for report in reports:
+                    self.parent.i_behaviour_table.insertRow(0)
+                    for i in range(3):
+                        self.parent.i_behaviour_table.setItem(0, i, QtWidgets.QTableWidgetItem(str(report[i])+"%"))
+                self.parent.goto(self.parent.i_stacked_widget, self.parent.i_behaviour)
+
         except Exception as e:
             print(e)
 

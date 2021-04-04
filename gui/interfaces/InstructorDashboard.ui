@@ -186,7 +186,7 @@ QPushButton:pressed {
        </rect>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="i_courses">
        <widget class="QTableWidget" name="i_courses_table">
@@ -197,6 +197,12 @@ QPushButton:pressed {
           <width>871</width>
           <height>691</height>
          </rect>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>871</width>
+          <height>0</height>
+         </size>
         </property>
         <property name="font">
          <font>
@@ -261,6 +267,9 @@ QTableWidget::section{
         </property>
         <property name="gridStyle">
          <enum>Qt::SolidLine</enum>
+        </property>
+        <property name="sortingEnabled">
+         <bool>true</bool>
         </property>
         <attribute name="horizontalHeaderDefaultSectionSize">
          <number>435</number>
@@ -385,6 +394,9 @@ QTableWidget::section{
         </property>
         <property name="gridStyle">
          <enum>Qt::SolidLine</enum>
+        </property>
+        <property name="sortingEnabled">
+         <bool>true</bool>
         </property>
         <attribute name="horizontalHeaderDefaultSectionSize">
          <number>217</number>
@@ -532,6 +544,9 @@ QTableWidget::section{
         </property>
         <property name="gridStyle">
          <enum>Qt::SolidLine</enum>
+        </property>
+        <property name="sortingEnabled">
+         <bool>true</bool>
         </property>
         <attribute name="horizontalHeaderDefaultSectionSize">
          <number>435</number>
@@ -694,6 +709,9 @@ QTableWidget::section{
         </property>
         <property name="gridStyle">
          <enum>Qt::SolidLine</enum>
+        </property>
+        <property name="sortingEnabled">
+         <bool>true</bool>
         </property>
         <attribute name="horizontalHeaderDefaultSectionSize">
          <number>290</number>
