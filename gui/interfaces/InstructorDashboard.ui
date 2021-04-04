@@ -149,7 +149,7 @@ QPushButton:pressed {
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="i_view_report_sec">
      <widget class="QLabel" name="i_title">
@@ -784,8 +784,8 @@ QTableWidget::section{
        <widget class="QPushButton" name="i_start">
         <property name="geometry">
          <rect>
-          <x>20</x>
-          <y>90</y>
+          <x>10</x>
+          <y>140</y>
           <width>91</width>
           <height>31</height>
          </rect>
@@ -842,7 +842,7 @@ QPushButton:pressed {
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>0</y>
+          <y>10</y>
           <width>211</width>
           <height>21</height>
          </rect>
@@ -859,16 +859,37 @@ QPushButton:pressed {
          <string notr="true">color: #38DBD0;</string>
         </property>
         <property name="text">
-         <string>Choose Course</string>
+         <string>Start Session</string>
         </property>
        </widget>
-       <widget class="QComboBox" name="comboBox">
+       <widget class="QComboBox" name="i_courses_cb">
         <property name="geometry">
          <rect>
-          <x>20</x>
-          <y>40</y>
+          <x>80</x>
+          <y>50</y>
           <width>241</width>
-          <height>31</height>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>RB</family>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: #38DBD0;
+foregroung: white;
+</string>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="i_classes_cb">
+        <property name="geometry">
+         <rect>
+          <x>80</x>
+          <y>100</y>
+          <width>241</width>
+          <height>21</height>
          </rect>
         </property>
         <property name="font">
@@ -880,16 +901,50 @@ QPushButton:pressed {
         <property name="styleSheet">
          <string notr="true">color: #38DBD0;</string>
         </property>
-        <item>
-         <property name="text">
-          <string>Hello</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Hello2</string>
-         </property>
-        </item>
+       </widget>
+       <widget class="QLabel" name="label_3">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>50</y>
+          <width>61</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>RB</family>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: #38DBD0;</string>
+        </property>
+        <property name="text">
+         <string>Course:</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_4">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>100</y>
+          <width>51</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>RB</family>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: #38DBD0;</string>
+        </property>
+        <property name="text">
+         <string>Class:</string>
+        </property>
        </widget>
       </widget>
       <widget class="QWidget" name="i_video_holder"/>
