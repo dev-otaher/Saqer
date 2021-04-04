@@ -102,7 +102,7 @@ class OfflineAttendance:
 
     def save_data(self):
         try:
-            sql = '''INSERT INTO attendance (student_id, status)
+            sql = '''INSERT INTO attendence (student_id, status)
                             VALUES (?, ?)'''
             cur = self.db_conn.cursor()
             for r in range(self.parent.i_recheck_table.rowCount()):

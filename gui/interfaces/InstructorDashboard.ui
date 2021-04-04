@@ -186,7 +186,7 @@ QPushButton:pressed {
        </rect>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="i_courses">
        <widget class="QTableWidget" name="i_courses_table">
@@ -211,18 +211,18 @@ QPushButton:pressed {
          <enum>Qt::ClickFocus</enum>
         </property>
         <property name="styleSheet">
-         <string notr="true">QHeaderView::section{background-color:#38DBD0; color:#383838}
+         <string notr="true">QHeaderView::section{
+	background-color:#38DBD0;
+	color:#383838
+}
 QTableWidget::item {
-		
 	selection-background-color: #38DBD0;
     color: white;
 }
 QTableWidget::section{
-
   border-collapse: collapse;
   border-radius: 1em;
   overflow: hidden
-
 }
 </string>
         </property>
@@ -252,6 +252,12 @@ QTableWidget::section{
         </property>
         <property name="textElideMode">
          <enum>Qt::ElideLeft</enum>
+        </property>
+        <property name="verticalScrollMode">
+         <enum>QAbstractItemView::ScrollPerPixel</enum>
+        </property>
+        <property name="horizontalScrollMode">
+         <enum>QAbstractItemView::ScrollPerPixel</enum>
         </property>
         <property name="gridStyle">
          <enum>Qt::SolidLine</enum>
@@ -371,6 +377,12 @@ QTableWidget::section{
         <property name="textElideMode">
          <enum>Qt::ElideLeft</enum>
         </property>
+        <property name="verticalScrollMode">
+         <enum>QAbstractItemView::ScrollPerPixel</enum>
+        </property>
+        <property name="horizontalScrollMode">
+         <enum>QAbstractItemView::ScrollPerPixel</enum>
+        </property>
         <property name="gridStyle">
          <enum>Qt::SolidLine</enum>
         </property>
@@ -408,7 +420,12 @@ QTableWidget::section{
         </column>
         <column>
          <property name="text">
-          <string>Attendance | Behaviour</string>
+          <string>Report</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Report</string>
          </property>
         </column>
         <column>
@@ -446,8 +463,8 @@ QTableWidget::section{
         </column>
        </widget>
       </widget>
-      <widget class="QWidget" name="i_attendnace">
-       <widget class="QTableWidget" name="i_attendnace_table">
+      <widget class="QWidget" name="i_attendance">
+       <widget class="QTableWidget" name="i_attendance_table">
         <property name="geometry">
          <rect>
           <x>0</x>
@@ -516,6 +533,9 @@ QTableWidget::section{
         <property name="gridStyle">
          <enum>Qt::SolidLine</enum>
         </property>
+        <attribute name="horizontalHeaderDefaultSectionSize">
+         <number>435</number>
+        </attribute>
         <attribute name="horizontalHeaderHighlightSections">
          <bool>false</bool>
         </attribute>
@@ -527,27 +547,7 @@ QTableWidget::section{
         </attribute>
         <column>
          <property name="text">
-          <string>New Column</string>
-         </property>
-         <property name="font">
-          <font>
-           <family>RB</family>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="foreground">
-          <brush brushstyle="NoBrush">
-           <color alpha="255">
-            <red>0</red>
-            <green>0</green>
-            <blue>0</blue>
-           </color>
-          </brush>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>New Column</string>
+          <string>Student Id</string>
          </property>
          <property name="font">
           <font>
@@ -558,7 +558,7 @@ QTableWidget::section{
         </column>
         <column>
          <property name="text">
-          <string>New Column</string>
+          <string>Present?</string>
          </property>
          <property name="font">
           <font>
@@ -695,6 +695,9 @@ QTableWidget::section{
         <property name="gridStyle">
          <enum>Qt::SolidLine</enum>
         </property>
+        <attribute name="horizontalHeaderDefaultSectionSize">
+         <number>290</number>
+        </attribute>
         <attribute name="horizontalHeaderHighlightSections">
          <bool>false</bool>
         </attribute>
@@ -706,7 +709,7 @@ QTableWidget::section{
         </attribute>
         <column>
          <property name="text">
-          <string>New Column</string>
+          <string>Happy</string>
          </property>
          <property name="font">
           <font>
@@ -717,7 +720,7 @@ QTableWidget::section{
         </column>
         <column>
          <property name="text">
-          <string>New Column</string>
+          <string>Sad</string>
          </property>
          <property name="font">
           <font>
@@ -728,18 +731,7 @@ QTableWidget::section{
         </column>
         <column>
          <property name="text">
-          <string>New Column</string>
-         </property>
-         <property name="font">
-          <font>
-           <family>RB</family>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>New Column</string>
+          <string>Neutral</string>
          </property>
          <property name="font">
           <font>

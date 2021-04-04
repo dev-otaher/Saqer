@@ -1,4 +1,8 @@
 from sqlite3 import Error
+
+from PyQt5.QtCore import QModelIndex
+from PyQt5.QtGui import QColor
+from PyQt5.QtWidgets import QLabel, QHBoxLayout, QWidget, QSizePolicy, QPushButton
 from qtpy import QtWidgets
 from gui.Warning import Warning
 
@@ -13,12 +17,16 @@ class ViewReports:
 
     def connect_widgets(self):
         self.parent.i_courses_table.clicked.connect(self.fill_classes)
-        # self.parent.i_save_recheck.clicked.connect(self.save_data)
+        self.parent.i_classes_table.clicked.connect(self.fill_report)
 
     def hide_widgets(self):
         self.parent.i_save_recheck.setHidden(True)
-        self.parent.i_courses_table.setColumnHidden(0, True)
-        self.parent.i_classes_table.setColumnHidden(0, True)
+        # self.hide_first_column(self.parent.i_classes_table)
+        # self.hide_first_column(self.parent.i_courses_table)
+
+    def hide_first_column(self, table):
+        table.setColumnHidden(0, True)
+        table.setColumnHidden(0, True)
 
     def fill_courses(self):
         try:
@@ -38,14 +46,14 @@ class ViewReports:
 
     def add_course(self, course):
         self.parent.i_courses_table.insertRow(0)
-        self.parent.i_courses_table.setItem(0, 0, QtWidgets.QTableWidgetItem(str(course[0])))
-        self.parent.i_courses_table.setItem(0, 1, QtWidgets.QTableWidgetItem(course[1]))
-        self.parent.i_courses_table.setItem(0, 2, QtWidgets.QTableWidgetItem(course[2]))
+        for i in range(3):
+            self.parent.i_courses_table.setItem(0, i, QtWidgets.QTableWidgetItem(str(course[i])))
 
-    def fill_classes(self, location):
+    def fill_classes(self, location: QModelIndex):
         try:
             row = location.row()
             course_id = self.parent.i_courses_table.item(row, 0).text()
+
             sql = '''
                     SELECT id, title, date, time FROM class 
                     WHERE course_id=?;
@@ -53,43 +61,13 @@ class ViewReports:
             cur = self.db_conn.cursor()
             cur.execute(sql, (course_id,))
             classes = cur.fetchall()
+
             self.reset_table(self.parent.i_classes_table)
             for c in classes:
                 self.add_class(c)
 
             self.parent.goto(self.parent.i_stacked_widget, self.parent.i_classes)
             self.parent.i_title.setText("View Reports - Classes")
-
-
-            # classes = [
-            #     {"Attendance1": "Attendance Reports", "Behaviour": "Behaviour Reports", "Attendance": "09/01/2020",
-            #      "From": "1:00 PM", "To": "03:00 PM"},
-            #     {"Attendance1": "Attendance Reports", "Behaviour": "Behaviour Reports", "Attendance": "10/01/2020",
-            #      "From": "8:00 PM", "To": "10:00 PM"},
-            #     {"Attendance1": "Attendance Reports", "Behaviour": "Behaviour Reports", "Attendance": "11/01/2020",
-            #      "From": "12:00 PM", "To": "03:00 PM"}]
-            # row = 0
-            # self.i_classes_table.setRowCount(len(classes))
-            # for person in classes:
-            #     atten = QtWidgets.QTableWidgetItem(person["Attendance1"])
-            #     atten.setForeground(QColor(56, 219, 208))
-            #     behv = QtWidgets.QTableWidgetItem(person["Behaviour"])
-            #     behv.setForeground(QColor(56, 219, 208))
-            #     rest = QtWidgets.QTableWidgetItem(person["Attendance"])
-            #     rest2 = QtWidgets.QTableWidgetItem(person["From"])
-            #     rest3 = QtWidgets.QTableWidgetItem(person["To"])
-            #
-            #     rest.setForeground(QColor(255, 255, 255))
-            #     rest2.setForeground(QColor(255, 255, 255))
-            #     rest3.setForeground(QColor(255, 255, 255))
-            #
-            #     self.i_classes_table.setItem(row, 0, atten)
-            #     self.i_classes_table.setItem(row, 1, behv)
-            #     self.i_classes_table.setItem(row, 2, rest)
-            #     self.i_classes_table.setItem(row, 3, rest2)
-            #     self.i_classes_table.setItem(row, 4, rest3)
-            #     row = row + 1
-            # self.i_classes_table.clicked.connect(self.show_behaviour)
         except Error as e:
             Warning(str(e))
         except Exception as e:
@@ -97,10 +75,51 @@ class ViewReports:
 
     def add_class(self, c):
         self.parent.i_classes_table.insertRow(0)
+        a = QtWidgets.QTableWidgetItem("Attendance")
+        a.setForeground(QColor(56, 219, 208))
+        self.parent.i_classes_table.setItem(0, 1, a)
+        b = QtWidgets.QTableWidgetItem("Behaviour")
+        b.setForeground(QColor(56, 219, 208))
+        self.parent.i_classes_table.setItem(0, 2, b)
+
         self.parent.i_classes_table.setItem(0, 0, QtWidgets.QTableWidgetItem(str(c[0])))
-        self.parent.i_classes_table.setItem(0, 2, QtWidgets.QTableWidgetItem(c[1]))
-        self.parent.i_classes_table.setItem(0, 3, QtWidgets.QTableWidgetItem(c[2]))
-        self.parent.i_classes_table.setItem(0, 4, QtWidgets.QTableWidgetItem(c[3]))
+        for i in range(3, 6):
+            self.parent.i_classes_table.setItem(0, i, QtWidgets.QTableWidgetItem(c[i - 2]))
+
+    def fill_report(self, location):
+        try:
+            row, column = location.row(), location.column()
+            class_id = self.parent.i_classes_table.item(row, 0).text()
+            if column == 1:
+                sql = '''
+                        SELECT student_id, status FROM attendance 
+                        WHERE class_id=?;
+                        '''
+            elif column == 2:
+                sql = '''
+                        SELECT happy, sad, neutral FROM behavior 
+                        WHERE class_id=?;
+                        '''
+            else:
+                return
+
+            cur = self.db_conn.cursor()
+            cur.execute(sql, (class_id,))
+            reports = cur.fetchall()
+
+            if column == 1:
+                self.reset_table(self.parent.i_attendance_table)
+                for report in reports:
+                    self.parent.i_attendance_table.insertRow(0)
+                    self.parent.i_attendance_table.setItem(0, 0, QtWidgets.QTableWidgetItem(str(report[0])))
+                    checkbox = QtWidgets.QCheckBox()
+                    checkbox.setChecked(report[1])
+                    self.parent.i_attendance_table.setCellWidget(0, 1, checkbox)
+                self.parent.goto(self.parent.i_stacked_widget, self.parent.i_attendance)
+            elif column == 2:
+                self.reset_table(self.parent.i_behaviour_table)
+        except Exception as e:
+            print(e)
 
     def reset_table(self, table):
         table.clearContents()
