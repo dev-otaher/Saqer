@@ -55,7 +55,8 @@ class Login(QDialog):
                 auth = firebase.auth()
                 db = firebase.database()
                 user = auth.sign_in_with_email_and_password(username, password)
-                isAdmin = db.child("users").child(str(user["localId"])).child("isAdmin").get()
+                UUID = str(user["localId"])
+                isAdmin = db.child("users").child(UUID).child("isAdmin").get()
                 if isAdmin.val() == "True":
                     print("Is admin...")
                     from gui.admin.AdminDashboard import AdminDashboard
@@ -63,8 +64,8 @@ class Login(QDialog):
 
                 else:
                     self.destroy()
-                    from gui.InstructorDashboard import InstructorDashboard
-                    InstructorDashboard()
+                    from gui.instructor.InstructorDashboard import InstructorDashboard
+                    InstructorDashboard(UUID)
             except requests.exceptions.HTTPError as e:
                 print(e)
                 # print(json.loads(e.args[1])["error"]["message"])

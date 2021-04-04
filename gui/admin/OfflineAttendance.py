@@ -88,18 +88,21 @@ class OfflineAttendance:
         self.show_recheck_table()
         checkpoints = self.parent.i_progress_bar.maximum()
         for std in self.students:
-            self.parent.i_recheck_table.insertRow(0)
-            self.parent.i_recheck_table.setItem(0, 0, QtWidgets.QTableWidgetItem(std.uni_id))
-            self.parent.i_recheck_table.setItem(0, 1, QtWidgets.QTableWidgetItem(std.name))
-            self.parent.i_recheck_table.setItem(0, 2, QtWidgets.QTableWidgetItem(str(std.appear_counter)+f"/{checkpoints}"))
+            self.add_record(std.uni_id, std.name, std.appear_counter, checkpoints)
             checkbox = QtWidgets.QCheckBox()
             is_present = std.appear_counter/self.parent.i_progress_bar.maximum() > 0.7
             checkbox.setChecked(is_present)
             self.parent.i_recheck_table.setCellWidget(0, 3, checkbox)
 
+    def add_record(self, uni_id, name, appear_counter, checkpoints):
+        self.parent.i_recheck_table.insertRow(0)
+        self.parent.i_recheck_table.setItem(0, 0, QtWidgets.QTableWidgetItem(uni_id))
+        self.parent.i_recheck_table.setItem(0, 1, QtWidgets.QTableWidgetItem(name))
+        self.parent.i_recheck_table.setItem(0, 2,QtWidgets.QTableWidgetItem(str(appear_counter) + f"/{checkpoints}"))
+
     def save_data(self):
         try:
-            sql = '''INSERT INTO attendance (student_id, status)
+            sql = '''INSERT INTO attendence (student_id, status)
                             VALUES (?, ?)'''
             cur = self.db_conn.cursor()
             for r in range(self.parent.i_recheck_table.rowCount()):

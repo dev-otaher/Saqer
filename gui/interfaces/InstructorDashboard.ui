@@ -114,28 +114,6 @@ QPushButton:pressed {
      <string>-</string>
     </property>
    </widget>
-   <widget class="QLabel" name="i_logout">
-    <property name="geometry">
-     <rect>
-      <x>1118</x>
-      <y>11</y>
-      <width>21</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="cursor">
-     <cursorShape>PointingHandCursor</cursorShape>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="pixmap">
-     <pixmap>../images/logout.png</pixmap>
-    </property>
-    <property name="scaledContents">
-     <bool>true</bool>
-    </property>
-   </widget>
   </widget>
   <widget class="QFrame" name="i_right_menu">
    <property name="geometry">
@@ -171,14 +149,14 @@ QPushButton:pressed {
      </rect>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="i_view_report_sec">
      <widget class="QLabel" name="i_title">
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>-10</y>
+        <y>0</y>
         <width>491</width>
         <height>31</height>
        </rect>
@@ -220,6 +198,12 @@ QPushButton:pressed {
           <height>691</height>
          </rect>
         </property>
+        <property name="minimumSize">
+         <size>
+          <width>871</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="font">
          <font>
           <family>RB</family>
@@ -233,18 +217,18 @@ QPushButton:pressed {
          <enum>Qt::ClickFocus</enum>
         </property>
         <property name="styleSheet">
-         <string notr="true">QHeaderView::section{background-color:#38DBD0; color:#383838}
+         <string notr="true">QHeaderView::section{
+	background-color:#38DBD0;
+	color:#383838
+}
 QTableWidget::item {
-		
 	selection-background-color: #38DBD0;
     color: white;
 }
 QTableWidget::section{
-
   border-collapse: collapse;
   border-radius: 1em;
   overflow: hidden
-
 }
 </string>
         </property>
@@ -275,9 +259,21 @@ QTableWidget::section{
         <property name="textElideMode">
          <enum>Qt::ElideLeft</enum>
         </property>
+        <property name="verticalScrollMode">
+         <enum>QAbstractItemView::ScrollPerPixel</enum>
+        </property>
+        <property name="horizontalScrollMode">
+         <enum>QAbstractItemView::ScrollPerPixel</enum>
+        </property>
         <property name="gridStyle">
          <enum>Qt::SolidLine</enum>
         </property>
+        <property name="sortingEnabled">
+         <bool>true</bool>
+        </property>
+        <attribute name="horizontalHeaderDefaultSectionSize">
+         <number>435</number>
+        </attribute>
         <attribute name="horizontalHeaderHighlightSections">
          <bool>false</bool>
         </attribute>
@@ -289,7 +285,12 @@ QTableWidget::section{
         </attribute>
         <column>
          <property name="text">
-          <string notr="true">New Column</string>
+          <string>Id</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string notr="true">Code</string>
          </property>
          <property name="font">
           <font>
@@ -309,18 +310,7 @@ QTableWidget::section{
         </column>
         <column>
          <property name="text">
-          <string>New Column</string>
-         </property>
-         <property name="font">
-          <font>
-           <family>RB</family>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>New Column</string>
+          <string>Title</string>
          </property>
          <property name="font">
           <font>
@@ -354,20 +344,15 @@ QTableWidget::section{
          <enum>Qt::ClickFocus</enum>
         </property>
         <property name="styleSheet">
-         <string notr="true">QHeaderView::section{background-color:#38DBD0; color:#383838}
-QTableWidget::item {
-		
-	selection-background-color: #38DBD0;
-  	width: 100%;
-
+         <string notr="true">QHeaderView::section{
+	background-color:#38DBD0; 
+	color:#383838
 }
-
-QTableWidget::item:nth-child(0) {
-		
-
+QTableWidget::item {
+	selection-background-color: #38DBD0;
+  	color: white;
 }
 QTableWidget::section{
-
   border-collapse: collapse;
   border-radius: 1em;
   overflow: hidden;
@@ -401,9 +386,21 @@ QTableWidget::section{
         <property name="textElideMode">
          <enum>Qt::ElideLeft</enum>
         </property>
+        <property name="verticalScrollMode">
+         <enum>QAbstractItemView::ScrollPerPixel</enum>
+        </property>
+        <property name="horizontalScrollMode">
+         <enum>QAbstractItemView::ScrollPerPixel</enum>
+        </property>
         <property name="gridStyle">
          <enum>Qt::SolidLine</enum>
         </property>
+        <property name="sortingEnabled">
+         <bool>true</bool>
+        </property>
+        <attribute name="horizontalHeaderDefaultSectionSize">
+         <number>217</number>
+        </attribute>
         <attribute name="horizontalHeaderHighlightSections">
          <bool>false</bool>
         </attribute>
@@ -415,7 +412,7 @@ QTableWidget::section{
         </attribute>
         <column>
          <property name="text">
-          <string notr="true">New Column</string>
+          <string notr="true">Id</string>
          </property>
          <property name="font">
           <font>
@@ -435,7 +432,17 @@ QTableWidget::section{
         </column>
         <column>
          <property name="text">
-          <string>New Column</string>
+          <string>Report</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Report</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Title</string>
          </property>
          <property name="font">
           <font>
@@ -446,7 +453,7 @@ QTableWidget::section{
         </column>
         <column>
          <property name="text">
-          <string>New Column</string>
+          <string>Date</string>
          </property>
          <property name="font">
           <font>
@@ -457,18 +464,7 @@ QTableWidget::section{
         </column>
         <column>
          <property name="text">
-          <string>New Column</string>
-         </property>
-         <property name="font">
-          <font>
-           <family>RB</family>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>New Column</string>
+          <string>Time</string>
          </property>
          <property name="font">
           <font>
@@ -479,8 +475,8 @@ QTableWidget::section{
         </column>
        </widget>
       </widget>
-      <widget class="QWidget" name="i_attendnace">
-       <widget class="QTableWidget" name="i_attendnace_table">
+      <widget class="QWidget" name="i_attendance">
+       <widget class="QTableWidget" name="i_attendance_table">
         <property name="geometry">
          <rect>
           <x>0</x>
@@ -549,6 +545,12 @@ QTableWidget::section{
         <property name="gridStyle">
          <enum>Qt::SolidLine</enum>
         </property>
+        <property name="sortingEnabled">
+         <bool>true</bool>
+        </property>
+        <attribute name="horizontalHeaderDefaultSectionSize">
+         <number>435</number>
+        </attribute>
         <attribute name="horizontalHeaderHighlightSections">
          <bool>false</bool>
         </attribute>
@@ -560,27 +562,12 @@ QTableWidget::section{
         </attribute>
         <column>
          <property name="text">
-          <string>New Column</string>
-         </property>
-         <property name="font">
-          <font>
-           <family>RB</family>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-         <property name="foreground">
-          <brush brushstyle="NoBrush">
-           <color alpha="255">
-            <red>0</red>
-            <green>0</green>
-            <blue>0</blue>
-           </color>
-          </brush>
+          <string>Class Id</string>
          </property>
         </column>
         <column>
          <property name="text">
-          <string>New Column</string>
+          <string>Student Id</string>
          </property>
          <property name="font">
           <font>
@@ -591,7 +578,7 @@ QTableWidget::section{
         </column>
         <column>
          <property name="text">
-          <string>New Column</string>
+          <string>Present?</string>
          </property>
          <property name="font">
           <font>
@@ -728,6 +715,12 @@ QTableWidget::section{
         <property name="gridStyle">
          <enum>Qt::SolidLine</enum>
         </property>
+        <property name="sortingEnabled">
+         <bool>true</bool>
+        </property>
+        <attribute name="horizontalHeaderDefaultSectionSize">
+         <number>290</number>
+        </attribute>
         <attribute name="horizontalHeaderHighlightSections">
          <bool>false</bool>
         </attribute>
@@ -739,7 +732,7 @@ QTableWidget::section{
         </attribute>
         <column>
          <property name="text">
-          <string>New Column</string>
+          <string>Happy</string>
          </property>
          <property name="font">
           <font>
@@ -750,7 +743,7 @@ QTableWidget::section{
         </column>
         <column>
          <property name="text">
-          <string>New Column</string>
+          <string>Sad</string>
          </property>
          <property name="font">
           <font>
@@ -761,18 +754,7 @@ QTableWidget::section{
         </column>
         <column>
          <property name="text">
-          <string>New Column</string>
-         </property>
-         <property name="font">
-          <font>
-           <family>RB</family>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>New Column</string>
+          <string>Neutral</string>
          </property>
          <property name="font">
           <font>
@@ -859,8 +841,8 @@ QPushButton:pressed {
        <widget class="QLabel" name="i_title_start">
         <property name="geometry">
          <rect>
-          <x>20</x>
-          <y>10</y>
+          <x>10</x>
+          <y>0</y>
           <width>211</width>
           <height>21</height>
          </rect>
@@ -918,7 +900,7 @@ QPushButton:pressed {
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>10</y>
+        <y>0</y>
         <width>211</width>
         <height>21</height>
        </rect>
@@ -1295,6 +1277,9 @@ QPushButton:pressed {
    </property>
   </widget>
   <widget class="QPushButton" name="i_end_session">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="geometry">
     <rect>
      <x>20</x>
@@ -1349,6 +1334,54 @@ QPushButton:pressed {
    </property>
    <property name="flat">
     <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="i_logout">
+   <property name="geometry">
+    <rect>
+     <x>1112</x>
+     <y>10</y>
+     <width>31</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>RB</family>
+     <pointsize>11</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
+   </property>
+   <property name="toolTip">
+    <string>Logout</string>
+   </property>
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+	border-radius: 8px;
+	background-color: none;
+	color: #383838
+}
+</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>../images/logout.png</normaloff>../images/logout.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>21</width>
+     <height>21</height>
+    </size>
    </property>
   </widget>
  </widget>

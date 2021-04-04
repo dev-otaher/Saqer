@@ -55,7 +55,7 @@ class AdminDashboard(QDialog):
         btn_text = self.sender().text()
         caption = filter = ""
         if btn_text == "Choose Encodings":
-            caption = "Choose Encodigns..."
+            caption = "Choose Encodings..."
             filter = "Pickle File (*.pickle)"
         elif btn_text == "Choose Video":
             caption = "Choose Video..."
