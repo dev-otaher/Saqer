@@ -18,13 +18,13 @@ class ViewReports:
     def connect_widgets(self):
         self.parent.i_courses_table.clicked.connect(self.fill_classes)
         self.parent.i_classes_table.clicked.connect(self.fill_report)
+        self.parent.i_save.clicked.connect(self.save_attendance)
 
     def hide_widgets(self):
         self.parent.i_save_recheck.setHidden(True)
         self.hide_first_column(self.parent.i_classes_table)
         self.hide_first_column(self.parent.i_courses_table)
         self.hide_first_column(self.parent.i_attendance_table)
-        self.hide_first_column(self.parent.i_behaviour_table)
 
     def hide_first_column(self, table):
         table.setColumnHidden(0, True)
@@ -46,10 +46,10 @@ class ViewReports:
             Warning(str(e))
             print(e)
 
-    def add_course(self, course):
+    def add_course(self, c):
         self.parent.i_courses_table.insertRow(0)
         for i in range(3):
-            self.parent.i_courses_table.setItem(0, i, QtWidgets.QTableWidgetItem(str(course[i])))
+            self.parent.i_courses_table.setItem(0, i, QtWidgets.QTableWidgetItem(str(c[i])))
 
     def fill_classes(self, location: QModelIndex):
         try:
@@ -94,7 +94,7 @@ class ViewReports:
             class_id = self.parent.i_classes_table.item(row, 0).text()
             if column == 1:
                 sql = '''
-                        SELECT student_id, status FROM attendance 
+                        SELECT class_id, student_id, status FROM attendance 
                         WHERE class_id=?;
                         '''
             elif column == 2:
@@ -104,28 +104,28 @@ class ViewReports:
                         '''
             else:
                 return
-
             cur = self.db_conn.cursor()
             cur.execute(sql, (class_id,))
-            reports = cur.fetchall()
-            print(reports)
+            records = cur.fetchall()
             if column == 1:
                 self.reset_table(self.parent.i_attendance_table)
-                for report in reports:
+                for r in records:
                     self.parent.i_attendance_table.insertRow(0)
-                    self.parent.i_attendance_table.setItem(0, 0, QtWidgets.QTableWidgetItem(str(report[0])))
+                    self.parent.i_attendance_table.setItem(0, 0, QtWidgets.QTableWidgetItem(str(r[0])))
+                    self.parent.i_attendance_table.setItem(0, 1, QtWidgets.QTableWidgetItem(str(r[1])))
                     checkbox = QtWidgets.QCheckBox()
-                    checkbox.setChecked(report[1])
-                    self.parent.i_attendance_table.setCellWidget(0, 1, checkbox)
+                    checkbox.setChecked(r[2])
+                    self.parent.i_attendance_table.setCellWidget(0, 2, checkbox)
                 self.parent.goto(self.parent.i_stacked_widget, self.parent.i_attendance)
+                self.parent.i_title.setText("View Reports - Attendance")
             elif column == 2:
                 self.reset_table(self.parent.i_behaviour_table)
-                for report in reports:
+                for r in records:
                     self.parent.i_behaviour_table.insertRow(0)
                     for i in range(3):
-                        self.parent.i_behaviour_table.setItem(0, i, QtWidgets.QTableWidgetItem(str(report[i])+"%"))
+                        self.parent.i_behaviour_table.setItem(0, i, QtWidgets.QTableWidgetItem(str(r[i])+"%"))
                 self.parent.goto(self.parent.i_stacked_widget, self.parent.i_behaviour)
-
+                self.parent.i_title.setText("View Reports - Behaviour")
         except Exception as e:
             print(e)
 
@@ -133,16 +133,19 @@ class ViewReports:
         table.clearContents()
         table.setRowCount(0)
 
-    def save_data(self):
+    def save_attendance(self):
         try:
-            sql = '''INSERT INTO attendence (student_id, status)
-                            VALUES (?, ?)'''
+            sql = '''
+                    UPDATE attendance
+                    SET status = ?
+                    WHERE student_id = ?
+                    '''
             cur = self.db_conn.cursor()
-            for r in range(self.parent.i_recheck_table.rowCount()):
-                id = self.parent.i_recheck_table.item(r, 0).text()
-                status = self.parent.i_recheck_table.cellWidget(r, 3).isChecked()
-                cur.execute(sql, (id, status))
+            for r in range(self.parent.i_attendance_table.rowCount()):
+                student_id = self.parent.i_attendance_table.item(r, 1).text()
+                status = int(self.parent.i_attendance_table.cellWidget(r, 2).isChecked())
+                cur.execute(sql, (status, student_id))
                 self.db_conn.commit()
-        except Error as e:
+        except Exception as e:
             Warning(str(e))
             print(e)
