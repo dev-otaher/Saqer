@@ -61,12 +61,6 @@ class InstructorDashboard(QDialog):
     def mousePressEvent(self, event):
         self.clickPosition = event.globalPos()
 
-    # def start_session(self):
-    #     self.goto(self.i_choices, self.i_start_session_sec)
-    #     self.goto(self.i_video_sec, self.i_choose_course)
-
-
-
     def end_session(self):
         self.i_choices.setCurrentWidget(self.i_end_session_sec)
 

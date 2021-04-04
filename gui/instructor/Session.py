@@ -119,6 +119,7 @@ class Session:
         self.parent.enable_btn(self.parent.i_end_session)
         self.parent.goto(self.parent.i_video_sec, self.parent.i_video_holder)
 
+
     def reset_combox(self, combobox):
         combobox.clear()
 

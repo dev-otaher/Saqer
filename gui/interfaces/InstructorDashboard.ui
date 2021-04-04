@@ -149,7 +149,7 @@ QPushButton:pressed {
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="i_view_report_sec">
      <widget class="QLabel" name="i_title">
@@ -774,7 +774,7 @@ QTableWidget::section{
         <x>0</x>
         <y>0</y>
         <width>881</width>
-        <height>731</height>
+        <height>741</height>
        </rect>
       </property>
       <property name="currentIndex">
@@ -785,7 +785,7 @@ QTableWidget::section{
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>140</y>
+          <y>150</y>
           <width>91</width>
           <height>31</height>
          </rect>
@@ -946,8 +946,50 @@ foregroung: white;
          <string>Class:</string>
         </property>
        </widget>
+       <widget class="QCheckBox" name="i_save_recording_checkbox">
+        <property name="geometry">
+         <rect>
+          <x>120</x>
+          <y>150</y>
+          <width>151</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>RB</family>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: #38DBD0;</string>
+        </property>
+        <property name="text">
+         <string>Save Recording?</string>
+        </property>
+       </widget>
       </widget>
-      <widget class="QWidget" name="i_video_holder"/>
+      <widget class="QWidget" name="i_video_holder">
+       <widget class="QLabel" name="i_cam_feed">
+        <property name="geometry">
+         <rect>
+          <x>13</x>
+          <y>110</y>
+          <width>864</width>
+          <height>486</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QLabel{
+	border: 1px solid #38DBD0;
+	border-radius: 5px
+}</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </widget>
      </widget>
     </widget>
     <widget class="QWidget" name="i_end_session_sec">
@@ -1197,9 +1239,9 @@ QPushButton:pressed {
   <widget class="QFrame" name="i_footer">
    <property name="geometry">
     <rect>
-     <x>2</x>
+     <x>-2</x>
      <y>787</y>
-     <width>1201</width>
+     <width>1204</width>
      <height>13</height>
     </rect>
    </property>
