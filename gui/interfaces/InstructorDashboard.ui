@@ -186,7 +186,7 @@ QPushButton:pressed {
        </rect>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="i_courses">
        <widget class="QTableWidget" name="i_courses_table">
@@ -453,24 +453,7 @@ QTableWidget::section{
         </column>
         <column>
          <property name="text">
-          <string>Date</string>
-         </property>
-         <property name="font">
-          <font>
-           <family>RB</family>
-           <pointsize>10</pointsize>
-          </font>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>Time</string>
-         </property>
-         <property name="font">
-          <font>
-           <family>RB</family>
-           <pointsize>10</pointsize>
-          </font>
+          <string>Date &amp; Time</string>
          </property>
         </column>
        </widget>
@@ -549,7 +532,7 @@ QTableWidget::section{
          <bool>true</bool>
         </property>
         <attribute name="horizontalHeaderDefaultSectionSize">
-         <number>435</number>
+         <number>289</number>
         </attribute>
         <attribute name="horizontalHeaderHighlightSections">
          <bool>false</bool>
@@ -567,13 +550,18 @@ QTableWidget::section{
         </column>
         <column>
          <property name="text">
-          <string>Student Id</string>
+          <string>Id</string>
          </property>
          <property name="font">
           <font>
            <family>RB</family>
            <pointsize>10</pointsize>
           </font>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Name</string>
          </property>
         </column>
         <column>
@@ -585,6 +573,11 @@ QTableWidget::section{
            <family>RB</family>
            <pointsize>10</pointsize>
           </font>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Date &amp; Time</string>
          </property>
         </column>
        </widget>
@@ -1014,129 +1007,8 @@ foregroung: white;
        <string notr="true">color: #38DBD0;</string>
       </property>
       <property name="text">
-       <string>Recheck Attendnace</string>
+       <string>Recheck Attendance</string>
       </property>
-     </widget>
-     <widget class="QTableWidget" name="i_attendnace_table_2">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>40</y>
-        <width>871</width>
-        <height>641</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>RB</family>
-        <pointsize>12</pointsize>
-       </font>
-      </property>
-      <property name="cursor" stdset="0">
-       <cursorShape>PointingHandCursor</cursorShape>
-      </property>
-      <property name="focusPolicy">
-       <enum>Qt::ClickFocus</enum>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QHeaderView::section{background-color:#38DBD0; color:#383838}
-QTableWidget::item {
-		
-	selection-background-color: #38DBD0;
-    color: white;
-  	width: 100%;
-}
-
-
-QTableWidget::section{
-
-  border-collapse: collapse;
-  border-radius: 1em;
-  overflow: hidden;
-}
-</string>
-      </property>
-      <property name="frameShape">
-       <enum>QFrame::NoFrame</enum>
-      </property>
-      <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
-      </property>
-      <property name="sizeAdjustPolicy">
-       <enum>QAbstractScrollArea::AdjustIgnored</enum>
-      </property>
-      <property name="autoScroll">
-       <bool>true</bool>
-      </property>
-      <property name="editTriggers">
-       <set>QAbstractItemView::NoEditTriggers</set>
-      </property>
-      <property name="showDropIndicator" stdset="0">
-       <bool>true</bool>
-      </property>
-      <property name="selectionMode">
-       <enum>QAbstractItemView::SingleSelection</enum>
-      </property>
-      <property name="selectionBehavior">
-       <enum>QAbstractItemView::SelectRows</enum>
-      </property>
-      <property name="textElideMode">
-       <enum>Qt::ElideLeft</enum>
-      </property>
-      <property name="gridStyle">
-       <enum>Qt::SolidLine</enum>
-      </property>
-      <attribute name="horizontalHeaderHighlightSections">
-       <bool>false</bool>
-      </attribute>
-      <attribute name="verticalHeaderVisible">
-       <bool>false</bool>
-      </attribute>
-      <attribute name="verticalHeaderHighlightSections">
-       <bool>true</bool>
-      </attribute>
-      <column>
-       <property name="text">
-        <string>New Column</string>
-       </property>
-       <property name="font">
-        <font>
-         <family>RB</family>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="foreground">
-        <brush brushstyle="NoBrush">
-         <color alpha="255">
-          <red>0</red>
-          <green>0</green>
-          <blue>0</blue>
-         </color>
-        </brush>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>New Column</string>
-       </property>
-       <property name="font">
-        <font>
-         <family>RB</family>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>New Column</string>
-       </property>
-       <property name="font">
-        <font>
-         <family>RB</family>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-      </column>
      </widget>
      <widget class="QPushButton" name="i_save_recheck">
       <property name="geometry">
@@ -1194,6 +1066,134 @@ QPushButton:pressed {
       <property name="flat">
        <bool>false</bool>
       </property>
+     </widget>
+     <widget class="QTableWidget" name="i_recheck_table">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>30</y>
+        <width>861</width>
+        <height>651</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>RB</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="cursor" stdset="0">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="focusPolicy">
+       <enum>Qt::ClickFocus</enum>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QHeaderView::section{background-color:#38DBD0; color:#383838}
+QTableWidget::item {
+	selection-background-color: #38DBD0;
+    color: white;
+  	width: 100%;
+}
+
+
+QTableWidget::section{
+
+  border-collapse: collapse;
+  border-radius: 1em;
+  overflow: hidden;
+}
+</string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <property name="sizeAdjustPolicy">
+       <enum>QAbstractScrollArea::AdjustIgnored</enum>
+      </property>
+      <property name="autoScroll">
+       <bool>true</bool>
+      </property>
+      <property name="editTriggers">
+       <set>QAbstractItemView::NoEditTriggers</set>
+      </property>
+      <property name="showDropIndicator" stdset="0">
+       <bool>true</bool>
+      </property>
+      <property name="selectionMode">
+       <enum>QAbstractItemView::SingleSelection</enum>
+      </property>
+      <property name="selectionBehavior">
+       <enum>QAbstractItemView::SelectRows</enum>
+      </property>
+      <property name="textElideMode">
+       <enum>Qt::ElideLeft</enum>
+      </property>
+      <property name="gridStyle">
+       <enum>Qt::SolidLine</enum>
+      </property>
+      <attribute name="horizontalHeaderDefaultSectionSize">
+       <number>215</number>
+      </attribute>
+      <attribute name="horizontalHeaderHighlightSections">
+       <bool>false</bool>
+      </attribute>
+      <attribute name="verticalHeaderVisible">
+       <bool>false</bool>
+      </attribute>
+      <attribute name="verticalHeaderHighlightSections">
+       <bool>true</bool>
+      </attribute>
+      <column>
+       <property name="text">
+        <string>Id</string>
+       </property>
+       <property name="font">
+        <font>
+         <family>RB</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="foreground">
+        <brush brushstyle="NoBrush">
+         <color alpha="255">
+          <red>0</red>
+          <green>0</green>
+          <blue>0</blue>
+         </color>
+        </brush>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Name</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>No. of Appear</string>
+       </property>
+       <property name="font">
+        <font>
+         <family>RB</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Present?</string>
+       </property>
+       <property name="font">
+        <font>
+         <family>RB</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+      </column>
      </widget>
     </widget>
    </widget>

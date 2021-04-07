@@ -9,6 +9,7 @@ class AttendanceTaker:
         self.class_id = class_id
         self.date = date
         self.students: Students
+        self.checkpoints = 0
 
     def populate_std_list(self):
         omar = Student("2170007761", "Omar")
@@ -31,3 +32,6 @@ class AttendanceTaker:
 
     def increment(self, std: Student):
         std.appear_counter += 1
+
+    def increment_checkpoint(self):
+        self.checkpoints += 1

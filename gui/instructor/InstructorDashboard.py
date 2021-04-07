@@ -19,9 +19,6 @@ class InstructorDashboard(QDialog):
         self.setWindowFlags(QtCore.Qt.WindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint))
         self.connect_widgets()
         self.UUID = UUID
-
-        self.i_save_recheck.clicked.connect(self.save_attendance)
-        # self.i_save.clicked.connect(self.save)
         self.db = DBHelper()
         self.view_reports = ViewReports(self)
         self.session = Session(self)
@@ -41,6 +38,7 @@ class InstructorDashboard(QDialog):
     def connect_side_widgets(self):
         self.connect_view_reports()
         self.i_start_session.clicked.connect(partial(self.goto, self.i_choices, self.i_start_session_sec))
+        self.i_start_session.clicked.connect(partial(self.goto, self.i_video_sec, self.i_choose_course))
         self.i_end_session.clicked.connect(partial(self.goto, self.i_choices, self.i_end_session_sec))
 
     def connect_view_reports(self):
@@ -64,12 +62,9 @@ class InstructorDashboard(QDialog):
     def end_session(self):
         self.i_choices.setCurrentWidget(self.i_end_session_sec)
 
-    def save_attendance(self):
-        print('save attendance test')
-
     def enable_btn(self, btn):
         btn.setEnabled(True)
-        self.i_end_session.setStyleSheet("QPushButton {border-radius: 25px;background-color: "
+        btn.setStyleSheet("QPushButton {border-radius: 25px;background-color: "
                                          "#38DBD0;color:#ffffff}QPushButton:hover {background-color: "
                                          "#23b2a8; color: rgb(255, 255, 255);} QPushButton:pressed { background-color: #38DBD0; }")
 

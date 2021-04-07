@@ -4,7 +4,18 @@ from PyQt5.QtCore import QModelIndex
 from PyQt5.QtGui import QColor
 from PyQt5.QtWidgets import QLabel, QHBoxLayout, QWidget, QSizePolicy, QPushButton
 from qtpy import QtWidgets
+
+from gui.Success import Success
 from gui.Warning import Warning
+
+
+def hide_column(table, index):
+    table.setColumnHidden(index, True)
+
+
+def reset_table(table):
+    table.clearContents()
+    table.setRowCount(0)
 
 
 class ViewReports:
@@ -22,13 +33,10 @@ class ViewReports:
 
     def hide_widgets(self):
         self.parent.i_save_recheck.setHidden(True)
-        self.hide_first_column(self.parent.i_classes_table)
-        self.hide_first_column(self.parent.i_courses_table)
-        self.hide_first_column(self.parent.i_attendance_table)
-
-    def hide_first_column(self, table):
-        table.setColumnHidden(0, True)
-        table.setColumnHidden(0, True)
+        hide_column(self.parent.i_classes_table, 0)
+        hide_column(self.parent.i_courses_table, 0)
+        hide_column(self.parent.i_attendance_table, 0)
+        hide_column(self.parent.i_attendance_table, 4)
 
     def fill_courses(self):
         try:
@@ -57,14 +65,15 @@ class ViewReports:
             course_id = self.parent.i_courses_table.item(row, 0).text()
 
             sql = '''
-                    SELECT id, title, date, time FROM class 
-                    WHERE course_id=?;
+                    SELECT DISTINCT class.id, title, date_time FROM class
+                    INNER JOIN attendance a on class.id = a.class_id
+                    WHERE course_id=? AND instructor_id=?;
                     '''
             cur = self.db_conn.cursor()
-            cur.execute(sql, (course_id,))
+            cur.execute(sql, (course_id, self.parent.UUID))
             classes = cur.fetchall()
 
-            self.reset_table(self.parent.i_classes_table)
+            reset_table(self.parent.i_classes_table)
             for c in classes:
                 self.add_class(c)
 
@@ -83,19 +92,23 @@ class ViewReports:
         b = QtWidgets.QTableWidgetItem("Behaviour")
         b.setForeground(QColor(56, 219, 208))
         self.parent.i_classes_table.setItem(0, 2, b)
-
+        # fill "Id" column
         self.parent.i_classes_table.setItem(0, 0, QtWidgets.QTableWidgetItem(str(c[0])))
-        for i in range(3, 6):
-            self.parent.i_classes_table.setItem(0, i, QtWidgets.QTableWidgetItem(c[i - 2]))
+        # fill "Title" column
+        self.parent.i_classes_table.setItem(0, 3, QtWidgets.QTableWidgetItem(str(c[1])))
+        # fill "Date & Time" column
+        self.parent.i_classes_table.setItem(0, 4, QtWidgets.QTableWidgetItem(str(c[2])))
 
     def fill_report(self, location):
         try:
             row, column = location.row(), location.column()
             class_id = self.parent.i_classes_table.item(row, 0).text()
+            date_time = self.parent.i_classes_table.item(row, 4).text()
             if column == 1:
                 sql = '''
-                        SELECT class_id, student_id, status FROM attendance 
-                        WHERE class_id=?;
+                        SELECT class_id, student_id, s.name, status, date_time FROM attendance
+                        INNER JOIN student s on s.uni_id = attendance.student_id
+                        WHERE class_id=? AND date_time=?;
                         '''
             elif column == 2:
                 sql = '''
@@ -105,47 +118,49 @@ class ViewReports:
             else:
                 return
             cur = self.db_conn.cursor()
-            cur.execute(sql, (class_id,))
+            cur.execute(sql, (class_id, date_time))
             records = cur.fetchall()
             if column == 1:
-                self.reset_table(self.parent.i_attendance_table)
+                reset_table(self.parent.i_attendance_table)
                 for r in records:
                     self.parent.i_attendance_table.insertRow(0)
                     self.parent.i_attendance_table.setItem(0, 0, QtWidgets.QTableWidgetItem(str(r[0])))
                     self.parent.i_attendance_table.setItem(0, 1, QtWidgets.QTableWidgetItem(str(r[1])))
+                    self.parent.i_attendance_table.setItem(0, 2, QtWidgets.QTableWidgetItem(str(r[2])))
                     checkbox = QtWidgets.QCheckBox()
-                    checkbox.setChecked(r[2])
-                    self.parent.i_attendance_table.setCellWidget(0, 2, checkbox)
+                    checkbox.setChecked(r[3])
+                    self.parent.i_attendance_table.setCellWidget(0, 3, checkbox)
+                    self.parent.i_attendance_table.setItem(0, 4, QtWidgets.QTableWidgetItem(str(r[4])))
                 self.parent.goto(self.parent.i_stacked_widget, self.parent.i_attendance)
                 self.parent.i_title.setText("View Reports - Attendance")
             elif column == 2:
-                self.reset_table(self.parent.i_behaviour_table)
+                reset_table(self.parent.i_behaviour_table)
                 for r in records:
                     self.parent.i_behaviour_table.insertRow(0)
                     for i in range(3):
-                        self.parent.i_behaviour_table.setItem(0, i, QtWidgets.QTableWidgetItem(str(r[i])+"%"))
+                        self.parent.i_behaviour_table.setItem(0, i, QtWidgets.QTableWidgetItem(str(r[i]) + "%"))
                 self.parent.goto(self.parent.i_stacked_widget, self.parent.i_behaviour)
                 self.parent.i_title.setText("View Reports - Behaviour")
         except Exception as e:
             print(e)
-
-    def reset_table(self, table):
-        table.clearContents()
-        table.setRowCount(0)
 
     def save_attendance(self):
         try:
             sql = '''
                     UPDATE attendance
                     SET status = ?
-                    WHERE student_id = ?
+                    WHERE student_id = ? AND class_id = ? AND date_time=?
                     '''
             cur = self.db_conn.cursor()
             for r in range(self.parent.i_attendance_table.rowCount()):
+                class_id = self.parent.i_attendance_table.item(r, 0).text()
                 student_id = self.parent.i_attendance_table.item(r, 1).text()
-                status = int(self.parent.i_attendance_table.cellWidget(r, 2).isChecked())
-                cur.execute(sql, (status, student_id))
+                status = int(self.parent.i_attendance_table.cellWidget(r, 3).isChecked())
+                date_time = self.parent.i_attendance_table.item(r, 4).text()
+                cur.execute(sql, (status, student_id, class_id, date_time))
                 self.db_conn.commit()
+            Success("Attendance Updated!")
+            self.parent.goto(self.parent.i_stacked_widget, self.parent.i_courses)
         except Exception as e:
             Warning(str(e))
             print(e)

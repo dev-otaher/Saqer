@@ -1,10 +1,14 @@
 from sqlite3 import Error
 
 from PyQt5.QtCore import QModelIndex, QVariant
-from PyQt5.QtGui import QColor
+from PyQt5.QtGui import QColor, QPixmap
 from PyQt5.QtWidgets import QLabel, QHBoxLayout, QWidget, QSizePolicy, QPushButton, QComboBox
 from qtpy import QtWidgets
+
+from gui.Success import Success
 from gui.Warning import Warning
+from modules.Students import Students
+from modules.VideoThread import VideoThread
 
 
 class Session:
@@ -14,20 +18,27 @@ class Session:
         self.hide_widgets()
         self.db_conn = self.parent.db.create_db_connection("db/saqer.db")
         self.fill_courses()
+        self.vt = VideoThread("D:/Playground\Python/FaceAttendance - Parallelism/class_videos/1k.mp4",
+                              "db/model/deploy.prototxt",
+                              "db/model/res10_300x300_ssd_iter_140000.caffemodel",
+                              "db/model/openface_nn4.small2.v1.t7",
+                              "db/courses/CS 422/L6M3/dataset/output/recognizer.pickle",
+                              "db/courses/CS 422/L6M3/dataset/output/labels.pickle")
+        self.vt.ImageUpdate.connect(self.update_holder)
+        self.vt.std_list.connect(self.fill_recheck_table)
+        self.class_id = None
 
     def connect_widgets(self):
         self.parent.i_courses_cb.currentIndexChanged.connect(self.fill_classes)
-        self.parent.i_start.clicked.connect(self.start_recording)
-
-        # self.parent.i_courses_table.clicked.connect(self.fill_classes)
-        # self.parent.i_classes_table.clicked.connect(self.fill_report)
-        # self.parent.i_save.clicked.connect(self.save_attendance)
+        self.parent.i_start.clicked.connect(self.start_session)
+        self.parent.i_end_session.clicked.connect(self.stop_session)
+        self.parent.i_save_recheck.clicked.connect(self.save_attendance)
 
     def hide_widgets(self):
         self.parent.i_save_recheck.setHidden(True)
         self.hide_first_column(self.parent.i_classes_table)
         self.hide_first_column(self.parent.i_courses_table)
-        self.hide_first_column(self.parent.i_attendance_table)
+        self.hide_first_column(self.parent.i_recheck_table)
 
     def hide_first_column(self, table):
         table.setColumnHidden(0, True)
@@ -56,7 +67,7 @@ class Session:
         try:
             course_id = self.parent.i_courses_cb.itemData(index)
             sql = '''
-                    SELECT DISTINCT title FROM class
+                    SELECT DISTINCT id, title FROM class
                     WHERE course_id=? AND instructor_id=?;
                     '''
             cur = self.db_conn.cursor()
@@ -71,71 +82,76 @@ class Session:
             print(e)
 
     def add_class(self, c):
-        self.parent.i_classes_cb.addItem(c[0])
-
-    # def fill_report(self, location):
-    #     try:
-    #         row, column = location.row(), location.column()
-    #         class_id = self.parent.i_classes_table.item(row, 0).text()
-    #         if column == 1:
-    #             sql = '''
-    #                     SELECT class_id, student_id, status FROM attendance
-    #                     WHERE class_id=?;
-    #                     '''
-    #         elif column == 2:
-    #             sql = '''
-    #                     SELECT happy, sad, neutral FROM behavior
-    #                     WHERE class_id=?;
-    #                     '''
-    #         else:
-    #             return
-    #         cur = self.db_conn.cursor()
-    #         cur.execute(sql, (class_id,))
-    #         records = cur.fetchall()
-    #         if column == 1:
-    #             self.reset_table(self.parent.i_attendance_table)
-    #             for r in records:
-    #                 self.parent.i_attendance_table.insertRow(0)
-    #                 self.parent.i_attendance_table.setItem(0, 0, QtWidgets.QTableWidgetItem(str(r[0])))
-    #                 self.parent.i_attendance_table.setItem(0, 1, QtWidgets.QTableWidgetItem(str(r[1])))
-    #                 checkbox = QtWidgets.QCheckBox()
-    #                 checkbox.setChecked(r[2])
-    #                 self.parent.i_attendance_table.setCellWidget(0, 2, checkbox)
-    #             self.parent.goto(self.parent.i_stacked_widget, self.parent.i_attendance)
-    #             self.parent.i_title.setText("View Reports - Attendance")
-    #         elif column == 2:
-    #             self.reset_table(self.parent.i_behaviour_table)
-    #             for r in records:
-    #                 self.parent.i_behaviour_table.insertRow(0)
-    #                 for i in range(3):
-    #                     self.parent.i_behaviour_table.setItem(0, i, QtWidgets.QTableWidgetItem(str(r[i])+"%"))
-    #             self.parent.goto(self.parent.i_stacked_widget, self.parent.i_behaviour)
-    #             self.parent.i_title.setText("View Reports - Behaviour")
-    #     except Exception as e:
-    #         print(e)
-
-    def start_recording(self):
-        self.parent.disable_btn(self.parent.i_start_session)
-        self.parent.enable_btn(self.parent.i_end_session)
-        self.parent.goto(self.parent.i_video_sec, self.parent.i_video_holder)
-
+        self.parent.i_classes_cb.addItem(c[1], c[0])
 
     def reset_combox(self, combobox):
         combobox.clear()
 
+    def start_session(self):
+        self.parent.disable_btn(self.parent.i_start_session)
+        self.parent.enable_btn(self.parent.i_end_session)
+        self.parent.goto(self.parent.i_video_sec, self.parent.i_video_holder)
+        self.class_id = self.parent.i_classes_cb.currentData()
+        self.vt.isRecordChecked = self.parent.i_save_recording_checkbox.isChecked()
+        self.vt.start()
+
+    def update_holder(self, frame):
+        try:
+            # keep updating the label according to the new frame
+            self.parent.i_cam_feed.setPixmap(QPixmap.fromImage(frame))
+        except Exception as e:
+            print(e.args)
+
+    def stop_session(self):
+        # self.parent.i_cam_feed.setPixmap(QPixmap(1,0))
+        self.vt.threadActive = False
+        self.vt.quit()
+
+    def reset_table(self):
+        self.parent.i_recheck_table.clearContents()
+        self.parent.i_recheck_table.setRowCount(0)
+
+    def show_recheck_table(self):
+        self.reset_table()
+        self.parent.i_recheck_table.setHidden(False)
+        self.parent.i_save_recheck.setHidden(False)
+
+    def fill_recheck_table(self, taker):
+        self.show_recheck_table()
+        try:
+            checkpoints = taker.checkpoints
+            for std in taker.students:
+                self.add_record(std.uni_id, std.name, std.appear_counter, checkpoints)
+                checkbox = QtWidgets.QCheckBox()
+                is_present = std.appear_counter / checkpoints > 0.7
+                checkbox.setChecked(is_present)
+                self.parent.i_recheck_table.setCellWidget(0, 3, checkbox)
+        except Exception as e:
+            print(e)
+
+    def add_record(self, uni_id, name, appear_counter, checkpoints):
+        self.parent.i_recheck_table.insertRow(0)
+        self.parent.i_recheck_table.setItem(0, 0, QtWidgets.QTableWidgetItem(uni_id))
+        self.parent.i_recheck_table.setItem(0, 1, QtWidgets.QTableWidgetItem(name))
+        self.parent.i_recheck_table.setItem(0, 2,QtWidgets.QTableWidgetItem(str(appear_counter) + f"/{checkpoints}"))
+
     def save_attendance(self):
         try:
             sql = '''
-                    UPDATE attendance
-                    SET status = ?
-                    WHERE student_id = ?
+                    INSERT INTO attendance(student_id, class_id, status)
+                    VALUES (?, ?, ?)
                     '''
             cur = self.db_conn.cursor()
-            for r in range(self.parent.i_attendance_table.rowCount()):
-                student_id = self.parent.i_attendance_table.item(r, 1).text()
-                status = int(self.parent.i_attendance_table.cellWidget(r, 2).isChecked())
-                cur.execute(sql, (status, student_id))
+            for r in range(self.parent.i_recheck_table.rowCount()):
+                student_id = self.parent.i_recheck_table.item(r, 0).text()
+                status = int(self.parent.i_recheck_table.cellWidget(r, 3).isChecked())
+                cur.execute(sql, (student_id, self.class_id, status))
                 self.db_conn.commit()
+            Success("Attendance Saved!")
+            self.parent.enable_btn(self.parent.i_start_session)
+            self.parent.disable_btn(self.parent.i_end_session)
+            self.parent.goto(self.parent.i_choices, self.parent.i_view_report_sec)
+            self.parent.goto(self.parent.i_stacked_widget, self.parent.i_courses)
         except Exception as e:
             Warning(str(e))
             print(e)

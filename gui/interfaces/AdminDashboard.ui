@@ -197,7 +197,7 @@ QPushButton:pressed {
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="i_register_sec">
      <widget class="QLabel" name="i_register_label">
@@ -1388,6 +1388,9 @@ QTableWidget::section{
       <property name="gridStyle">
        <enum>Qt::SolidLine</enum>
       </property>
+      <attribute name="horizontalHeaderDefaultSectionSize">
+       <number>212</number>
+      </attribute>
       <attribute name="horizontalHeaderHighlightSections">
        <bool>false</bool>
       </attribute>
@@ -1399,7 +1402,7 @@ QTableWidget::section{
       </attribute>
       <column>
        <property name="text">
-        <string>ID</string>
+        <string>Id</string>
        </property>
        <property name="font">
         <font>

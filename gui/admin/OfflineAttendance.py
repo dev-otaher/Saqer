@@ -73,10 +73,6 @@ class OfflineAttendance:
             self.fill_recheck_table()
 
     def reset_table(self):
-        self.parent.i_recheck_table.setColumnWidth(0, 212)
-        self.parent.i_recheck_table.setColumnWidth(1, 212)
-        self.parent.i_recheck_table.setColumnWidth(2, 212)
-        self.parent.i_recheck_table.setColumnWidth(3, 212)
         self.parent.i_recheck_table.clearContents()
         self.parent.i_recheck_table.setRowCount(0)
 
