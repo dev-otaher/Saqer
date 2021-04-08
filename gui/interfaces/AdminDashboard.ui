@@ -1108,7 +1108,7 @@ QPushButton:pressed {
       <property name="geometry">
        <rect>
         <x>600</x>
-        <y>70</y>
+        <y>60</y>
         <width>131</width>
         <height>31</height>
        </rect>
@@ -1165,7 +1165,7 @@ QPushButton:pressed {
       <property name="geometry">
        <rect>
         <x>740</x>
-        <y>70</y>
+        <y>130</y>
         <width>131</width>
         <height>31</height>
        </rect>
@@ -1225,7 +1225,7 @@ QPushButton:pressed {
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>80</y>
+        <y>70</y>
         <width>571</width>
         <height>21</height>
        </rect>
@@ -1253,7 +1253,7 @@ border-bottom: 2px solid rgb(85, 255, 255);
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>54</y>
+        <y>44</y>
         <width>211</width>
         <height>16</height>
        </rect>
@@ -1324,9 +1324,9 @@ QProgressBar::chunk{
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>150</y>
+        <y>180</y>
         <width>851</width>
-        <height>521</height>
+        <height>491</height>
        </rect>
       </property>
       <property name="font">
@@ -1503,6 +1503,135 @@ QPushButton:pressed {
       </property>
       <property name="flat">
        <bool>false</bool>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="i_instructor_cb">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>140</y>
+        <width>211</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>RB</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: #38DBD0;
+foregroung: white;
+</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_5">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>110</y>
+        <width>81</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>RB</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: #38DBD0;</string>
+      </property>
+      <property name="text">
+       <string>Instructor:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_9">
+      <property name="geometry">
+       <rect>
+        <x>250</x>
+        <y>110</y>
+        <width>61</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>RB</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: #38DBD0;</string>
+      </property>
+      <property name="text">
+       <string>Course:</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="i_course_cb">
+      <property name="geometry">
+       <rect>
+        <x>250</x>
+        <y>140</y>
+        <width>211</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>RB</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: #38DBD0;
+foregroung: white;
+</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_10">
+      <property name="geometry">
+       <rect>
+        <x>480</x>
+        <y>110</y>
+        <width>51</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>RB</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: #38DBD0;</string>
+      </property>
+      <property name="text">
+       <string>Class:</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="i_class_cb">
+      <property name="geometry">
+       <rect>
+        <x>480</x>
+        <y>140</y>
+        <width>211</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>RB</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: #38DBD0;
+foregroung: white;
+</string>
       </property>
      </widget>
     </widget>

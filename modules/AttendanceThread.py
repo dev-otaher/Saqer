@@ -2,6 +2,8 @@ import multiprocessing
 from os import cpu_count
 from threading import Thread
 from PyQt5.QtCore import pyqtSignal, QThread
+
+from modules.AttendanceTaker import AttendanceTaker
 from modules.FileVideoStreamInfo import FileVideoStreamInfo
 from modules.Recognizer import Recognizer
 
@@ -23,6 +25,8 @@ class AttendanceThread(QThread):
             qsize = 128 // CPUs
             total_picked_frames = duration / interval
             self.max_signal.emit(int(total_picked_frames))
+
+            students = AttendanceTaker(5).populate_std_list()
 
             for i in range(CPUs):
                 r = Recognizer(self.path,

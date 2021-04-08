@@ -48,8 +48,8 @@ class Session:
     def fill_courses(self):
         try:
             sql = '''
-                    SELECT DISTINCT	course.id, course.title FROM class
-                    INNER JOIN course ON class.course_id == course.id
+                    SELECT DISTINCT	course.id, course.title FROM course
+                    INNER JOIN class ON class.course_id == course.id
                     WHERE instructor_id=?;
                     '''
             cur = self.db_conn.cursor()

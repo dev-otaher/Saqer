@@ -1,8 +1,11 @@
+import os
+import time
 from multiprocessing import Pipe
 from sqlite3 import Error
 from typing import List
 
 from PyQt5.QtWidgets import QFileDialog
+from cv2 import cv2
 from qtpy import QtWidgets
 
 from modules.AttendanceThread import AttendanceThread
@@ -25,10 +28,13 @@ class OfflineAttendance:
         self.students = Students()
         self.db = DBHelper()
         self.db_conn = DBHelper().create_db_connection("db/saqer.db")
+        self.fill_instructor_cb()
 
     def connect_widgets(self):
         self.parent.i_start.clicked.connect(self.start_offline_attendance)
         self.parent.i_save_recheck.clicked.connect(self.save_data)
+        self.parent.i_instructor_cb.currentIndexChanged.connect(self.fill_courses_cb)
+        self.parent.i_course_cb.currentIndexChanged.connect(self.fill_classes_cb)
 
     def hide_widgets(self):
         self.parent.i_video_note.setHidden(True)
@@ -37,13 +43,67 @@ class OfflineAttendance:
         self.parent.i_recheck_table.setHidden(True)
         self.parent.i_save_recheck.setHidden(True)
 
+    def fill_instructor_cb(self):
+        sql = '''
+                SELECT DISTINCT instructor_id FROM class;
+                '''
+        instructors = self.db_conn.cursor().execute(sql).fetchall()
+        for inst in instructors:
+            self.parent.i_instructor_cb.addItem(inst[0])
+
+    def fill_courses_cb(self, index):
+        try:
+            instructor_id = self.parent.i_instructor_cb.itemText(index)
+            sql = '''
+                    SELECT DISTINCT course.id, course.code, course.title FROM course
+                    INNER JOIN class ON course.id = class.course_id
+                    WHERE class.instructor_id=?;
+                    '''
+            courses = self.db_conn.cursor().execute(sql, (instructor_id,)).fetchall()
+            self.parent.i_course_cb.clear()
+            for c in courses:
+                self.parent.i_course_cb.addItem(c[2], c[0])
+        except Exception as e:
+            print(e)
+
+    def fill_classes_cb(self, index):
+        try:
+            instructor_id = self.parent.i_instructor_cb.currentText()
+            course_id = self.parent.i_course_cb.itemData(index)
+            sql = '''
+                    SELECT DISTINCT title FROM class
+                    WHERE course_id=? AND instructor_id=?;
+                    '''
+            classes = self.db_conn.cursor().execute(sql, (course_id, instructor_id)).fetchall()
+            self.parent.i_class_cb.clear()
+            for c in classes:
+                self.parent.i_class_cb.addItem(c[0])
+        except Exception as e:
+            print(e)
+
     def set_bar_max(self, val):
         self.parent.i_progress_bar.setMaximum(val)
+
+    def get_course_code(self, id):
+        sql = '''
+                SELECT code FROM course
+                WHERE id=?; 
+                '''
+        return self.db_conn.cursor().execute(sql, (id,)).fetchall()[0][0]
 
     def start_offline_attendance(self):
         try:
             self.parent.i_video_note.setHidden(True)
-            path = self.parent.i_video_path.text()
+            course_id = self.parent.i_course_cb.currentData()
+            course_code = self.get_course_code(course_id)
+            class_title = self.parent.i_class_cb.currentText()
+            print(course_code, class_title)
+            path = os.getcwd()+f"/db/courses/{course_code}/{class_title}/1k.mp4"
+            # vc = cv2.VideoCapture(path)
+            # while True:
+            #     ret, frame = vc.read()
+            #     cv2.imshow("frame", frame)
+            #     cv2.waitKey(0)
             # path = "D:/Playground/Python/FaceAttendance - Parallelism/class_videos/1k - 2.MOV"
             if path == "":
                 self.parent.i_video_note.setHidden(False)

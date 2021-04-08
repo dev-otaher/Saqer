@@ -1,18 +1,17 @@
 import pickle
 from multiprocessing import Pipe
-from multiprocessing.process import current_process
 import cv2
 import imutils
 import numpy as np
-
 from modules.AttendanceTaker import AttendanceTaker
 from modules.FileVideoStream import FileVideoStream
 
 
 class Recognizer:
-    def __init__(self, path, qsize, proto_path, model_path, embedder_path, recognizer_path, le_path, to_emitter: Pipe,
+    def __init__(self, path, qsize, students, proto_path, model_path, embedder_path, recognizer_path, le_path, to_emitter: Pipe,
                  confidence=0.6):
         self.vs = FileVideoStream(path, qsize)
+        self.students = students
         self.proto_path = proto_path
         self.model_path = model_path
         self.embedder_path = embedder_path
@@ -78,7 +77,8 @@ class Recognizer:
         return id, p
 
     def run(self):
-        taker = AttendanceTaker().populate_std_list()
+        taker = AttendanceTaker("")
+        taker.students = self.students
         while self.vs.more():
             frame = imutils.resize(self.vs.read(), width=1080)
             locations = self.get_locations(frame)
