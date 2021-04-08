@@ -186,7 +186,7 @@ QPushButton:pressed {
        </rect>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="i_courses">
        <widget class="QTableWidget" name="i_courses_table">

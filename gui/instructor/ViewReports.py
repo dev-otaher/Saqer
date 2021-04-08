@@ -113,7 +113,7 @@ class ViewReports:
             elif column == 2:
                 sql = '''
                         SELECT happy, sad, neutral FROM behavior 
-                        WHERE class_id=?;
+                        WHERE class_id=? AND date_time=?;
                         '''
             else:
                 return
@@ -143,6 +143,8 @@ class ViewReports:
                 self.parent.i_title.setText("View Reports - Behaviour")
         except Exception as e:
             print(e)
+
+
 
     def save_attendance(self):
         try:

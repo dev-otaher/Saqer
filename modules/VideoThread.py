@@ -4,6 +4,7 @@ import os
 import pickle
 import time
 from os import cpu_count
+from sqlite3 import Error
 from threading import Thread
 
 import cv2
@@ -21,13 +22,14 @@ from modules.Recognizer import Recognizer
 
 class VideoThread(QThread):
     # this class will handle the detection and recognition part using worker thread
-    ImageUpdate = pyqtSignal(QImage)
+    image_update = pyqtSignal(QImage)
     std_list = pyqtSignal(object)
     # determine the state of the save record checkbox
     def __init__(self, stream_path, proto_path, model_path, embedder_path, recognizer_path, le_path, confidence=0.7):
         super(VideoThread, self).__init__()
         self.threadActive = True
         self.isRecordChecked = None
+        self.class_id = None
         self.stream_path = stream_path
         self.proto_path, self.model_path, self.embedder_path = proto_path, model_path, embedder_path
         self.detector = cv2.dnn.readNetFromCaffe(self.proto_path, self.model_path)
@@ -83,7 +85,8 @@ class VideoThread(QThread):
     def run(self):
         fileName = str(datetime.datetime.now().strftime('%I%p-%M-%S--%d_%m_%Y'))
         try:
-            taker = AttendanceTaker().populate_std_list()
+            print(type(self.class_id))
+            taker = AttendanceTaker(self.class_id).populate_std_list()
             if self.stream_path == 0:
                 cap = cv2.VideoCapture(self.stream_path, cv2.CAP_DSHOW)
             else:
@@ -133,9 +136,11 @@ class VideoThread(QThread):
                 # convert the frame into a Qt format and keep the aspect ratio
                 convertToQtFormat = QImage(flippedImage.data, flippedImage.shape[1], flippedImage.shape[0], QImage.Format_RGB888)
                 pic = convertToQtFormat.scaled(864, 486, Qt.KeepAspectRatio)
-                self.ImageUpdate.emit(pic)
+                self.image_update.emit(pic)
                 taker.increment_checkpoint()
             cap.release()
             self.std_list.emit(taker)
+        except Error as e:
+            print("sqlite", e)
         except Exception as e:
-            print(e.args)
+            print(e)

@@ -1,3 +1,4 @@
+from datetime import datetime
 from sqlite3 import Error
 
 from PyQt5.QtCore import QModelIndex, QVariant
@@ -18,13 +19,13 @@ class Session:
         self.hide_widgets()
         self.db_conn = self.parent.db.create_db_connection("db/saqer.db")
         self.fill_courses()
-        self.vt = VideoThread("D:/Playground\Python/FaceAttendance - Parallelism/class_videos/1k.mp4",
+        self.vt = VideoThread("D:/Playground/Python/FaceAttendance - Parallelism/class_videos/1k.mp4",
                               "db/model/deploy.prototxt",
                               "db/model/res10_300x300_ssd_iter_140000.caffemodel",
                               "db/model/openface_nn4.small2.v1.t7",
                               "db/courses/CS 422/L6M3/dataset/output/recognizer.pickle",
                               "db/courses/CS 422/L6M3/dataset/output/labels.pickle")
-        self.vt.ImageUpdate.connect(self.update_holder)
+        self.vt.image_update.connect(self.update_holder)
         self.vt.std_list.connect(self.fill_recheck_table)
         self.class_id = None
 
@@ -38,7 +39,7 @@ class Session:
         self.parent.i_save_recheck.setHidden(True)
         self.hide_first_column(self.parent.i_classes_table)
         self.hide_first_column(self.parent.i_courses_table)
-        self.hide_first_column(self.parent.i_recheck_table)
+        # self.hide_first_column(self.parent.i_recheck_table)
 
     def hide_first_column(self, table):
         table.setColumnHidden(0, True)
@@ -91,7 +92,7 @@ class Session:
         self.parent.disable_btn(self.parent.i_start_session)
         self.parent.enable_btn(self.parent.i_end_session)
         self.parent.goto(self.parent.i_video_sec, self.parent.i_video_holder)
-        self.class_id = self.parent.i_classes_cb.currentData()
+        self.class_id = self.vt.class_id = self.parent.i_classes_cb.currentData()
         self.vt.isRecordChecked = self.parent.i_save_recording_checkbox.isChecked()
         self.vt.start()
 
@@ -137,21 +138,22 @@ class Session:
 
     def save_attendance(self):
         try:
+            date_time = str(datetime.now())
             sql = '''
-                    INSERT INTO attendance(student_id, class_id, status)
-                    VALUES (?, ?, ?)
+                    INSERT INTO attendance(date_time, student_id, class_id, status)
+                    VALUES (?, ?, ?, ?)
                     '''
             cur = self.db_conn.cursor()
             for r in range(self.parent.i_recheck_table.rowCount()):
                 student_id = self.parent.i_recheck_table.item(r, 0).text()
                 status = int(self.parent.i_recheck_table.cellWidget(r, 3).isChecked())
-                cur.execute(sql, (student_id, self.class_id, status))
+                cur.execute(sql, (date_time, student_id, self.class_id, status))
                 self.db_conn.commit()
-            Success("Attendance Saved!")
             self.parent.enable_btn(self.parent.i_start_session)
             self.parent.disable_btn(self.parent.i_end_session)
             self.parent.goto(self.parent.i_choices, self.parent.i_view_report_sec)
             self.parent.goto(self.parent.i_stacked_widget, self.parent.i_courses)
+            Success("Attendance Saved!")
         except Exception as e:
             Warning(str(e))
             print(e)
