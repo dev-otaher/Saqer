@@ -9,7 +9,7 @@ if __name__ == '__main__':
         app = QApplication(sys.argv)
         # mainwindow = Login()
         # mainwindow = AdminDashboard()
-        mainwindow = InstructorDashboard("2gno0wZNp2apUdtyz3YOJNb4GFl1")
+        mainwindow = InstructorDashboard("dYdPh9CTfxOsYvKR26Dc3bkQwB62")
         # mainwindow = Login()
         sys.exit(app.exec_())
     except Exception as e:

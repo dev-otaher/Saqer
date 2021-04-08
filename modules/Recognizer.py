@@ -21,13 +21,12 @@ class Recognizer:
         self.confidence = confidence
         self.to_emitter = to_emitter
 
-
     def get_locations(self, frame):
-        f_copy = frame.copy()
-        (h, w) = f_copy.shape[:2]
+        # f_copy = frame.copy()
+        (h, w) = frame.shape[:2]
 
         f_blob = cv2.dnn.blobFromImage(
-            cv2.resize(f_copy, (300, 300)), 1.0, (w, h),
+            cv2.resize(frame, (300, 300)), 1.0, (w, h),
             (104.0, 177.0, 123.0), swapRB=False, crop=False)
 
         detector = cv2.dnn.readNetFromCaffe(self.proto_path, self.model_path)
@@ -80,7 +79,6 @@ class Recognizer:
 
     def run(self):
         taker = AttendanceTaker().populate_std_list()
-        text = ""
         while self.vs.more():
             frame = imutils.resize(self.vs.read(), width=1080)
             locations = self.get_locations(frame)
