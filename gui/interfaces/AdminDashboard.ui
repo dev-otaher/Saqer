@@ -1104,68 +1104,11 @@ QPushButton:pressed {
        <string>Offline Attendance</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="i_choose_video">
-      <property name="geometry">
-       <rect>
-        <x>600</x>
-        <y>60</y>
-        <width>131</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>RB</family>
-        <pointsize>12</pointsize>
-       </font>
-      </property>
-      <property name="cursor">
-       <cursorShape>PointingHandCursor</cursorShape>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QPushButton {
-	border-radius: 12px;
-	background-color: #38DBD0;
-	color:rgb(255, 255, 255);
-
-}
-
-QPushButton:hover {
-	background-color: #23b2a8;
-	color: rgb(255, 255, 255);
-}
-
-QPushButton:pressed {
-	background-color: #38DBD0;
-}</string>
-      </property>
-      <property name="text">
-       <string>Choose Video</string>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>30</width>
-        <height>30</height>
-       </size>
-      </property>
-      <property name="checkable">
-       <bool>false</bool>
-      </property>
-      <property name="autoDefault">
-       <bool>true</bool>
-      </property>
-      <property name="default">
-       <bool>false</bool>
-      </property>
-      <property name="flat">
-       <bool>false</bool>
-      </property>
-     </widget>
      <widget class="QPushButton" name="i_start">
       <property name="geometry">
        <rect>
-        <x>740</x>
-        <y>130</y>
+        <x>490</x>
+        <y>90</y>
         <width>131</width>
         <height>31</height>
        </rect>
@@ -1216,59 +1159,6 @@ QPushButton:pressed {
       </property>
       <property name="flat">
        <bool>false</bool>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="i_video_path">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>70</y>
-        <width>571</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>RB</family>
-        <pointsize>12</pointsize>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">color: #38DBD0;
-border: none;
-border-bottom: 2px solid rgb(85, 255, 255);
-</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
-      </property>
-      <property name="placeholderText">
-       <string>Video Path...</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="i_video_note">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>44</y>
-        <width>211</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>RB</family>
-        <pointsize>11</pointsize>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">color:#ff0000</string>
-      </property>
-      <property name="text">
-       <string>*There is no video specified</string>
       </property>
      </widget>
      <widget class="QProgressBar" name="i_progress_bar">
@@ -1324,9 +1214,9 @@ QProgressBar::chunk{
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>180</y>
+        <y>170</y>
         <width>851</width>
-        <height>491</height>
+        <height>501</height>
        </rect>
       </property>
       <property name="font">
@@ -1509,7 +1399,7 @@ QPushButton:pressed {
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>140</y>
+        <y>70</y>
         <width>211</width>
         <height>21</height>
        </rect>
@@ -1530,7 +1420,7 @@ foregroung: white;
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>110</y>
+        <y>40</y>
         <width>81</width>
         <height>21</height>
        </rect>
@@ -1545,14 +1435,14 @@ foregroung: white;
        <string notr="true">color: #38DBD0;</string>
       </property>
       <property name="text">
-       <string>Instructor:</string>
+       <string>Instructor</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_9">
       <property name="geometry">
        <rect>
         <x>250</x>
-        <y>110</y>
+        <y>40</y>
         <width>61</width>
         <height>21</height>
        </rect>
@@ -1567,14 +1457,14 @@ foregroung: white;
        <string notr="true">color: #38DBD0;</string>
       </property>
       <property name="text">
-       <string>Course:</string>
+       <string>Course</string>
       </property>
      </widget>
      <widget class="QComboBox" name="i_course_cb">
       <property name="geometry">
        <rect>
         <x>250</x>
-        <y>140</y>
+        <y>70</y>
         <width>211</width>
         <height>21</height>
        </rect>
@@ -1594,8 +1484,8 @@ foregroung: white;
      <widget class="QLabel" name="label_10">
       <property name="geometry">
        <rect>
-        <x>480</x>
-        <y>110</y>
+        <x>20</x>
+        <y>100</y>
         <width>51</width>
         <height>21</height>
        </rect>
@@ -1610,14 +1500,14 @@ foregroung: white;
        <string notr="true">color: #38DBD0;</string>
       </property>
       <property name="text">
-       <string>Class:</string>
+       <string>Class</string>
       </property>
      </widget>
      <widget class="QComboBox" name="i_class_cb">
       <property name="geometry">
        <rect>
-        <x>480</x>
-        <y>140</y>
+        <x>20</x>
+        <y>130</y>
         <width>211</width>
         <height>21</height>
        </rect>
@@ -1632,6 +1522,74 @@ foregroung: white;
        <string notr="true">color: #38DBD0;
 foregroung: white;
 </string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_11">
+      <property name="geometry">
+       <rect>
+        <x>250</x>
+        <y>100</y>
+        <width>101</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>RB</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: #38DBD0;</string>
+      </property>
+      <property name="text">
+       <string>Date &amp; Time</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="i_date_cb">
+      <property name="geometry">
+       <rect>
+        <x>250</x>
+        <y>130</y>
+        <width>211</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>RB</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: #38DBD0;
+foregroung: white;
+</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="i_video_note">
+      <property name="geometry">
+       <rect>
+        <x>640</x>
+        <y>90</y>
+        <width>211</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>RB</family>
+        <pointsize>11</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color:#ff0000</string>
+      </property>
+      <property name="text">
+       <string>*No recording found with selected data.</string>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
       </property>
      </widget>
     </widget>

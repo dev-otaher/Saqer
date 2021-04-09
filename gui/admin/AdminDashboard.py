@@ -37,7 +37,6 @@ class AdminDashboard(QDialog):
     def connect_browser_btns(self):
         self.i_choose_folder.clicked.connect(self.browse_folder)
         self.i_choose_encodings.clicked.connect(self.browse_file)
-        self.i_choose_video.clicked.connect(self.browse_file)
 
     def move_window(self, e):
         if e.buttons() == Qt.LeftButton:

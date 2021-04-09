@@ -101,7 +101,7 @@ class Session:
             # keep updating the label according to the new frame
             self.parent.i_cam_feed.setPixmap(QPixmap.fromImage(frame))
         except Exception as e:
-            print(e.args)
+            print(e)
 
     def stop_session(self):
         # self.parent.i_cam_feed.setPixmap(QPixmap(1,0))

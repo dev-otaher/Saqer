@@ -1,6 +1,7 @@
 import os
 import time
 from multiprocessing import Pipe
+from os.path import exists
 from sqlite3 import Error
 from typing import List
 
@@ -8,6 +9,7 @@ from PyQt5.QtWidgets import QFileDialog
 from cv2 import cv2
 from qtpy import QtWidgets
 
+from gui.Success import Success
 from modules.AttendanceThread import AttendanceThread
 from modules.DBHelper import DBHelper
 from modules.Emitter import Emitter
@@ -35,6 +37,7 @@ class OfflineAttendance:
         self.parent.i_save_recheck.clicked.connect(self.save_data)
         self.parent.i_instructor_cb.currentIndexChanged.connect(self.fill_courses_cb)
         self.parent.i_course_cb.currentIndexChanged.connect(self.fill_classes_cb)
+        self.parent.i_class_cb.currentIndexChanged.connect(self.fill_dates_cb)
 
     def hide_widgets(self):
         self.parent.i_video_note.setHidden(True)
@@ -71,15 +74,27 @@ class OfflineAttendance:
             instructor_id = self.parent.i_instructor_cb.currentText()
             course_id = self.parent.i_course_cb.itemData(index)
             sql = '''
-                    SELECT DISTINCT title FROM class
+                    SELECT DISTINCT id, title FROM class
                     WHERE course_id=? AND instructor_id=?;
                     '''
             classes = self.db_conn.cursor().execute(sql, (course_id, instructor_id)).fetchall()
             self.parent.i_class_cb.clear()
             for c in classes:
-                self.parent.i_class_cb.addItem(c[0])
+                self.parent.i_class_cb.addItem(c[1], c[0])
         except Exception as e:
             print(e)
+
+    def fill_dates_cb(self, index):
+        print()
+        class_id = self.parent.i_class_cb.itemData(index)
+        sql = '''
+                SELECT DISTINCT date_time FROM attendance
+                WHERE class_id=?  
+                '''
+        dates_times = self.db_conn.cursor().execute(sql, (class_id,)).fetchall()
+        self.parent.i_date_cb.clear()
+        for dt in dates_times:
+            self.parent.i_date_cb.addItem(dt[0])
 
     def set_bar_max(self, val):
         self.parent.i_progress_bar.setMaximum(val)
@@ -91,31 +106,33 @@ class OfflineAttendance:
                 '''
         return self.db_conn.cursor().execute(sql, (id,)).fetchall()[0][0]
 
+    def reset_progress_bar(self):
+        self.parent.i_progress_label.setHidden(False)
+        self.parent.i_progress_bar.setHidden(False)
+        self.parent.i_progress_bar.setValue(0)
+
+    def prepare_thread(self, path, code, class_id, class_title):
+        self.attendance_thread.max_signal.connect(self.set_bar_max)
+        self.attendance_thread.path = path
+        self.attendance_thread.course_code = code
+        self.attendance_thread.class_title = class_title
+        self.attendance_thread.get_students(class_id)
+
     def start_offline_attendance(self):
         try:
             self.parent.i_video_note.setHidden(True)
-            course_id = self.parent.i_course_cb.currentData()
-            course_code = self.get_course_code(course_id)
+            course_code = self.get_course_code(self.parent.i_course_cb.currentData())
             class_title = self.parent.i_class_cb.currentText()
-            print(course_code, class_title)
             path = os.getcwd()+f"/db/courses/{course_code}/{class_title}/1k.mp4"
-            # vc = cv2.VideoCapture(path)
-            # while True:
-            #     ret, frame = vc.read()
-            #     cv2.imshow("frame", frame)
-            #     cv2.waitKey(0)
-            # path = "D:/Playground/Python/FaceAttendance - Parallelism/class_videos/1k - 2.MOV"
-            if path == "":
+            if path == "" or not exists(path):
                 self.parent.i_video_note.setHidden(False)
             else:
-                self.reset_table()
-                self.parent.i_progress_label.setHidden(False)
-                self.parent.i_progress_bar.setHidden(False)
-                self.parent.i_progress_bar.setValue(0)
+                self.reset_table(self.parent.i_recheck_table)
+                self.reset_progress_bar()
                 self.students.clear()
-                self.attendance_thread.max_signal.connect(self.set_bar_max)
                 self.emitter.start()
-                self.attendance_thread.path = path
+                class_id = self.parent.i_class_cb.currentData()
+                self.prepare_thread(path, course_code, class_id, class_title)
                 self.attendance_thread.start()
         except Exception as e:
             print(e)
@@ -132,12 +149,12 @@ class OfflineAttendance:
             self.parent.i_save_recheck.setHidden(False)
             self.fill_recheck_table()
 
-    def reset_table(self):
-        self.parent.i_recheck_table.clearContents()
-        self.parent.i_recheck_table.setRowCount(0)
+    def reset_table(self, table):
+        table.clearContents()
+        table.setRowCount(0)
 
     def show_recheck_table(self):
-        self.reset_table()
+        self.reset_table(self.parent.i_recheck_table)
         self.parent.i_recheck_table.setHidden(False)
 
     def fill_recheck_table(self):
@@ -158,14 +175,23 @@ class OfflineAttendance:
 
     def save_data(self):
         try:
-            sql = '''INSERT INTO attendence (student_id, status)
-                            VALUES (?, ?)'''
+            sql = '''
+                    UPDATE attendance
+                    SET status = ?
+                    WHERE student_id = ? AND class_id = ? AND date_time=?
+                    '''
             cur = self.db_conn.cursor()
-            for r in range(self.parent.i_recheck_table.rowCount()):
-                id = self.parent.i_recheck_table.item(r, 0).text()
-                status = self.parent.i_recheck_table.cellWidget(r, 3).isChecked()
-                cur.execute(sql, (id, status))
+            for i in range(self.parent.i_recheck_table.rowCount()):
+                id = self.parent.i_recheck_table.item(i, 0).text()
+                status = self.parent.i_recheck_table.cellWidget(i, 3).isChecked()
+                class_id = self.parent.i_class_cb.currentData()
+                dt = self.parent.i_date_cb.currentText()
+                cur.execute(sql, (status, id, class_id, dt))
                 self.db_conn.commit()
+            Success("Attendance Updated!")
+            self.hide_widgets()
         except Error as e:
             Warning(str(e))
+            print(e)
+        except Exception as e:
             print(e)
