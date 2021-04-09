@@ -85,7 +85,6 @@ class VideoThread(QThread):
     def run(self):
         fileName = str(datetime.datetime.now().strftime('%I%p-%M-%S--%d_%m_%Y'))
         try:
-            print(type(self.class_id))
             taker = AttendanceTaker(self.class_id).populate_std_list()
             if self.stream_path == 0:
                 cap = cv2.VideoCapture(self.stream_path, cv2.CAP_DSHOW)
