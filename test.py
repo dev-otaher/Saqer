@@ -101,7 +101,6 @@ if __name__ == '__main__':
 
     # Create the communication lines.
     mother_pipe, child_pipe = Pipe()
-    print(child_pipe)
     queue = Queue()
 
     # Instantiate (i.e. create instances of) our classes.

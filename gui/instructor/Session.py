@@ -48,8 +48,8 @@ class Session:
     def fill_courses(self):
         try:
             sql = '''
-                    SELECT DISTINCT	course.id, course.title FROM class
-                    INNER JOIN course ON class.course_id == course.id
+                    SELECT DISTINCT	course.id, course.title FROM course
+                    INNER JOIN class ON class.course_id == course.id
                     WHERE instructor_id=?;
                     '''
             cur = self.db_conn.cursor()
@@ -101,7 +101,7 @@ class Session:
             # keep updating the label according to the new frame
             self.parent.i_cam_feed.setPixmap(QPixmap.fromImage(frame))
         except Exception as e:
-            print(e.args)
+            print(e)
 
     def stop_session(self):
         # self.parent.i_cam_feed.setPixmap(QPixmap(1,0))

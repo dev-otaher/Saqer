@@ -2,8 +2,11 @@ import multiprocessing
 from os import cpu_count
 from threading import Thread
 from PyQt5.QtCore import pyqtSignal, QThread
+
+from modules.AttendanceTaker import AttendanceTaker
 from modules.FileVideoStreamInfo import FileVideoStreamInfo
 from modules.Recognizer import Recognizer
+from modules.Students import Students
 
 
 class AttendanceThread(QThread):
@@ -13,6 +16,12 @@ class AttendanceThread(QThread):
         super(AttendanceThread, self).__init__(parent=None)
         self.path = path
         self.child_pipe = child_pipe
+        self.course_code = int()
+        self.class_title = ""
+        self.students = Students()
+
+    def get_students(self, class_id):
+        self.students = AttendanceTaker(class_id).populate_std_list().students
 
     def run(self):
         try:
@@ -23,16 +32,16 @@ class AttendanceThread(QThread):
             qsize = 128 // CPUs
             total_picked_frames = duration / interval
             self.max_signal.emit(int(total_picked_frames))
-
             for i in range(CPUs):
                 r = Recognizer(self.path,
                                qsize,
+                               self.students,
                                "db/model/deploy.prototxt",
                                "db/model/res10_300x300_ssd_iter_140000.caffemodel",
                                "db/model/openface_nn4.small2.v1.t7",
-                               "db/courses/CS 422/L6M3/dataset/output/recognizer.pickle",
-                               "db/courses/CS 422/L6M3/dataset/output/labels.pickle",
-                               to_emitter=self.child_pipe)
+                               f"db/courses/{self.course_code}/{self.class_title}/dataset/output/recognizer.pickle",
+                               f"db/courses/{self.course_code}/{self.class_title}/dataset/output/labels.pickle",
+                               self.child_pipe)
                 Thread(target=r.vs.pick_frames, args=(interval, i * chunk_size, (i + 1) * chunk_size)).start()
                 multiprocessing.Process(target=r.run).start()
         except Exception as e:
