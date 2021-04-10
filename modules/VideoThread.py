@@ -25,7 +25,7 @@ class VideoThread(QThread):
     image_update = pyqtSignal(QImage)
     std_list = pyqtSignal(object)
     # determine the state of the save record checkbox
-    def __init__(self, stream_path, proto_path, model_path, embedder_path, recognizer_path, le_path, confidence=0.7):
+    def __init__(self, stream_path, proto_path, model_path, embedder_path, confidence=0.7):
         super(VideoThread, self).__init__()
         self.threadActive = True
         self.isRecordChecked = None
@@ -34,8 +34,8 @@ class VideoThread(QThread):
         self.proto_path, self.model_path, self.embedder_path = proto_path, model_path, embedder_path
         self.detector = cv2.dnn.readNetFromCaffe(self.proto_path, self.model_path)
         self.embedder = cv2.dnn.readNetFromTorch(self.embedder_path)
-        self.recognizer = pickle.loads(open(recognizer_path, 'rb').read())
-        self.label_encoder = pickle.loads(open(le_path, 'rb').read())
+        self.recognizer = None
+        self.label_encoder = None
         self.confidence = confidence
 
     def get_locations(self, frame):
@@ -86,7 +86,7 @@ class VideoThread(QThread):
         fileName = str(datetime.datetime.now().strftime('%I%p-%M-%S--%d_%m_%Y'))
         try:
             taker = AttendanceTaker(self.class_id).populate_std_list()
-            if self.stream_path == 0:
+            if self.stream_path is int:
                 cap = cv2.VideoCapture(self.stream_path, cv2.CAP_DSHOW)
             else:
                 cap = cv2.VideoCapture(self.stream_path)
