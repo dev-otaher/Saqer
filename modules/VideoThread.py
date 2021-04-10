@@ -28,7 +28,9 @@ class VideoThread(QThread):
     def __init__(self, stream_path, proto_path, model_path, embedder_path, confidence=0.7):
         super(VideoThread, self).__init__()
         self.threadActive = True
-        self.isRecordChecked = None
+        self.isRecord = None
+        self.folder_path = None
+        self.filename = None
         self.class_id = None
         self.stream_path = stream_path
         self.proto_path, self.model_path, self.embedder_path = proto_path, model_path, embedder_path
@@ -83,25 +85,24 @@ class VideoThread(QThread):
         return id, p
 
     def run(self):
-        fileName = str(datetime.datetime.now().strftime('%I%p-%M-%S--%d_%m_%Y'))
+
         try:
             taker = AttendanceTaker(self.class_id).populate_std_list()
             if self.stream_path is int:
                 cap = cv2.VideoCapture(self.stream_path, cv2.CAP_DSHOW)
             else:
                 cap = cv2.VideoCapture(self.stream_path)
-            time.sleep(2.0)
+            time.sleep(1.0)
             text = ""
             first_loop = self.threadActive = True
             while self.threadActive:
                 ret, frame = cap.read()
                 frame = imutils.resize(frame, width=1080)
                 if ret:
-                    if self.isRecordChecked and first_loop:
-                        writer = cv2.VideoWriter(os.path.sep.join(['db', fileName+'.avi']), cv2.VideoWriter_fourcc(*'XVID'), 10, (frame.shape[1], frame.shape[0]), True)
+                    if self.isRecord and first_loop:
+                        writer = cv2.VideoWriter(os.path.sep.join([self.folder_path, self.filename+'.avi']), cv2.VideoWriter_fourcc(*'XVID'), 10, (frame.shape[1], frame.shape[0]), True)
                         first_loop = False
-                    if self.isRecordChecked:
-                        # save the frame
+                    if self.isRecord:
                         writer.write(frame)
                     locations = self.get_locations(frame)
                     # loop over the detections
