@@ -123,7 +123,8 @@ class OfflineAttendance:
             self.parent.i_video_note.setHidden(True)
             course_code = self.get_course_code(self.parent.i_course_cb.currentData())
             class_title = self.parent.i_class_cb.currentText()
-            path = os.getcwd()+f"/db/courses/{course_code}/{class_title}/1k.mp4"
+            dt = self.parent.i_date_cb.currentText()
+            path = os.getcwd()+f"/db/courses/{course_code}/{class_title}/{dt}.avi"
             if path == "" or not exists(path):
                 self.parent.i_video_note.setHidden(False)
             else:
