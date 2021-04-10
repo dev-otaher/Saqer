@@ -1,5 +1,8 @@
+import os
+import pickle
 from datetime import datetime
-from sqlite3 import Error
+from os.path import exists
+from sqlite3 import Error, Connection
 
 from PyQt5.QtCore import QModelIndex, QVariant
 from PyQt5.QtGui import QColor, QPixmap
@@ -17,17 +20,16 @@ class Session:
         self.parent = parent_gui
         self.connect_widgets()
         self.hide_widgets()
-        self.db_conn = self.parent.db.create_db_connection("db/saqer.db")
+        self.db_conn: Connection = self.parent.db.create_db_connection("db/saqer.db")
         self.fill_courses()
         self.vt = VideoThread("D:/Playground/Python/FaceAttendance - Parallelism/class_videos/1k.mp4",
                               "db/model/deploy.prototxt",
                               "db/model/res10_300x300_ssd_iter_140000.caffemodel",
-                              "db/model/openface_nn4.small2.v1.t7",
-                              "db/courses/CS 422/L6M3/dataset/output/recognizer.pickle",
-                              "db/courses/CS 422/L6M3/dataset/output/labels.pickle")
+                              "db/model/openface_nn4.small2.v1.t7")
         self.vt.image_update.connect(self.update_holder)
         self.vt.std_list.connect(self.fill_recheck_table)
         self.class_id = None
+        self.date_time = str()
 
     def connect_widgets(self):
         self.parent.i_courses_cb.currentIndexChanged.connect(self.fill_classes)
@@ -88,13 +90,36 @@ class Session:
     def reset_combox(self, combobox):
         combobox.clear()
 
+    def get_course_code(self):
+        sql = '''
+                SELECT code FROM course
+                WHERE id=?;
+                '''
+        course_id = self.parent.i_courses_cb.currentData()
+        return self.db_conn.cursor().execute(sql, (course_id,)).fetchall()[0][0]
+
+    def prepare_thread(self):
+        class_title, course_code = self.parent.i_classes_cb.currentText(), self.get_course_code()
+        r_path = f"db/courses/{course_code}/{class_title}/dataset/output/recognizer.pickle"
+        l_path = f"db/courses/{course_code}/{class_title}/dataset/output/labels.pickle"
+        if exists(r_path) and exists(l_path):
+            self.vt.recognizer = pickle.loads(open(r_path, 'rb').read())
+            self.vt.label_encoder = pickle.loads(open(l_path, 'rb').read())
+            self.vt.isRecord = self.parent.i_save_recording_checkbox.isChecked()
+            self.vt.folder_path = os.path.sep.join(['db', 'courses', course_code, class_title])
+            self.date_time = self.vt.filename = str(datetime.now()).replace(":", ".")
+            return True
+        else:
+            Warning("No recognizer found!")
+            return False
+
     def start_session(self):
-        self.parent.disable_btn(self.parent.i_start_session)
-        self.parent.enable_btn(self.parent.i_end_session)
-        self.parent.goto(self.parent.i_video_sec, self.parent.i_video_holder)
-        self.class_id = self.vt.class_id = self.parent.i_classes_cb.currentData()
-        self.vt.isRecordChecked = self.parent.i_save_recording_checkbox.isChecked()
-        self.vt.start()
+        if self.prepare_thread() is True:
+            self.vt.start()
+            self.parent.disable_btn(self.parent.i_start_session)
+            self.parent.enable_btn(self.parent.i_end_session)
+            self.parent.goto(self.parent.i_video_sec, self.parent.i_video_holder)
+            self.class_id = self.vt.class_id = self.parent.i_classes_cb.currentData()
 
     def update_holder(self, frame):
         try:
@@ -138,7 +163,6 @@ class Session:
 
     def save_attendance(self):
         try:
-            date_time = str(datetime.now())
             sql = '''
                     INSERT INTO attendance(date_time, student_id, class_id, status)
                     VALUES (?, ?, ?, ?)
@@ -147,7 +171,7 @@ class Session:
             for r in range(self.parent.i_recheck_table.rowCount()):
                 student_id = self.parent.i_recheck_table.item(r, 0).text()
                 status = int(self.parent.i_recheck_table.cellWidget(r, 3).isChecked())
-                cur.execute(sql, (date_time, student_id, self.class_id, status))
+                cur.execute(sql, (self.date_time, student_id, self.class_id, status))
                 self.db_conn.commit()
             self.parent.enable_btn(self.parent.i_start_session)
             self.parent.disable_btn(self.parent.i_end_session)
