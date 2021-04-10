@@ -4,6 +4,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QDialog, QFileDialog
 from gui import Login
 from gui.admin.OfflineAttendance import OfflineAttendance
+from gui.admin.RegisterStudent import RegisterStudent
 from gui.admin.TrainModel import TrainModel
 
 
@@ -13,8 +14,9 @@ class AdminDashboard(QDialog):
         uic.loadUi("gui/interfaces/AdminDashboard.ui", self)
         self.setWindowFlags(QtCore.Qt.WindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint))
         self.connect_widgets()
-        self.offline_attendance = OfflineAttendance(parent_gui=self)
+        self.register_student = RegisterStudent(parent_gui=self)
         self.train_model = TrainModel(parent_gui=self)
+        self.offline_attendance = OfflineAttendance(parent_gui=self)
         self.show()
 
     def connect_widgets(self):
