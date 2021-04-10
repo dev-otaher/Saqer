@@ -197,7 +197,7 @@ QPushButton:pressed {
      </rect>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="i_register_sec">
      <widget class="QLabel" name="i_register_label">
@@ -205,7 +205,7 @@ QPushButton:pressed {
        <rect>
         <x>10</x>
         <y>0</y>
-        <width>491</width>
+        <width>251</width>
         <height>31</height>
        </rect>
       </property>
@@ -232,7 +232,7 @@ QPushButton:pressed {
        <rect>
         <x>250</x>
         <y>100</y>
-        <width>171</width>
+        <width>131</width>
         <height>16</height>
        </rect>
       </property>
@@ -246,7 +246,7 @@ QPushButton:pressed {
        <string notr="true">color:#ff0000</string>
       </property>
       <property name="text">
-       <string>*Id not valid</string>
+       <string>*Mandatory Field</string>
       </property>
      </widget>
      <widget class="QLineEdit" name="i_university_id">
@@ -332,7 +332,7 @@ border-bottom: 2px solid rgb(85, 255, 255);
        <rect>
         <x>250</x>
         <y>150</y>
-        <width>181</width>
+        <width>141</width>
         <height>16</height>
        </rect>
       </property>
@@ -346,7 +346,7 @@ border-bottom: 2px solid rgb(85, 255, 255);
        <string notr="true">color:#ff0000</string>
       </property>
       <property name="text">
-       <string>*Please enter a valid name</string>
+       <string>*Mandatory Field</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_4">
@@ -490,7 +490,7 @@ QPushButton:pressed {
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>300</y>
+        <y>350</y>
         <width>161</width>
         <height>31</height>
        </rect>
@@ -548,7 +548,7 @@ QPushButton:pressed {
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>350</y>
+        <y>300</y>
         <width>161</width>
         <height>31</height>
        </rect>
@@ -609,9 +609,9 @@ QPushButton:pressed {
      <widget class="QLabel" name="i_cam_feed">
       <property name="geometry">
        <rect>
-        <x>450</x>
+        <x>380</x>
         <y>50</y>
-        <width>421</width>
+        <width>491</width>
         <height>631</height>
        </rect>
       </property>
@@ -623,6 +623,9 @@ QPushButton:pressed {
       </property>
       <property name="text">
        <string/>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
       </property>
      </widget>
     </widget>

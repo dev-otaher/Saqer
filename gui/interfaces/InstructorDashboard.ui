@@ -771,7 +771,7 @@ QTableWidget::section{
        </rect>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="i_choose_course">
        <widget class="QPushButton" name="i_start">
@@ -980,6 +980,9 @@ foregroung: white;
         </property>
         <property name="text">
          <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
         </property>
        </widget>
       </widget>
