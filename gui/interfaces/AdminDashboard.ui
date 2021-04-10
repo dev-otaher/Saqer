@@ -609,9 +609,9 @@ QPushButton:pressed {
      <widget class="QLabel" name="i_cam_feed">
       <property name="geometry">
        <rect>
-        <x>450</x>
+        <x>380</x>
         <y>50</y>
-        <width>421</width>
+        <width>491</width>
         <height>631</height>
        </rect>
       </property>

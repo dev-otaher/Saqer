@@ -64,6 +64,7 @@ class RegisterStudent:
                     VALUES (?, ?)
                     '''
             self.db_conn.cursor().execute(sql, (int(uni_id), name))
+            self.db_conn.commit()
             Success("Data Saved!")
         except IntegrityError as e:
             Warning("Student already exists!")
