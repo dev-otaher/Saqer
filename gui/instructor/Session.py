@@ -65,13 +65,10 @@ class Session:
                     INNER JOIN class ON class.course_id == course.id
                     WHERE instructor_id=?;
                     '''
-            if self.connection_is_open() is False:
-                self.create_connection()
-            cur = self.db_conn.cursor()
-            cur.execute(sql, (self.parent.UUID,))
-            courses = cur.fetchall()
-            for course in courses:
-                self.add_course(course)
+            with self.db_conn as con:
+                courses = con.cursor().execute(sql, (self.parent.UUID,)).fetchall()
+                for course in courses:
+                    self.add_course(course)
         except Error as e:
             Warning(str(e))
             print(e)
@@ -86,14 +83,11 @@ class Session:
                     SELECT DISTINCT id, title FROM class
                     WHERE course_id=? AND instructor_id=?;
                     '''
-            if self.connection_is_open() is False:
-                self.create_connection()
-            cur = self.db_conn.cursor()
-            cur.execute(sql, (course_id, self.parent.UUID))
-            classes = cur.fetchall()
-            self.reset_combox(self.parent.i_classes_cb)
-            for c in classes:
-                self.add_class(c)
+            with self.db_conn as con:
+                classes = con.cursor().execute(sql, (course_id, self.parent.UUID)).fetchall()
+                self.reset_combox(self.parent.i_classes_cb)
+                for c in classes:
+                    self.add_class(c)
         except Error as e:
             Warning(str(e))
         except Exception as e:
@@ -110,11 +104,10 @@ class Session:
                 SELECT code FROM course
                 WHERE id=?;
                 '''
-        if self.connection_is_open() is False:
-            self.create_connection()
-        course_id = self.parent.i_courses_cb.currentData()
-        course_code = self.db_conn.cursor().execute(sql, (course_id,)).fetchall()[0][0]
-        return course_code
+        with self.db_conn as con:
+            course_id = self.parent.i_courses_cb.currentData()
+            course_code = con.cursor().execute(sql, (course_id,)).fetchall()[0][0]
+            return course_code
 
     def prepare_thread(self):
         class_title, course_code = self.parent.i_classes_cb.currentText(), self.get_course_code()
@@ -185,19 +178,18 @@ class Session:
                     INSERT INTO attendance(date_time, student_id, class_id, status)
                     VALUES (?, ?, ?, ?)
                     '''
-            if self.connection_is_open() is False:
-                self.create_connection()
-            cur = self.db_conn.cursor()
-            for r in range(self.parent.i_recheck_table.rowCount()):
-                student_id = self.parent.i_recheck_table.item(r, 0).text()
-                status = int(self.parent.i_recheck_table.cellWidget(r, 3).isChecked())
-                cur.execute(sql, (self.date_time, student_id, self.class_id, status))
-                self.db_conn.commit()
-            self.parent.enable_btn(self.parent.i_start_session)
-            self.parent.disable_btn(self.parent.i_end_session)
-            self.parent.goto(self.parent.i_choices, self.parent.i_view_report_sec)
-            self.parent.goto(self.parent.i_stacked_widget, self.parent.i_courses)
-            Success("Attendance Saved!")
+            with self.db_conn as con:
+                cur = con.cursor()
+                for r in range(self.parent.i_recheck_table.rowCount()):
+                    student_id = self.parent.i_recheck_table.item(r, 0).text()
+                    status = int(self.parent.i_recheck_table.cellWidget(r, 3).isChecked())
+                    cur.execute(sql, (self.date_time, student_id, self.class_id, status))
+                    con.commit()
+                self.parent.enable_btn(self.parent.i_start_session)
+                self.parent.disable_btn(self.parent.i_end_session)
+                self.parent.goto(self.parent.i_choices, self.parent.i_view_report_sec)
+                self.parent.goto(self.parent.i_stacked_widget, self.parent.i_courses)
+                Success("Attendance Saved!")
         except Exception as e:
             Warning(str(e))
             print(e)

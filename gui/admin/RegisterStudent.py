@@ -73,17 +73,15 @@ class RegisterStudent:
                     INSERT INTO student(uni_id, name)
                     VALUES (?, ?)
                     '''
-            if self.connection_is_open() is False:
-                self.create_connection()
-            self.db_conn.cursor().execute(sql, (int(uni_id), name))
-            self.db_conn.commit()
-            Success("Data Saved!")
+            with self.db_conn as con:
+                con.cursor().execute(sql, (int(uni_id), name))
+                con.commit()
+                Success("Data Saved!")
         except IntegrityError:
             Warning("Student already exists!")
         except Exception as e:
             Warning(str(e))
             print(e)
-
 
     def update_holder(self, frame):
         try:

@@ -55,17 +55,13 @@ class ViewReports:
                     INNER JOIN course ON class.course_id == course.id 
                     WHERE instructor_id=?;
                     '''
-            if self.connection_is_open() is False:
-                self.create_connection()
-            cur = self.db_conn.cursor()
-            cur.execute(sql, (self.parent.UUID,))
-            courses = cur.fetchall()
-            for course in courses:
-                self.add_course(course)
+            with self.db_conn as con:
+                courses = con.cursor().execute(sql, (self.parent.UUID,)).fetchall()
+                for course in courses:
+                    self.add_course(course)
         except Error as e:
             Warning(str(e))
             print(e)
-        self.db_conn.close()
 
     def add_course(self, c):
         self.parent.i_courses_table.insertRow(0)
@@ -81,19 +77,13 @@ class ViewReports:
                     INNER JOIN attendance a on class.id = a.class_id
                     WHERE course_id=? AND instructor_id=?;
                     '''
-            if self.connection_is_open() is False:
-                self.create_connection()
-
-            cur = self.db_conn.cursor()
-            cur.execute(sql, (course_id, self.parent.UUID))
-            classes = cur.fetchall()
-
-            reset_table(self.parent.i_classes_table)
-            for c in classes:
-                self.add_class(c)
-
-            self.parent.goto(self.parent.i_stacked_widget, self.parent.i_classes)
-            self.parent.i_title.setText("View Reports - Classes")
+            with self.db_conn as con:
+                classes = con.cursor().execute(sql, (course_id, self.parent.UUID)).fetchall()
+                reset_table(self.parent.i_classes_table)
+                for c in classes:
+                    self.add_class(c)
+                self.parent.goto(self.parent.i_stacked_widget, self.parent.i_classes)
+                self.parent.i_title.setText("View Reports - Classes")
         except Error as e:
             Warning(str(e))
             print(e)
@@ -133,32 +123,29 @@ class ViewReports:
                         '''
             else:
                 return
-            if self.connection_is_open() is False:
-                self.create_connection()
-            cur = self.db_conn.cursor()
-            cur.execute(sql, (class_id, date_time))
-            records = cur.fetchall()
-            if column == 1:
-                reset_table(self.parent.i_attendance_table)
-                for r in records:
-                    self.parent.i_attendance_table.insertRow(0)
-                    self.parent.i_attendance_table.setItem(0, 0, QtWidgets.QTableWidgetItem(str(r[0])))
-                    self.parent.i_attendance_table.setItem(0, 1, QtWidgets.QTableWidgetItem(str(r[1])))
-                    self.parent.i_attendance_table.setItem(0, 2, QtWidgets.QTableWidgetItem(str(r[2])))
-                    checkbox = QtWidgets.QCheckBox()
-                    checkbox.setChecked(r[3])
-                    self.parent.i_attendance_table.setCellWidget(0, 3, checkbox)
-                    self.parent.i_attendance_table.setItem(0, 4, QtWidgets.QTableWidgetItem(str(r[4])))
-                self.parent.goto(self.parent.i_stacked_widget, self.parent.i_attendance)
-                self.parent.i_title.setText("View Reports - Attendance")
-            elif column == 2:
-                reset_table(self.parent.i_behaviour_table)
-                for r in records:
-                    self.parent.i_behaviour_table.insertRow(0)
-                    for i in range(3):
-                        self.parent.i_behaviour_table.setItem(0, i, QtWidgets.QTableWidgetItem(str(r[i]) + "%"))
-                self.parent.goto(self.parent.i_stacked_widget, self.parent.i_behaviour)
-                self.parent.i_title.setText("View Reports - Behaviour")
+            with self.db_conn as con:
+                records = con.cursor().execute(sql, (class_id, date_time)).fetchall()
+                if column == 1:
+                    reset_table(self.parent.i_attendance_table)
+                    for r in records:
+                        self.parent.i_attendance_table.insertRow(0)
+                        self.parent.i_attendance_table.setItem(0, 0, QtWidgets.QTableWidgetItem(str(r[0])))
+                        self.parent.i_attendance_table.setItem(0, 1, QtWidgets.QTableWidgetItem(str(r[1])))
+                        self.parent.i_attendance_table.setItem(0, 2, QtWidgets.QTableWidgetItem(str(r[2])))
+                        checkbox = QtWidgets.QCheckBox()
+                        checkbox.setChecked(r[3])
+                        self.parent.i_attendance_table.setCellWidget(0, 3, checkbox)
+                        self.parent.i_attendance_table.setItem(0, 4, QtWidgets.QTableWidgetItem(str(r[4])))
+                    self.parent.goto(self.parent.i_stacked_widget, self.parent.i_attendance)
+                    self.parent.i_title.setText("View Reports - Attendance")
+                elif column == 2:
+                    reset_table(self.parent.i_behaviour_table)
+                    for r in records:
+                        self.parent.i_behaviour_table.insertRow(0)
+                        for i in range(3):
+                            self.parent.i_behaviour_table.setItem(0, i, QtWidgets.QTableWidgetItem(str(r[i]) + "%"))
+                    self.parent.goto(self.parent.i_stacked_widget, self.parent.i_behaviour)
+                    self.parent.i_title.setText("View Reports - Behaviour")
         except Exception as e:
             print(e)
 
@@ -169,18 +156,17 @@ class ViewReports:
                     SET status = ?
                     WHERE student_id = ? AND class_id = ? AND date_time=?
                     '''
-            if self.connection_is_open() is False:
-                self.create_connection()
-            cur = self.db_conn.cursor()
-            for r in range(self.parent.i_attendance_table.rowCount()):
-                class_id = self.parent.i_attendance_table.item(r, 0).text()
-                student_id = self.parent.i_attendance_table.item(r, 1).text()
-                status = int(self.parent.i_attendance_table.cellWidget(r, 3).isChecked())
-                date_time = self.parent.i_attendance_table.item(r, 4).text()
-                cur.execute(sql, (status, student_id, class_id, date_time))
-                self.db_conn.commit()
-            Success("Attendance Updated!")
-            self.parent.goto(self.parent.i_stacked_widget, self.parent.i_courses)
+            with self.db_conn as con:
+                cur = con.cursor()
+                for r in range(self.parent.i_attendance_table.rowCount()):
+                    class_id = self.parent.i_attendance_table.item(r, 0).text()
+                    student_id = self.parent.i_attendance_table.item(r, 1).text()
+                    status = int(self.parent.i_attendance_table.cellWidget(r, 3).isChecked())
+                    date_time = self.parent.i_attendance_table.item(r, 4).text()
+                    cur.execute(sql, (status, student_id, class_id, date_time))
+                    con.commit()
+                Success("Attendance Updated!")
+                self.parent.goto(self.parent.i_stacked_widget, self.parent.i_courses)
         except Exception as e:
             Warning(str(e))
             print(e)
