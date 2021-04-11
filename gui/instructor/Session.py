@@ -47,6 +47,17 @@ class Session:
         table.setColumnHidden(0, True)
         table.setColumnHidden(0, True)
 
+    def connection_is_open(self):
+        try:
+            self.db_conn.execute("SELECT 1 FROM student LIMIT 1;")
+            return True
+        except Error:
+            return False
+
+    def create_connection(self):
+        self.db_conn = self.parent.db.create_db_connection("db/saqer.db")
+
+
     def fill_courses(self):
         try:
             sql = '''
@@ -54,6 +65,8 @@ class Session:
                     INNER JOIN class ON class.course_id == course.id
                     WHERE instructor_id=?;
                     '''
+            if self.connection_is_open() is False:
+                self.create_connection()
             cur = self.db_conn.cursor()
             cur.execute(sql, (self.parent.UUID,))
             courses = cur.fetchall()
@@ -73,6 +86,8 @@ class Session:
                     SELECT DISTINCT id, title FROM class
                     WHERE course_id=? AND instructor_id=?;
                     '''
+            if self.connection_is_open() is False:
+                self.create_connection()
             cur = self.db_conn.cursor()
             cur.execute(sql, (course_id, self.parent.UUID))
             classes = cur.fetchall()
@@ -95,8 +110,11 @@ class Session:
                 SELECT code FROM course
                 WHERE id=?;
                 '''
+        if self.connection_is_open() is False:
+            self.create_connection()
         course_id = self.parent.i_courses_cb.currentData()
-        return self.db_conn.cursor().execute(sql, (course_id,)).fetchall()[0][0]
+        course_code = self.db_conn.cursor().execute(sql, (course_id,)).fetchall()[0][0]
+        return course_code
 
     def prepare_thread(self):
         class_title, course_code = self.parent.i_classes_cb.currentText(), self.get_course_code()
@@ -167,6 +185,8 @@ class Session:
                     INSERT INTO attendance(date_time, student_id, class_id, status)
                     VALUES (?, ?, ?, ?)
                     '''
+            if self.connection_is_open() is False:
+                self.create_connection()
             cur = self.db_conn.cursor()
             for r in range(self.parent.i_recheck_table.rowCount()):
                 student_id = self.parent.i_recheck_table.item(r, 0).text()

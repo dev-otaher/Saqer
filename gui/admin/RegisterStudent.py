@@ -1,6 +1,6 @@
 import os
 from os.path import exists
-from sqlite3 import Connection, IntegrityError
+from sqlite3 import Connection, IntegrityError, Error
 
 from gui.Success import Success
 from gui.Warning import Warning
@@ -55,6 +55,16 @@ class RegisterStudent:
             os.mkdir(path)
         self.thread.save = True
 
+    def connection_is_open(self):
+        try:
+            self.db_conn.execute("SELECT 1 FROM student LIMIT 1;")
+            return True
+        except Error:
+            return False
+
+    def create_connection(self):
+        self.db_conn = self.parent.db.create_db_connection("db/saqer.db")
+
     def register(self):
         try:
             uni_id = self.get_uni_id()
@@ -63,15 +73,17 @@ class RegisterStudent:
                     INSERT INTO student(uni_id, name)
                     VALUES (?, ?)
                     '''
+            if self.connection_is_open() is False:
+                self.create_connection()
             self.db_conn.cursor().execute(sql, (int(uni_id), name))
             self.db_conn.commit()
             Success("Data Saved!")
-        except IntegrityError as e:
+        except IntegrityError:
             Warning("Student already exists!")
-            print(e)
         except Exception as e:
             Warning(str(e))
             print(e)
+
 
     def update_holder(self, frame):
         try:

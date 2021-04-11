@@ -46,10 +46,22 @@ class OfflineAttendance:
         self.parent.i_recheck_table.setHidden(True)
         self.parent.i_save_recheck.setHidden(True)
 
+    def connection_is_open(self):
+        try:
+            self.db_conn.execute("SELECT 1 FROM student LIMIT 1;")
+            return True
+        except Error:
+            return False
+
+    def create_connection(self):
+        self.db_conn = self.parent.db.create_db_connection("db/saqer.db")
+
     def fill_instructor_cb(self):
         sql = '''
                 SELECT DISTINCT instructor_id FROM class;
                 '''
+        if self.connection_is_open() is False:
+            self.create_connection()
         instructors = self.db_conn.cursor().execute(sql).fetchall()
         for inst in instructors:
             self.parent.i_instructor_cb.addItem(inst[0])
@@ -62,6 +74,8 @@ class OfflineAttendance:
                     INNER JOIN class ON course.id = class.course_id
                     WHERE class.instructor_id=?;
                     '''
+            if self.connection_is_open() is False:
+                self.create_connection()
             courses = self.db_conn.cursor().execute(sql, (instructor_id,)).fetchall()
             self.parent.i_course_cb.clear()
             for c in courses:
@@ -77,6 +91,8 @@ class OfflineAttendance:
                     SELECT DISTINCT id, title FROM class
                     WHERE course_id=? AND instructor_id=?;
                     '''
+            if self.connection_is_open() is False:
+                self.create_connection()
             classes = self.db_conn.cursor().execute(sql, (course_id, instructor_id)).fetchall()
             self.parent.i_class_cb.clear()
             for c in classes:
@@ -85,12 +101,13 @@ class OfflineAttendance:
             print(e)
 
     def fill_dates_cb(self, index):
-        print()
         class_id = self.parent.i_class_cb.itemData(index)
         sql = '''
                 SELECT DISTINCT date_time FROM attendance
                 WHERE class_id=?  
                 '''
+        if self.connection_is_open() is False:
+            self.create_connection()
         dates_times = self.db_conn.cursor().execute(sql, (class_id,)).fetchall()
         self.parent.i_date_cb.clear()
         for dt in dates_times:
@@ -104,7 +121,10 @@ class OfflineAttendance:
                 SELECT code FROM course
                 WHERE id=?; 
                 '''
-        return self.db_conn.cursor().execute(sql, (id,)).fetchall()[0][0]
+        if self.connection_is_open() is False:
+            self.create_connection()
+        course_code = self.db_conn.cursor().execute(sql, (id,)).fetchall()[0][0]
+        return course_code
 
     def reset_progress_bar(self):
         self.parent.i_progress_label.setHidden(False)
@@ -181,6 +201,8 @@ class OfflineAttendance:
                     SET status = ?
                     WHERE student_id = ? AND class_id = ? AND date_time=?
                     '''
+            if self.connection_is_open() is False:
+                self.create_connection()
             cur = self.db_conn.cursor()
             for i in range(self.parent.i_recheck_table.rowCount()):
                 id = self.parent.i_recheck_table.item(i, 0).text()
@@ -196,3 +218,4 @@ class OfflineAttendance:
             print(e)
         except Exception as e:
             print(e)
+

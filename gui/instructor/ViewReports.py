@@ -1,4 +1,4 @@
-from sqlite3 import Error
+from sqlite3 import Error, Connection
 
 from PyQt5.QtCore import QModelIndex
 from PyQt5.QtGui import QColor
@@ -23,7 +23,7 @@ class ViewReports:
         self.parent = parent_gui
         self.connect_widgets()
         self.hide_widgets()
-        self.db_conn = self.parent.db.create_db_connection("db/saqer.db")
+        self.db_conn: Connection = self.parent.db.create_db_connection("db/saqer.db")
         self.fill_courses()
 
     def connect_widgets(self):
@@ -38,6 +38,16 @@ class ViewReports:
         hide_column(self.parent.i_attendance_table, 0)
         hide_column(self.parent.i_attendance_table, 4)
 
+    def connection_is_open(self):
+        try:
+            self.db_conn.execute("SELECT 1 FROM student LIMIT 1;")
+            return True
+        except Error:
+            return False
+
+    def create_connection(self):
+        self.db_conn = self.parent.db.create_db_connection("db/saqer.db")
+
     def fill_courses(self):
         try:
             sql = '''
@@ -45,6 +55,8 @@ class ViewReports:
                     INNER JOIN course ON class.course_id == course.id 
                     WHERE instructor_id=?;
                     '''
+            if self.connection_is_open() is False:
+                self.create_connection()
             cur = self.db_conn.cursor()
             cur.execute(sql, (self.parent.UUID,))
             courses = cur.fetchall()
@@ -53,6 +65,7 @@ class ViewReports:
         except Error as e:
             Warning(str(e))
             print(e)
+        self.db_conn.close()
 
     def add_course(self, c):
         self.parent.i_courses_table.insertRow(0)
@@ -63,12 +76,14 @@ class ViewReports:
         try:
             row = location.row()
             course_id = self.parent.i_courses_table.item(row, 0).text()
-
             sql = '''
                     SELECT DISTINCT class.id, title, date_time FROM class
                     INNER JOIN attendance a on class.id = a.class_id
                     WHERE course_id=? AND instructor_id=?;
                     '''
+            if self.connection_is_open() is False:
+                self.create_connection()
+
             cur = self.db_conn.cursor()
             cur.execute(sql, (course_id, self.parent.UUID))
             classes = cur.fetchall()
@@ -81,6 +96,7 @@ class ViewReports:
             self.parent.i_title.setText("View Reports - Classes")
         except Error as e:
             Warning(str(e))
+            print(e)
         except Exception as e:
             print(e)
 
@@ -117,6 +133,8 @@ class ViewReports:
                         '''
             else:
                 return
+            if self.connection_is_open() is False:
+                self.create_connection()
             cur = self.db_conn.cursor()
             cur.execute(sql, (class_id, date_time))
             records = cur.fetchall()
@@ -144,8 +162,6 @@ class ViewReports:
         except Exception as e:
             print(e)
 
-
-
     def save_attendance(self):
         try:
             sql = '''
@@ -153,6 +169,8 @@ class ViewReports:
                     SET status = ?
                     WHERE student_id = ? AND class_id = ? AND date_time=?
                     '''
+            if self.connection_is_open() is False:
+                self.create_connection()
             cur = self.db_conn.cursor()
             for r in range(self.parent.i_attendance_table.rowCount()):
                 class_id = self.parent.i_attendance_table.item(r, 0).text()

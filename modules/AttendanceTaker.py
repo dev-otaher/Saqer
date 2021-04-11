@@ -1,3 +1,4 @@
+from sqlite3.dbapi2 import Error
 from typing import List
 
 from modules.DBHelper import DBHelper
@@ -11,6 +12,16 @@ class AttendanceTaker:
         self.students = Students()
         self.checkpoints = 0
         self.db = DBHelper()
+        self.db_conn = DBHelper().create_db_connection("db/saqer.db")
+
+    def connection_is_open(self):
+        try:
+            self.db_conn.execute("SELECT 1 FROM student LIMIT 1;")
+            return True
+        except Error:
+            return False
+
+    def create_connection(self):
         self.db_conn = self.db.create_db_connection("db/saqer.db")
 
     def populate_std_list(self):
@@ -20,6 +31,8 @@ class AttendanceTaker:
                 ON e.student_id = s.uni_id
                 WHERE e.class_id = ?
                 '''
+        if self.connection_is_open() is False:
+            self.create_connection()
         cur = self.db_conn.cursor()
         cur.execute(sql, (self.class_id,))
         records = cur.fetchall()
