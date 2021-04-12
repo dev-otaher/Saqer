@@ -60,17 +60,17 @@ class Login(QDialog):
                 UUID = str(user["localId"])
                 isAdmin = db.child("users").child(UUID).child("isAdmin").get()
                 if isAdmin.val() == "True":
+                    self.destroy()
                     from gui.admin.AdminDashboard import AdminDashboard
                     AdminDashboard()
-                    self.destroy()
                 elif isAdmin.val() == "False":
+                    self.destroy()
                     from gui.instructor.InstructorDashboard import InstructorDashboard
                     InstructorDashboard(UUID)
-                    self.destroy()
                 else:
-                    print(isAdmin.val())
                     self.i_password_note.setHidden(False)
-            except requests.exceptions.HTTPError:
+            except requests.exceptions.HTTPError as e:
                 self.i_password_note.setHidden(False)
-            except Exception as e:
+                Warning(str(e))
+            except Exception:
                 Warning("Something went wrong! Could not login.")
