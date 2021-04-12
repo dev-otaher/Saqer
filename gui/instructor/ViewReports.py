@@ -2,6 +2,7 @@ from sqlite3 import Error, Connection
 
 from PyQt5.QtCore import QModelIndex
 from PyQt5.QtGui import QColor
+from PyQt5.QtWidgets import QHeaderView
 from qtpy import QtWidgets
 
 from gui.Success import Success
@@ -22,6 +23,7 @@ class ViewReports:
         self.parent = parent_gui
         self.connect_widgets()
         self.hide_widgets()
+        self.format_tables()
         self.db_conn: Connection = self.parent.db.create_db_connection("db/saqer.db")
         self.fill_courses()
 
@@ -36,6 +38,14 @@ class ViewReports:
         hide_column(self.parent.i_courses_table, 0)
         hide_column(self.parent.i_attendance_table, 0)
         hide_column(self.parent.i_attendance_table, 4)
+
+    def format_tables(self):
+        self.parent.i_classes_table.setColumnWidth(3, 39)
+        self.parent.i_courses_table.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
+        self.parent.i_classes_table.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
+        self.parent.i_attendance_table.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
+        self.parent.i_behaviour_table.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
+        self.parent.i_recheck_table.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
 
     def fill_courses(self):
         try:
@@ -87,12 +97,18 @@ class ViewReports:
         b = QtWidgets.QTableWidgetItem("Behaviour")
         b.setForeground(QColor(56, 219, 208))
         self.parent.i_classes_table.setItem(0, 2, b)
+
         # fill "Id" column
         self.parent.i_classes_table.setItem(0, 0, QtWidgets.QTableWidgetItem(str(c[0])))
+
         # fill "Title" column
-        self.parent.i_classes_table.setItem(0, 3, QtWidgets.QTableWidgetItem(str(c[1])))
+        title = QtWidgets.QTableWidgetItem(str(c[1]))
+        title.setForeground(QColor(255, 255, 255))
+        self.parent.i_classes_table.setItem(0, 3, title)
         # fill "Date & Time" column
-        self.parent.i_classes_table.setItem(0, 4, QtWidgets.QTableWidgetItem(str(c[2])))
+        dt = QtWidgets.QTableWidgetItem(str(c[2]))
+        dt.setForeground(QColor(255, 255, 255))
+        self.parent.i_classes_table.setItem(0, 4, dt)
 
     def fill_report(self, location):
         try:
