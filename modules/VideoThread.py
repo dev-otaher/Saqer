@@ -100,7 +100,7 @@ class VideoThread(QThread):
         try:
             self.detector = cv2.dnn.readNetFromCaffe(self.proto_path, self.model_path)
             self.embedder = cv2.dnn.readNetFromTorch(self.embedder_path)
-            # self.emotioner = load_model(self.emotioner_path)
+            self.emotioner = load_model(self.emotioner_path)
             taker = AttendanceTaker(self.class_id).populate_std_list()
             if self.stream_path is int:
                 cap = cv2.VideoCapture(self.stream_path, cv2.CAP_DSHOW)
@@ -127,7 +127,7 @@ class VideoThread(QThread):
                     for loc in locations:
                         face = self.get_face(frame, loc)
                         if face is not None:
-                            # self.process_emotion(face)
+                            self.process_emotion(face)
                             encoding = self.encode(face)
                             id, p = self.recognize(encoding)
                             if id is not None and id != "Unknown":
