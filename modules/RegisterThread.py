@@ -27,24 +27,28 @@ class RegisterThread(VideoThread):
                 cap = cv2.VideoCapture(self.stream_path, cv2.CAP_DSHOW)
             else:
                 cap = cv2.VideoCapture(self.stream_path)
-            self.threadActive = True
-            first_frame = cap.read()[1]
-            while self.threadActive:
-                ret, frame = cap.read()
-                frame = imutils.resize(frame, width=1080)
-                if ret:
-                    if self.save:
-                        filename = str(datetime.datetime.now().time()).replace(":", ".")
-                        cv2.imwrite(f"db/dataset/{self.uni_id}/{filename}.jpg", frame)
-                        self.save = False
-                    # convert the frame into RGB format
-                    image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-                    # convert the frame into a Qt format and keep the aspect ratio
-                    convertToQtFormat = QImage(image.data, image.shape[1], image.shape[0], QImage.Format_RGB888)
-                    pic = convertToQtFormat.scaled(864, 486, Qt.KeepAspectRatio)
-                    self.image_update.emit(pic)
-            self.image_update.emit(QImage(first_frame, first_frame.shape[1], first_frame.shape[0], QImage.Format_RGB888))
-            cap.release()
+
+            if cap is not None:
+                self.threadActive = True
+                first_frame = cap.read()[1]
+                while self.threadActive:
+                    ret, frame = cap.read()
+                    frame = imutils.resize(frame, width=1080)
+                    if ret:
+                        if self.save:
+                            filename = str(datetime.datetime.now().time()).replace(":", ".")
+                            cv2.imwrite(f"db/dataset/{self.uni_id}/{filename}.jpg", frame)
+                            self.save = False
+                        # convert the frame into RGB format
+                        image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                        # convert the frame into a Qt format and keep the aspect ratio
+                        convertToQtFormat = QImage(image.data, image.shape[1], image.shape[0], QImage.Format_RGB888)
+                        pic = convertToQtFormat.scaled(864, 486, Qt.KeepAspectRatio)
+                        self.image_update.emit(pic)
+                self.image_update.emit(QImage(first_frame, first_frame.shape[1], first_frame.shape[0], QImage.Format_RGB888))
+                cap.release()
+            else:
+                Warning("Failed to open camera or no camera found!")
         except Error as e:
             print("sqlite", e)
         except Exception as e:
