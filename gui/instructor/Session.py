@@ -29,8 +29,14 @@ class Session:
         self.vt.image_update.connect(self.update_holder)
         self.vt.std_list.connect(self.fill_recheck_table)
         self.vt.no_cam.connect(show_alert)
+        self.vt.no_cam.connect(self.default_layout)
         self.class_id = None
         self.date_time = str()
+
+    def default_layout(self):
+        self.parent.enable_btn(self.parent.i_start_session)
+        self.parent.disable_btn(self.parent.i_end_session)
+        self.parent.goto(self.parent.i_choices, self.parent.i_end_session_sec)
 
     def connect_widgets(self):
         self.parent.i_courses_cb.currentIndexChanged.connect(self.fill_classes)

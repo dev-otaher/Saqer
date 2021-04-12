@@ -108,11 +108,12 @@ class VideoThread(QThread):
                 cap = cv2.VideoCapture(self.stream_path)
             time.sleep(1.0)
             text = ""
-            first_loop = self.threadActive = True
+            first_loop = self.threadActive = found_cam = True
             while self.threadActive:
                 ret, frame = cap.read()
                 if ret is False and first_loop:
                     self.no_cam.emit("Failed to open camera or no camera found!")
+                    found_cam = False
                     break
                 frame = imutils.resize(frame, width=1080)
                 if ret:
@@ -154,8 +155,9 @@ class VideoThread(QThread):
                 self.image_update.emit(pic)
                 taker.increment_checkpoint()
             cap.release()
-            self.std_list.emit(taker)
-            self.convert_to_percetage(taker.faces)
+            if found_cam:
+                self.std_list.emit(taker)
+                taker.convert_to_percetage(taker.faces)
         except Error as e:
             print("sqlite", e)
         except Exception as e:
