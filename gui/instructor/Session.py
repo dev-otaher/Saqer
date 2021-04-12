@@ -11,6 +11,7 @@ from gui.Success import Success
 from gui.Warning import Warning
 from modules.VideoThread import VideoThread
 
+
 def show_alert(msg):
     Warning(msg)
 

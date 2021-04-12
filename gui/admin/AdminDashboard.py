@@ -38,7 +38,6 @@ class AdminDashboard(QDialog):
         self.i_register_student.clicked.connect(partial(self.goto, self.i_register_sec))
         self.i_train_model.clicked.connect(partial(self.goto, self.i_train_sec))
         self.i_offline_atten.clicked.connect(partial(self.goto, self.i_offline_sec))
-        self.i_settings.clicked.connect(partial(self.goto, self.i_settings_sec))
 
     def connect_browser_btns(self):
         self.i_choose_folder.clicked.connect(self.browse_folder)
