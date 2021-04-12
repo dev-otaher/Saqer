@@ -118,7 +118,7 @@ class ViewReports:
                         '''
             elif column == 2:
                 sql = '''
-                        SELECT happy, sad, neutral FROM behavior 
+                        SELECT angry, scared, happy, sad, suprised, neutral FROM behavior 
                         WHERE class_id=? AND date_time=?;
                         '''
             else:
@@ -129,9 +129,8 @@ class ViewReports:
                     reset_table(self.parent.i_attendance_table)
                     for r in records:
                         self.parent.i_attendance_table.insertRow(0)
-                        self.parent.i_attendance_table.setItem(0, 0, QtWidgets.QTableWidgetItem(str(r[0])))
-                        self.parent.i_attendance_table.setItem(0, 1, QtWidgets.QTableWidgetItem(str(r[1])))
-                        self.parent.i_attendance_table.setItem(0, 2, QtWidgets.QTableWidgetItem(str(r[2])))
+                        for i in range(3):
+                            self.parent.i_attendance_table.setItem(0, i, QtWidgets.QTableWidgetItem(str(r[i])))
                         checkbox = QtWidgets.QCheckBox()
                         checkbox.setChecked(r[3])
                         self.parent.i_attendance_table.setCellWidget(0, 3, checkbox)
@@ -142,7 +141,7 @@ class ViewReports:
                     reset_table(self.parent.i_behaviour_table)
                     for r in records:
                         self.parent.i_behaviour_table.insertRow(0)
-                        for i in range(3):
+                        for i in range(6):
                             self.parent.i_behaviour_table.setItem(0, i, QtWidgets.QTableWidgetItem(str(r[i]) + "%"))
                     self.parent.goto(self.parent.i_stacked_widget, self.parent.i_behaviour)
                     self.parent.i_title.setText("View Reports - Behaviour")
