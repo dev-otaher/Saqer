@@ -36,6 +36,7 @@ class Session:
     def default_layout(self):
         self.parent.enable_btn(self.parent.i_start_session)
         self.parent.disable_btn(self.parent.i_end_session)
+        self.parent.goto(self.parent.i_choices, self.parent.i_view_report_sec)
         self.parent.goto(self.parent.i_stacked_widget, self.parent.i_courses)
 
     def connect_widgets(self):
