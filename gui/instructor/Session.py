@@ -11,6 +11,8 @@ from gui.Success import Success
 from gui.Warning import Warning
 from modules.VideoThread import VideoThread
 
+def show_alert(msg):
+    Warning(msg)
 
 class Session:
     def __init__(self, parent_gui):
@@ -26,6 +28,7 @@ class Session:
                               "db/model/epoch_75.hdf5")
         self.vt.image_update.connect(self.update_holder)
         self.vt.std_list.connect(self.fill_recheck_table)
+        self.vt.no_cam.connect(show_alert)
         self.class_id = None
         self.date_time = str()
 
@@ -39,7 +42,6 @@ class Session:
         self.parent.i_save_recheck.setHidden(True)
         self.hide_first_column(self.parent.i_classes_table)
         self.hide_first_column(self.parent.i_courses_table)
-        # self.hide_first_column(self.parent.i_recheck_table)
 
     def hide_first_column(self, table):
         table.setColumnHidden(0, True)
@@ -127,7 +129,6 @@ class Session:
             print(e)
 
     def stop_session(self):
-        # self.parent.i_cam_feed.setPixmap(QPixmap(1,0))
         self.vt.threadActive = False
         self.vt.quit()
 
@@ -157,9 +158,7 @@ class Session:
         self.parent.i_recheck_table.insertRow(0)
         self.parent.i_recheck_table.setItem(0, 0, QtWidgets.QTableWidgetItem(uni_id))
         self.parent.i_recheck_table.setItem(0, 1, QtWidgets.QTableWidgetItem(name))
-        self.parent.i_recheck_table.setItem(0, 2,QtWidgets.QTableWidgetItem(str(appear_counter) + f"/{checkpoints}"))
-
-
+        self.parent.i_recheck_table.setItem(0, 2, QtWidgets.QTableWidgetItem(str(appear_counter) + f"/{checkpoints}"))
 
     def save_attendance(self):
         try:
@@ -182,8 +181,6 @@ class Session:
                 self.parent.disable_btn(self.parent.i_end_session)
                 self.parent.goto(self.parent.i_choices, self.parent.i_view_report_sec)
                 self.parent.goto(self.parent.i_stacked_widget, self.parent.i_courses)
-
-                checkpoints = int(self.parent.i_recheck_table.item(0, 2).text().split('/')[1])
                 parms = (
                             self.class_id,
                             self.vt.emotions[0][1],

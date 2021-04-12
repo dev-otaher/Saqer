@@ -8,7 +8,8 @@ import imutils
 import numpy as np
 from PyQt5.QtCore import pyqtSignal, QThread, Qt
 from PyQt5.QtGui import QImage
-
+# from keras.preprocessing.image import img_to_array
+# from keras.models import load_model
 from modules.AttendanceTaker import AttendanceTaker
 
 
@@ -97,11 +98,9 @@ class VideoThread(QThread):
 
     def run(self):
         try:
-            from keras.models import load_model
-            from keras.preprocessing.image import img_to_array
             self.detector = cv2.dnn.readNetFromCaffe(self.proto_path, self.model_path)
             self.embedder = cv2.dnn.readNetFromTorch(self.embedder_path)
-            self.emotioner = load_model(self.emotioner_path)
+            # self.emotioner = load_model(self.emotioner_path)
             taker = AttendanceTaker(self.class_id).populate_std_list()
             if self.stream_path is int:
                 cap = cv2.VideoCapture(self.stream_path, cv2.CAP_DSHOW)
@@ -112,6 +111,9 @@ class VideoThread(QThread):
             first_loop = self.threadActive = True
             while self.threadActive:
                 ret, frame = cap.read()
+                if ret is False and first_loop:
+                    self.no_cam.emit("Failed to open camera or no camera found!")
+                    break
                 frame = imutils.resize(frame, width=1080)
                 if ret:
                     if self.isRecord and first_loop:
@@ -124,7 +126,7 @@ class VideoThread(QThread):
                     for loc in locations:
                         face = self.get_face(frame, loc)
                         if face is not None:
-                            self.process_emotion(face)
+                            # self.process_emotion(face)
                             encoding = self.encode(face)
                             id, p = self.recognize(encoding)
                             if id is not None and id != "Unknown":
