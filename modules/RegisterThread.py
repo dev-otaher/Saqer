@@ -13,8 +13,9 @@ class RegisterThread(VideoThread):
         super().__init__(stream_path,
                          "db/model/deploy.prototxt",
                          "db/model/res10_300x300_ssd_iter_140000.caffemodel",
-                         "db/model/openface_nn4.small2.v1.t7")
-        self.detector = self.embedder = None
+                         "db/model/openface_nn4.small2.v1.t7",
+                         "db/model/epoch_75.hdf5")
+        self.detector = self.embedder = self.emotioner = None
         self.save = False
         self.uni_id = None
 

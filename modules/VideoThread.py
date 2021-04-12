@@ -1,31 +1,23 @@
-import datetime
-import multiprocessing
 import os
-import pickle
 import time
-from os import cpu_count
+from collections import OrderedDict
+from math import floor
 from sqlite3 import Error
-from threading import Thread
-
 import cv2
 import imutils
 import numpy as np
 from PyQt5.QtCore import pyqtSignal, QThread, Qt
 from PyQt5.QtGui import QImage
-from imutils.video import FPS
-
 from modules.AttendanceTaker import AttendanceTaker
-from modules.AttendanceThread import AttendanceThread
-from modules.FileVideoStreamInfo import FileVideoStreamInfo
-from modules.Recognizer import Recognizer
+from keras.models import load_model
+from keras.preprocessing.image import img_to_array
 
 
 class VideoThread(QThread):
     # this class will handle the detection and recognition part using worker thread
     image_update = pyqtSignal(QImage)
     std_list = pyqtSignal(object)
-    # determine the state of the save record checkbox
-    def __init__(self, stream_path, proto_path, model_path, embedder_path, confidence=0.7):
+    def __init__(self, stream_path, proto_path, model_path, embedder_path, emotioner_path, confidence=0.7):
         super(VideoThread, self).__init__()
         self.threadActive = True
         self.isRecord = None
@@ -34,8 +26,11 @@ class VideoThread(QThread):
         self.class_id = None
         self.stream_path = stream_path
         self.proto_path, self.model_path, self.embedder_path = proto_path, model_path, embedder_path
-        self.detector = cv2.dnn.readNetFromCaffe(self.proto_path, self.model_path)
-        self.embedder = cv2.dnn.readNetFromTorch(self.embedder_path)
+        self.detector = None
+        self.embedder = None
+        self.emotioner_path = emotioner_path
+        self.emotioner = None
+        self.emotions = [['Angry', 0], ['Scared',0], ['Happy', 0], ['Sad', 0], ['Surprised', 0], ['Neutral', 0]]
         self.recognizer = None
         self.label_encoder = None
         self.confidence = confidence
@@ -84,9 +79,27 @@ class VideoThread(QThread):
             id = "Unknown"
         return id, p
 
-    def run(self):
+    def process_emotion(self, face):
+        roi = cv2.cvtColor(face, cv2.COLOR_BGR2GRAY)
+        if roi is None:
+            print('roi is None')
+            return
+        roi = cv2.resize(roi, (48, 48))
+        roi = roi.astype('float') / 255.0
+        roi = img_to_array(roi)  # convert to keras-compatible array
+        roi = np.expand_dims(roi, axis=0)
+        preds = self.emotioner.predict(roi)[0]
+        self.emotions[preds.argmax()][1] += 1
 
+    def convert_to_percetage(self, faces):
+        for e in self.emotions:
+            e[1] = floor(e[1]/faces*100)
+
+    def run(self):
         try:
+            self.detector = cv2.dnn.readNetFromCaffe(self.proto_path, self.model_path)
+            self.embedder = cv2.dnn.readNetFromTorch(self.embedder_path)
+            self.emotioner = load_model(self.emotioner_path)
             taker = AttendanceTaker(self.class_id).populate_std_list()
             if self.stream_path is int:
                 cap = cv2.VideoCapture(self.stream_path, cv2.CAP_DSHOW)
@@ -109,17 +122,19 @@ class VideoThread(QThread):
                     for loc in locations:
                         face = self.get_face(frame, loc)
                         if face is not None:
+                            self.process_emotion(face)
                             encoding = self.encode(face)
                             id, p = self.recognize(encoding)
                             if id is not None and id != "Unknown":
                                 std = taker.get_std_by_id(str(id))
                                 if std is not None:
                                     taker.increment(std)
-                                    text = '{}: {:.2f}%'.format(std.name, p * 100)
+                                    text = '{} | {:.2f}%'.format(std.name, p * 100)
                                 else:
-                                    text = '{}: {:.2f}%'.format("NIL", p * 100)
+                                    text = '{} | {:.2f}%'.format("NIL", p * 100)
                             else:
-                                text = '{}: {:.2f}%'.format(id, p * 100)
+                                text = '{} | {:.2f}%'.format(id, p * 100)
+                            taker.increment_faces()
                         (startX, startY, endX, endY) = loc
                         # draw the bounding box of the face along with the
                         # associated probability
@@ -127,19 +142,16 @@ class VideoThread(QThread):
                         y = startY - 10 if startY - 10 > 10 else startY + 10
                         cv2.rectangle(frame, (startX, startY), (endX, endY), (0, 255, 0), 2)
                         cv2.putText(frame, text, (startX, y - 50), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 0, 0), 2)
-                # Convert cv to qt
-                frame = cv2.flip(frame, 1)
                 # convert the frame into RGB format
-                Image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-                # flip the image
-                flippedImage = cv2.flip(Image, 1)
+                frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                 # convert the frame into a Qt format and keep the aspect ratio
-                convertToQtFormat = QImage(flippedImage.data, flippedImage.shape[1], flippedImage.shape[0], QImage.Format_RGB888)
+                convertToQtFormat = QImage(frame, frame.shape[1], frame.shape[0], QImage.Format_RGB888)
                 pic = convertToQtFormat.scaled(864, 486, Qt.KeepAspectRatio)
                 self.image_update.emit(pic)
                 taker.increment_checkpoint()
             cap.release()
             self.std_list.emit(taker)
+            self.convert_to_percetage(taker.faces)
         except Error as e:
             print("sqlite", e)
         except Exception as e:

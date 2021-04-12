@@ -25,7 +25,8 @@ class Session:
         self.vt = VideoThread("D:/Playground/Python/FaceAttendance - Parallelism/class_videos/1k.mp4",
                               "db/model/deploy.prototxt",
                               "db/model/res10_300x300_ssd_iter_140000.caffemodel",
-                              "db/model/openface_nn4.small2.v1.t7")
+                              "db/model/openface_nn4.small2.v1.t7",
+                              "db/model/epoch_75.hdf5")
         self.vt.image_update.connect(self.update_holder)
         self.vt.std_list.connect(self.fill_recheck_table)
         self.class_id = None
@@ -56,7 +57,6 @@ class Session:
 
     def create_connection(self):
         self.db_conn = self.parent.db.create_db_connection("db/saqer.db")
-
 
     def fill_courses(self):
         try:
@@ -172,12 +172,18 @@ class Session:
         self.parent.i_recheck_table.setItem(0, 1, QtWidgets.QTableWidgetItem(name))
         self.parent.i_recheck_table.setItem(0, 2,QtWidgets.QTableWidgetItem(str(appear_counter) + f"/{checkpoints}"))
 
+
+
     def save_attendance(self):
         try:
             sql = '''
                     INSERT INTO attendance(date_time, student_id, class_id, status)
                     VALUES (?, ?, ?, ?)
                     '''
+            b_sql = '''
+                        INSERT INTO behavior(class_id, angry, scared, happy, sad, suprised, neutral, date_time) 
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                        '''
             with self.db_conn as con:
                 cur = con.cursor()
                 for r in range(self.parent.i_recheck_table.rowCount()):
@@ -189,7 +195,21 @@ class Session:
                 self.parent.disable_btn(self.parent.i_end_session)
                 self.parent.goto(self.parent.i_choices, self.parent.i_view_report_sec)
                 self.parent.goto(self.parent.i_stacked_widget, self.parent.i_courses)
-                Success("Attendance Saved!")
+
+                checkpoints = int(self.parent.i_recheck_table.item(0, 2).text().split('/')[1])
+                parms = (
+                            self.class_id,
+                            self.vt.emotions[0][1],
+                            self.vt.emotions[1][1],
+                            self.vt.emotions[2][1],
+                            self.vt.emotions[3][1],
+                            self.vt.emotions[4][1],
+                            self.vt.emotions[5][1],
+                            self.date_time
+                        )
+                cur.execute(b_sql, parms)
+                con.commit()
+                Success("Attendance & Behaviour Saved!")
         except Exception as e:
             Warning(str(e))
             print(e)

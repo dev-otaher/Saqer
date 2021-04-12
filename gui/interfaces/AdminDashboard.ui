@@ -197,7 +197,7 @@ QPushButton:pressed {
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="i_register_sec">
      <widget class="QLabel" name="i_register_label">
