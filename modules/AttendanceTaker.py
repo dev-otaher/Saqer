@@ -11,6 +11,7 @@ class AttendanceTaker:
         self.class_id = class_id
         self.students = Students()
         self.checkpoints = 0
+        self.faces = 0
         self.db = DBHelper()
         self.db_conn = DBHelper().create_db_connection("db/saqer.db")
 
@@ -42,3 +43,6 @@ class AttendanceTaker:
 
     def increment_checkpoint(self):
         self.checkpoints += 1
+
+    def increment_faces(self):
+        self.faces += 1

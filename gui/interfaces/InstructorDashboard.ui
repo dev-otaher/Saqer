@@ -271,11 +271,17 @@ QTableWidget::section{
         <property name="sortingEnabled">
          <bool>true</bool>
         </property>
+        <attribute name="horizontalHeaderVisible">
+         <bool>true</bool>
+        </attribute>
         <attribute name="horizontalHeaderDefaultSectionSize">
          <number>435</number>
         </attribute>
         <attribute name="horizontalHeaderHighlightSections">
          <bool>false</bool>
+        </attribute>
+        <attribute name="horizontalHeaderStretchLastSection">
+         <bool>true</bool>
         </attribute>
         <attribute name="verticalHeaderVisible">
          <bool>false</bool>
@@ -646,7 +652,7 @@ QPushButton:pressed {
           <x>0</x>
           <y>0</y>
           <width>871</width>
-          <height>671</height>
+          <height>691</height>
          </rect>
         </property>
         <property name="font">
@@ -712,7 +718,7 @@ QTableWidget::section{
          <bool>true</bool>
         </property>
         <attribute name="horizontalHeaderDefaultSectionSize">
-         <number>290</number>
+         <number>145</number>
         </attribute>
         <attribute name="horizontalHeaderHighlightSections">
          <bool>false</bool>
@@ -723,6 +729,16 @@ QTableWidget::section{
         <attribute name="verticalHeaderHighlightSections">
          <bool>true</bool>
         </attribute>
+        <column>
+         <property name="text">
+          <string>Angry</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Scared</string>
+         </property>
+        </column>
         <column>
          <property name="text">
           <string>Happy</string>
@@ -743,6 +759,11 @@ QTableWidget::section{
            <family>RB</family>
            <pointsize>10</pointsize>
           </font>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Suprised</string>
          </property>
         </column>
         <column>
