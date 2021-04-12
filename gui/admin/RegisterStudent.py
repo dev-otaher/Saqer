@@ -1,6 +1,6 @@
 import os
 from os.path import exists
-from sqlite3 import Connection, IntegrityError, Error
+from sqlite3 import Connection, IntegrityError
 
 from PyQt5.QtGui import QPixmap
 
@@ -54,16 +54,6 @@ class RegisterStudent:
         if not exists(path):
             os.mkdir(path)
         self.thread.save = True
-
-    def connection_is_open(self):
-        try:
-            self.db_conn.execute("SELECT 1 FROM student LIMIT 1;")
-            return True
-        except Error:
-            return False
-
-    def create_connection(self):
-        self.db_conn = self.parent.db.create_db_connection("db/saqer.db")
 
     def register(self):
         try:

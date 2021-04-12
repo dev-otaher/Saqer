@@ -8,8 +8,6 @@ import imutils
 import numpy as np
 from PyQt5.QtCore import pyqtSignal, QThread, Qt
 from PyQt5.QtGui import QImage
-from keras.models import load_model
-from keras.preprocessing.image import img_to_array
 
 from modules.AttendanceTaker import AttendanceTaker
 
@@ -98,6 +96,8 @@ class VideoThread(QThread):
 
     def run(self):
         try:
+            from keras.models import load_model
+            from keras.preprocessing.image import img_to_array
             self.detector = cv2.dnn.readNetFromCaffe(self.proto_path, self.model_path)
             self.embedder = cv2.dnn.readNetFromTorch(self.embedder_path)
             self.emotioner = load_model(self.emotioner_path)

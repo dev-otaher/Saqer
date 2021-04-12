@@ -38,31 +38,40 @@
   <widget class="QLabel" name="i_message">
    <property name="geometry">
     <rect>
-     <x>60</x>
-     <y>190</y>
-     <width>281</width>
-     <height>41</height>
+     <x>20</x>
+     <y>230</y>
+     <width>351</width>
+     <height>51</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <family>RB</family>
-     <pointsize>20</pointsize>
+     <family>MS Shell Dlg 2</family>
+     <pointsize>12</pointsize>
      <weight>75</weight>
      <bold>true</bold>
     </font>
    </property>
    <property name="styleSheet">
-    <string notr="true">color: #38dbd0</string>
+    <string notr="true">color:white;</string>
    </property>
    <property name="text">
     <string/>
+   </property>
+   <property name="scaledContents">
+    <bool>true</bool>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+   <property name="wordWrap">
+    <bool>true</bool>
    </property>
   </widget>
   <widget class="QLabel" name="i_logo">
    <property name="geometry">
     <rect>
-     <x>140</x>
+     <x>150</x>
      <y>80</y>
      <width>101</width>
      <height>101</height>
@@ -116,11 +125,11 @@
     <enum>QFrame::Raised</enum>
    </property>
   </widget>
-  <widget class="QPushButton" name="i_yes">
+  <widget class="QPushButton" name="i_ok">
    <property name="geometry">
     <rect>
-     <x>80</x>
-     <y>300</y>
+     <x>145</x>
+     <y>310</y>
      <width>111</width>
      <height>41</height>
     </rect>
@@ -151,7 +160,7 @@ QPushButton:pressed {
 }</string>
    </property>
    <property name="text">
-    <string>Yes</string>
+    <string>Ok</string>
    </property>
    <property name="autoDefault">
     <bool>true</bool>
@@ -163,51 +172,28 @@ QPushButton:pressed {
     <bool>false</bool>
    </property>
   </widget>
-  <widget class="QPushButton" name="i_no">
+  <widget class="QLabel" name="i_success">
    <property name="geometry">
     <rect>
-     <x>200</x>
-     <y>300</y>
-     <width>111</width>
+     <x>139</x>
+     <y>190</y>
+     <width>131</width>
      <height>41</height>
     </rect>
    </property>
    <property name="font">
     <font>
      <family>RB</family>
-     <pointsize>14</pointsize>
+     <pointsize>20</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
     </font>
    </property>
-   <property name="cursor">
-    <cursorShape>PointingHandCursor</cursorShape>
-   </property>
    <property name="styleSheet">
-    <string notr="true">QPushButton {
-	border-radius: 15px;
-	background-color: #38DBD0;
-	color: rgb(255, 255, 255);
-}
-
-QPushButton:hover {
-	background-color: #23b2a8;
-	color: rgb(255, 255, 255);
-}
-
-QPushButton:pressed {
-	background-color: #38DBD0;
-}</string>
+    <string notr="true">color: #38dbd0</string>
    </property>
    <property name="text">
-    <string>No</string>
-   </property>
-   <property name="autoDefault">
-    <bool>true</bool>
-   </property>
-   <property name="default">
-    <bool>false</bool>
-   </property>
-   <property name="flat">
-    <bool>false</bool>
+    <string>Warning!</string>
    </property>
   </widget>
  </widget>

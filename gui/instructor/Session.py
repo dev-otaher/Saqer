@@ -45,16 +45,6 @@ class Session:
         table.setColumnHidden(0, True)
         table.setColumnHidden(0, True)
 
-    def connection_is_open(self):
-        try:
-            self.db_conn.execute("SELECT 1 FROM student LIMIT 1;")
-            return True
-        except Error:
-            return False
-
-    def create_connection(self):
-        self.db_conn = self.parent.db.create_db_connection("db/saqer.db")
-
     def fill_courses(self):
         try:
             sql = '''

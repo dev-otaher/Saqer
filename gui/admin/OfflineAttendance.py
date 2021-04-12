@@ -44,16 +44,6 @@ class OfflineAttendance:
         self.parent.i_recheck_table.setHidden(True)
         self.parent.i_save_recheck.setHidden(True)
 
-    def connection_is_open(self):
-        try:
-            self.db_conn.execute("SELECT 1 FROM student LIMIT 1;")
-            return True
-        except Error:
-            return False
-
-    def create_connection(self):
-        self.db_conn = self.parent.db.create_db_connection("db/saqer.db")
-
     def fill_instructor_cb(self):
         sql = '''
                 SELECT DISTINCT instructor_id FROM class;
@@ -203,8 +193,8 @@ class OfflineAttendance:
                     dt = self.parent.i_date_cb.currentText()
                     cur.execute(sql, (status, id, class_id, dt))
                     con.commit()
-                Success("Attendance Updated!")
                 self.hide_widgets()
+                Success("Attendance Updated!")
         except Error as e:
             Warning(str(e))
             print(e)
