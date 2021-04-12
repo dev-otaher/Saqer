@@ -27,9 +27,11 @@ class RegisterThread(VideoThread):
                 cap = cv2.VideoCapture(self.stream_path, cv2.CAP_DSHOW)
             else:
                 cap = cv2.VideoCapture(self.stream_path)
-            print(cap)
             self.threadActive = True
-            first_frame = cap.read()[1]
+            ret, first_frame = cap.read()
+            if ret is False:
+                Warning("Failed to open camera or no camera found!")
+                return
             while self.threadActive:
                 ret, frame = cap.read()
                 if ret:
