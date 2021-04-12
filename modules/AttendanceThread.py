@@ -1,6 +1,7 @@
 import multiprocessing
 from os import cpu_count
 from threading import Thread
+
 from PyQt5.QtCore import pyqtSignal, QThread
 
 from modules.AttendanceTaker import AttendanceTaker

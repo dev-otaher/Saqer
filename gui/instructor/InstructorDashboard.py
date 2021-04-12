@@ -1,11 +1,10 @@
 from functools import partial
 
-from PyQt5.QtWidgets import QDialog
-from PyQt5 import uic, QtCore, QtGui
-from PyQt5 import QtWidgets
+from PyQt5 import uic, QtCore
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QCursor, QColor
-from gui import Login, Warning
+from PyQt5.QtWidgets import QDialog
+
+from gui import Login
 from gui.instructor.Session import Session
 from gui.instructor.ViewReports import ViewReports
 from modules.DBHelper import DBHelper

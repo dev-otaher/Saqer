@@ -1,10 +1,9 @@
+import pickle
 from datetime import datetime
+
 from PyQt5.QtCore import QThread, pyqtSignal
 from sklearn.preprocessing import LabelEncoder
-import pickle
 from sklearn.svm import SVC
-
-from gui.Success import Success
 
 
 class Trainer(QThread):

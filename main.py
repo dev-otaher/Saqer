@@ -1,7 +1,7 @@
-from PyQt5.QtWidgets import QApplication
 import sys
-from gui.Login import Login
-from gui.admin.AdminDashboard import AdminDashboard
+
+from PyQt5.QtWidgets import QApplication
+
 from gui.instructor.InstructorDashboard import InstructorDashboard
 
 if __name__ == '__main__':

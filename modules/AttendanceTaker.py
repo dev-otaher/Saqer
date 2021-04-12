@@ -1,6 +1,3 @@
-from sqlite3.dbapi2 import Error
-from typing import List
-
 from modules.DBHelper import DBHelper
 from modules.Student import Student
 from modules.Students import Students

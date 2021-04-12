@@ -1,11 +1,13 @@
-from PyQt5.QtWidgets import QDialog
-from PyQt5.uic import loadUi
+import json
+import re
+
+import pyrebase
 from PyQt5 import QtCore
 from PyQt5.QtCore import Qt
-import re
+from PyQt5.QtWidgets import QDialog
+from PyQt5.uic import loadUi
+
 from gui import Success
-import json
-import pyrebase
 
 
 class ForgetPassword(QDialog):

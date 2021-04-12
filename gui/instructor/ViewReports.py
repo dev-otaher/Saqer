@@ -2,7 +2,6 @@ from sqlite3 import Error, Connection
 
 from PyQt5.QtCore import QModelIndex
 from PyQt5.QtGui import QColor
-from PyQt5.QtWidgets import QLabel, QHBoxLayout, QWidget, QSizePolicy, QPushButton
 from qtpy import QtWidgets
 
 from gui.Success import Success

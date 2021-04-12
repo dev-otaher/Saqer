@@ -1,9 +1,11 @@
 import datetime
 from sqlite3 import Error
+
 import cv2
 import imutils
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QImage
+
 from modules.VideoThread import VideoThread
 
 

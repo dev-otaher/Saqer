@@ -2,10 +2,10 @@ import os
 from os.path import exists
 from sqlite3 import Connection, IntegrityError, Error
 
-from gui.Success import Success
-from gui.Warning import Warning
 from PyQt5.QtGui import QPixmap
 
+from gui.Success import Success
+from gui.Warning import Warning
 from modules.RegisterThread import RegisterThread
 
 

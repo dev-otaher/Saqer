@@ -1,7 +1,9 @@
 from functools import partial
+
 from PyQt5 import uic, QtCore
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QDialog, QFileDialog
+
 from gui import Login
 from gui.admin.OfflineAttendance import OfflineAttendance
 from gui.admin.RegisterStudent import RegisterStudent

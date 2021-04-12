@@ -1,21 +1,19 @@
 import os
-import time
 from multiprocessing import Pipe
 from os.path import exists
 from sqlite3 import Error
 from typing import List
 
-from PyQt5.QtWidgets import QFileDialog
-from cv2 import cv2
 from qtpy import QtWidgets
 
 from gui.Success import Success
+from gui.Warning import Warning
 from modules.AttendanceThread import AttendanceThread
 from modules.DBHelper import DBHelper
 from modules.Emitter import Emitter
 from modules.Student import Student
 from modules.Students import Students
-from gui.Warning import Warning
+
 
 class OfflineAttendance:
     def __init__(self, parent_gui):

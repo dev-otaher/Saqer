@@ -1,9 +1,10 @@
 # import the necessary packages
-from math import ceil
-from multiprocessing.process import current_process
-import cv2
 import time
+from math import ceil
 from multiprocessing import Queue
+from multiprocessing.process import current_process
+
+import cv2
 from numpy import ndarray
 
 

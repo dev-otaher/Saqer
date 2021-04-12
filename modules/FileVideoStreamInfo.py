@@ -1,5 +1,5 @@
 import datetime
-from math import ceil
+
 import cv2
 
 

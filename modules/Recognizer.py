@@ -1,8 +1,10 @@
 import pickle
 from multiprocessing import Pipe
+
 import cv2
 import imutils
 import numpy as np
+
 from modules.AttendanceTaker import AttendanceTaker
 from modules.FileVideoStream import FileVideoStream
 

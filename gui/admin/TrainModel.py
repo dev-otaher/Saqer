@@ -1,5 +1,7 @@
 import os
+
 from imutils import paths
+
 from gui.Success import Success
 from modules.Encoder import Encoder
 from modules.Trainer import Trainer

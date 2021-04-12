@@ -1,11 +1,11 @@
-from datetime import datetime
 import os
 import pickle
+from datetime import datetime
+
 import cv2
 import imutils
 import numpy as np
 from PyQt5.QtCore import pyqtSignal, QThread
-from imutils import paths
 
 
 class Encoder(QThread):

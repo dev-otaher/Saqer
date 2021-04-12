@@ -4,14 +4,11 @@ from datetime import datetime
 from os.path import exists
 from sqlite3 import Error, Connection
 
-from PyQt5.QtCore import QModelIndex, QVariant
-from PyQt5.QtGui import QColor, QPixmap
-from PyQt5.QtWidgets import QLabel, QHBoxLayout, QWidget, QSizePolicy, QPushButton, QComboBox
+from PyQt5.QtGui import QPixmap
 from qtpy import QtWidgets
 
 from gui.Success import Success
 from gui.Warning import Warning
-from modules.Students import Students
 from modules.VideoThread import VideoThread
 
 
