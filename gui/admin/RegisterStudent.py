@@ -9,6 +9,10 @@ from gui.Warning import Warning
 from modules.RegisterThread import RegisterThread
 
 
+def show_alert(msg):
+    Warning(msg)
+
+
 class RegisterStudent:
     def __init__(self, parent_gui):
         self.parent = parent_gui
@@ -23,6 +27,7 @@ class RegisterStudent:
         self.parent.i_capture.clicked.connect(self.capture)
         self.parent.i_register.clicked.connect(self.register)
         self.thread.image_update.connect(self.update_holder)
+        self.thread.no_cam.connect(show_alert)
 
     def hide_widgets(self):
         self.parent.i_id_note.setHidden(True)

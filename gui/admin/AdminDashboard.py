@@ -44,6 +44,7 @@ class AdminDashboard(QDialog):
         self.i_choose_folder.clicked.connect(self.browse_folder)
         self.i_choose_encodings.clicked.connect(self.browse_file)
 
+
     def move_window(self, e):
         if e.buttons() == Qt.LeftButton:
             self.move(self.pos() + e.globalPos() - self.clickPosition)

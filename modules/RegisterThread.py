@@ -30,7 +30,7 @@ class RegisterThread(VideoThread):
             self.threadActive = True
             ret, first_frame = cap.read()
             if ret is False:
-                Warning("Failed to open camera or no camera found!")
+                self.no_cam.emit("Failed to open camera or no camera found!")
                 return
             while self.threadActive:
                 ret, frame = cap.read()
@@ -47,7 +47,7 @@ class RegisterThread(VideoThread):
                     pic = convertToQtFormat.scaled(864, 486, Qt.KeepAspectRatio)
                     self.image_update.emit(pic)
                 else:
-                    Warning("Failed to open camera or no camera found!")
+                    self.no_cam.emit("Failed to open camera or no camera found!")
                     break
             self.image_update.emit(QImage(first_frame, first_frame.shape[1], first_frame.shape[0], QImage.Format_RGB888))
             cap.release()

@@ -14,6 +14,7 @@ from modules.AttendanceTaker import AttendanceTaker
 
 class VideoThread(QThread):
     # this class will handle the detection and recognition part using worker thread
+    no_cam = pyqtSignal(str)
     image_update = pyqtSignal(QImage)
     std_list = pyqtSignal(object)
     def __init__(self, stream_path, proto_path, model_path, embedder_path, emotioner_path, confidence=0.7):
