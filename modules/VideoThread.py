@@ -158,7 +158,7 @@ class VideoThread(QThread):
             cap.release()
             if found_cam:
                 self.std_list.emit(taker)
-                taker.convert_to_percetage(taker.faces)
+                self.convert_to_percetage(taker.faces)
         except Error as e:
             print("sqlite", e)
         except Exception as e:

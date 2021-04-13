@@ -18,7 +18,7 @@ class Login(QDialog):
         uic.loadUi("gui/interfaces/Login.ui", self)
         self.i_login.clicked.connect(self.login)
         self.i_password_note.setHidden(True)
-        self.i_close.clicked.connect(lambda: exit())
+        self.i_close.clicked.connect(lambda: self.close())
         self.i_minmize.clicked.connect(lambda: self.showMinimized())
         self.i_forget_pass.mousePressEvent = self.forget_password
         self.i_header.mouseMoveEvent = self.move_window
@@ -60,13 +60,13 @@ class Login(QDialog):
                 UUID = str(user["localId"])
                 isAdmin = db.child("users").child(UUID).child("isAdmin").get()
                 if isAdmin.val() == "True":
-                    self.destroy()
                     from gui.admin.AdminDashboard import AdminDashboard
                     AdminDashboard()
-                elif isAdmin.val() == "False":
                     self.destroy()
+                elif isAdmin.val() == "False":
                     from gui.instructor.InstructorDashboard import InstructorDashboard
                     InstructorDashboard(UUID)
+                    self.destroy()
                 else:
                     self.i_password_note.setHidden(False)
             except requests.exceptions.HTTPError as e:

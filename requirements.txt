@@ -7,3 +7,6 @@ numpy==1.19.5
 sklearn==0.0
 scikit-learn==0.24.1
 Keras==2.4.3
+Keras-Preprocessing==1.1.2
+Pyrebase4==4.4.3
+tensorflow==2.4.1
