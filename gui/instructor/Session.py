@@ -125,11 +125,12 @@ class Session:
 
     def start_session(self):
         if self.prepare_thread() is True:
-            self.vt.start()
+            self.class_id = self.vt.class_id = self.parent.i_classes_cb.currentData()
             self.parent.disable_btn(self.parent.i_start_session)
             self.parent.enable_btn(self.parent.i_end_session)
             self.parent.goto(self.parent.i_video_sec, self.parent.i_video_holder)
-            self.class_id = self.vt.class_id = self.parent.i_classes_cb.currentData()
+
+            self.vt.start()
 
     def update_holder(self, frame):
         try:
