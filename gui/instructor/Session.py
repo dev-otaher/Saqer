@@ -22,15 +22,7 @@ class Session:
         self.hide_widgets()
         self.db_conn: Connection = self.parent.db.create_db_connection("db/saqer.db")
         self.fill_courses()
-        self.vt = VideoThread("D:/Playground/Python/FaceAttendance - Parallelism/class_videos/1k.mp4",
-                              "db/model/deploy.prototxt",
-                              "db/model/res10_300x300_ssd_iter_140000.caffemodel",
-                              "db/model/openface_nn4.small2.v1.t7",
-                              "db/model/epoch_75.hdf5")
-        self.vt.image_update.connect(self.update_holder)
-        self.vt.std_list.connect(self.fill_recheck_table)
-        self.vt.no_cam.connect(show_alert)
-        self.vt.no_cam.connect(self.default_layout)
+        self.vt: VideoThread = None
         self.class_id = None
         self.date_time = str()
 
@@ -88,6 +80,7 @@ class Session:
         except Error as e:
             Warning(str(e))
         except Exception as e:
+            Warning(str(e))
             print(e)
 
     def add_class(self, c):
@@ -107,6 +100,15 @@ class Session:
             return course_code
 
     def prepare_thread(self):
+        self.vt = VideoThread("video_samples/1k.mp4",
+                    "db/model/deploy.prototxt",
+                    "db/model/res10_300x300_ssd_iter_140000.caffemodel",
+                    "db/model/openface_nn4.small2.v1.t7",
+                    "db/model/epoch_75.hdf5")
+        self.vt.image_update.connect(self.update_holder)
+        self.vt.std_list.connect(self.fill_recheck_table)
+        self.vt.no_cam.connect(show_alert)
+        self.vt.no_cam.connect(self.default_layout)
         class_title, course_code = self.parent.i_classes_cb.currentText(), self.get_course_code()
         r_path = f"db/courses/{course_code}/{class_title}/dataset/output/recognizer.pickle"
         l_path = f"db/courses/{course_code}/{class_title}/dataset/output/labels.pickle"
@@ -134,6 +136,7 @@ class Session:
             # keep updating the label according to the new frame
             self.parent.i_cam_feed.setPixmap(QPixmap.fromImage(frame))
         except Exception as e:
+            Warning(str(e))
             print(e)
 
     def stop_session(self):
@@ -160,6 +163,7 @@ class Session:
                 checkbox.setChecked(is_present)
                 self.parent.i_recheck_table.setCellWidget(0, 3, checkbox)
         except Exception as e:
+            Warning(str(e))
             print(e)
 
     def add_record(self, uni_id, name, appear_counter, checkpoints):

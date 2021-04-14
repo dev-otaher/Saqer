@@ -67,6 +67,7 @@ class OfflineAttendance:
                 for c in courses:
                     self.parent.i_course_cb.addItem(c[2], c[0])
         except Exception as e:
+            Warning(str(e))
             print(e)
 
     def fill_classes_cb(self, index):
@@ -83,6 +84,7 @@ class OfflineAttendance:
                 for c in classes:
                     self.parent.i_class_cb.addItem(c[1], c[0])
         except Exception as e:
+            Warning(str(e))
             print(e)
 
     def fill_dates_cb(self, index):
@@ -139,12 +141,14 @@ class OfflineAttendance:
                 self.prepare_thread(path, course_code, class_id, class_title)
                 self.attendance_thread.start()
         except Exception as e:
+            Warning(str(e))
             print(e)
 
     def update_progress(self, val):
         try:
             self.parent.i_progress_bar.setValue(self.parent.i_progress_bar.value() + val)
         except Exception as e:
+            Warning(str(e))
             print(e)
 
     def combine_std_lists(self, list: List[Student]):
@@ -199,5 +203,6 @@ class OfflineAttendance:
             Warning(str(e))
             print(e)
         except Exception as e:
+            Warning(str(e))
             print(e)
 

@@ -8,6 +8,7 @@ from PyQt5.QtWidgets import QDialog
 from PyQt5.uic import loadUi
 
 from gui import Success
+from gui.Warning import Warning
 
 
 class ForgetPassword(QDialog):
@@ -15,9 +16,9 @@ class ForgetPassword(QDialog):
         super(ForgetPassword, self).__init__()
         loadUi("gui/interfaces/ForgetPassword.ui", self)
         self.i_send.clicked.connect(self.send_email)
-        self.i_close.clicked.connect(lambda: self.hide())
+        self.i_close.clicked.connect(lambda: self.close())
         self.i_email_note.setHidden(True)
-        self.setWindowFlags(QtCore.Qt.WindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint ))
+        self.setWindowFlags(QtCore.Qt.WindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint))
         self.i_header.mouseMoveEvent = self.move_window
         self.setWindowModality(Qt.ApplicationModal)
         self.show()
@@ -46,9 +47,9 @@ class ForgetPassword(QDialog):
                 firebase = pyrebase.initialize_app(config)
                 auth = firebase.auth()
                 auth.send_password_reset_email(email)
-                Success.Success("We've sent your password through email.")
+                Success.Success("We've sent reset link to your email.")
                 self.destroy()
         except Exception as e:
             # if there's error in the email authentication show error message
+            Warning(str(e))
             print(e)
-            self.i_email_note.setHidden(False)

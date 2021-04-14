@@ -4,7 +4,7 @@ from PyQt5 import uic, QtCore
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QDialog
 
-from gui import Login
+from gui.Warning import Warning
 from gui.instructor.Session import Session
 from gui.instructor.ViewReports import ViewReports
 from modules.DBHelper import DBHelper
@@ -30,7 +30,7 @@ class InstructorDashboard(QDialog):
 
     def connect_header(self):
         self.i_header.mouseMoveEvent = self.move_window
-        self.i_close.clicked.connect(lambda: self.close())
+        self.i_close.clicked.connect(lambda: exit())
         self.i_minmize.clicked.connect(lambda: self.showMinimized())
         self.i_logout.clicked.connect(self.logout)
 
@@ -75,7 +75,10 @@ class InstructorDashboard(QDialog):
 
     def logout(self):
         try:
+            self.session.vt.threadActive = False
+            from gui import Login
             Login.Login()
             self.destroy()
         except Exception as e:
+            Warning(str(e))
             print(e)

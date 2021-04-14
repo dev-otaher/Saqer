@@ -7,6 +7,8 @@ import imutils
 import numpy as np
 from PyQt5.QtCore import pyqtSignal, QThread
 
+from gui.Warning import Warning
+
 
 class Encoder(QThread):
     update_available = pyqtSignal(int)
@@ -17,6 +19,7 @@ class Encoder(QThread):
         self.confidence = confidence
         self.file = str()
         self.dataset_path = str()
+        self.is_thread_active = False
 
     def get_location(self, frame):
         f_copy = frame.copy()
@@ -63,6 +66,7 @@ class Encoder(QThread):
             f.write(pickle.dumps(data))
             f.close()
         except Exception as e:
+            Warning(str(e))
             print(e)
 
     def get_current_datetime(self):
@@ -71,7 +75,10 @@ class Encoder(QThread):
     def run(self):
         names = []
         embeddings = []
+        self.is_thread_active = True
         for i, path in enumerate(self.dataset_path):
+            if self.is_thread_active is False:
+                return
             frame = imutils.resize(cv2.imread(path), width=800)
             location = self.get_location(frame)
             if location is not None:

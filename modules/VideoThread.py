@@ -11,6 +11,7 @@ from PyQt5.QtGui import QImage
 from keras.models import load_model
 from keras.preprocessing.image import img_to_array
 
+from gui.Warning import Warning
 from modules.AttendanceTaker import AttendanceTaker
 
 
@@ -19,7 +20,7 @@ class VideoThread(QThread):
     no_cam = pyqtSignal(str)
     image_update = pyqtSignal(QImage)
     std_list = pyqtSignal(object)
-    def __init__(self, stream_path, proto_path, model_path, embedder_path, emotioner_path, confidence=0.7):
+    def __init__(self, stream_path, proto_path, model_path, embedder_path, emotioner_path, confidence=0.8):
         super(VideoThread, self).__init__()
         self.threadActive = True
         self.isRecord = None
@@ -82,16 +83,20 @@ class VideoThread(QThread):
         return id, p
 
     def process_emotion(self, face):
-        roi = cv2.cvtColor(face, cv2.COLOR_BGR2GRAY)
-        if roi is None:
-            print('roi is None')
-            return
-        roi = cv2.resize(roi, (48, 48))
-        roi = roi.astype('float') / 255.0
-        roi = img_to_array(roi)  # convert to keras-compatible array
-        roi = np.expand_dims(roi, axis=0)
-        preds = self.emotioner.predict(roi)[0]
-        self.emotions[preds.argmax()][1] += 1
+        try:
+            roi = cv2.cvtColor(face, cv2.COLOR_BGR2GRAY)
+            if roi is None:
+                print('roi is None')
+                return
+            roi = cv2.resize(roi, (48, 48))
+            roi = roi.astype('float') / 255.0
+            roi = img_to_array(roi)  # convert to keras-compatible array
+            roi = np.expand_dims(roi, axis=0)
+            preds = self.emotioner.predict(roi)[0]
+            self.emotions[preds.argmax()][1] += 1
+        except Exception as e:
+            Warning(str(e))
+            print(e)
 
     def convert_to_percetage(self, faces):
         for e in self.emotions:
@@ -116,11 +121,10 @@ class VideoThread(QThread):
                     self.no_cam.emit("Failed to open camera or no camera found!")
                     found_cam = False
                     break
-                frame = imutils.resize(frame, width=1080)
                 if ret:
+                    frame = imutils.resize(frame, width=1080)
                     if self.isRecord and first_loop:
                         writer = cv2.VideoWriter(os.path.sep.join([self.folder_path, self.filename+'.avi']), cv2.VideoWriter_fourcc(*'XVID'), 10, (frame.shape[1], frame.shape[0]), True)
-                        first_loop = False
                     if self.isRecord:
                         writer.write(frame)
                     locations = self.get_locations(frame)
@@ -128,7 +132,7 @@ class VideoThread(QThread):
                     for loc in locations:
                         face = self.get_face(frame, loc)
                         if face is not None:
-                            self.process_emotion(face)
+                            # self.process_emotion(face)
                             encoding = self.encode(face)
                             id, p = self.recognize(encoding)
                             if id is not None and id != "Unknown":
@@ -148,18 +152,23 @@ class VideoThread(QThread):
                         y = startY - 10 if startY - 10 > 10 else startY + 10
                         cv2.rectangle(frame, (startX, startY), (endX, endY), (0, 255, 0), 2)
                         cv2.putText(frame, text, (startX, y - 50), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 0, 0), 2)
-                # convert the frame into RGB format
-                frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-                # convert the frame into a Qt format and keep the aspect ratio
-                convertToQtFormat = QImage(frame, frame.shape[1], frame.shape[0], QImage.Format_RGB888)
-                pic = convertToQtFormat.scaled(864, 486, Qt.KeepAspectRatio)
-                self.image_update.emit(pic)
-                taker.increment_checkpoint()
+                    # convert the frame into RGB format
+                    frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                    # convert the frame into a Qt format and keep the aspect ratio
+                    convertToQtFormat = QImage(frame, frame.shape[1], frame.shape[0], QImage.Format_RGB888)
+                    pic = convertToQtFormat.scaled(864, 486, Qt.KeepAspectRatio)
+                    self.image_update.emit(pic)
+                    taker.increment_checkpoint()
+                else:
+                    break
+                first_loop = False
             cap.release()
             if found_cam:
                 self.std_list.emit(taker)
                 self.convert_to_percetage(taker.faces)
         except Error as e:
-            print("sqlite", e)
+            Warning(str(e))
+            print(e)
         except Exception as e:
+            Warning(str(e))
             print(e)

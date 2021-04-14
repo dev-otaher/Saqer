@@ -4,6 +4,7 @@ from threading import Thread
 
 from PyQt5.QtCore import pyqtSignal, QThread
 
+from gui.Warning import Warning
 from modules.AttendanceTaker import AttendanceTaker
 from modules.FileVideoStreamInfo import FileVideoStreamInfo
 from modules.Recognizer import Recognizer
@@ -46,5 +47,5 @@ class AttendanceThread(QThread):
                 Thread(target=r.vs.pick_frames, args=(interval, i * chunk_size, (i + 1) * chunk_size)).start()
                 multiprocessing.Process(target=r.run).start()
         except Exception as e:
-            print(e)
             Warning(str(e))
+            print(e)

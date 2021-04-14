@@ -87,6 +87,7 @@ class ViewReports:
             Warning(str(e))
             print(e)
         except Exception as e:
+            Warning(str(e))
             print(e)
 
     def add_class(self, c):
@@ -151,6 +152,7 @@ class ViewReports:
                     self.parent.goto(self.parent.i_stacked_widget, self.parent.i_behaviour)
                     self.parent.i_title.setText("View Reports - Behaviour")
         except Exception as e:
+            Warning(str(e))
             print(e)
 
     def save_attendance(self):

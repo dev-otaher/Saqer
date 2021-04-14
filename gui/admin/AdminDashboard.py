@@ -4,7 +4,7 @@ from PyQt5 import uic, QtCore
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QDialog, QFileDialog
 
-from gui import Login
+from gui.Warning import Warning
 from gui.admin.OfflineAttendance import OfflineAttendance
 from gui.admin.RegisterStudent import RegisterStudent
 from gui.admin.TrainModel import TrainModel
@@ -30,7 +30,7 @@ class AdminDashboard(QDialog):
 
     def connect_header(self):
         self.i_header.mouseMoveEvent = self.move_window
-        self.i_close.clicked.connect(lambda: self.close())
+        self.i_close.clicked.connect(lambda: exit())
         self.i_minmize.clicked.connect(lambda: self.showMinimized())
         self.i_logout.clicked.connect(self.logout)
 
@@ -42,7 +42,6 @@ class AdminDashboard(QDialog):
     def connect_browser_btns(self):
         self.i_choose_folder.clicked.connect(self.browse_folder)
         self.i_choose_encodings.clicked.connect(self.browse_file)
-
 
     def move_window(self, e):
         if e.buttons() == Qt.LeftButton:
@@ -79,7 +78,11 @@ class AdminDashboard(QDialog):
 
     def logout(self):
         try:
+            self.register_student.thread.threadActive = False
+            self.train_model.encoder.is_thread_active = False
+            # from gui import Login
             Login.Login()
             self.destroy()
         except Exception as e:
+            Warning(str(e))
             print(e)

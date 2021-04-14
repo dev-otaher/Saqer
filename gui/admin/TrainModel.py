@@ -3,6 +3,7 @@ import os
 from imutils import paths
 
 from gui.Success import Success
+from gui.Warning import Warning
 from modules.Encoder import Encoder
 from modules.Trainer import Trainer
 
@@ -12,12 +13,10 @@ class TrainModel:
         self.parent = parent_gui
         self.connect_widgets()
         self.hide_widgets()
-
         self.encoder = Encoder(protoPath="db/model/deploy.prototxt",
                        modelPath="db/model/res10_300x300_ssd_iter_140000.caffemodel",
                        embedderPath="db/model/openface_nn4.small2.v1.t7")
         self.encoder.update_available.connect(self.update_progress)
-
         self.trainer = Trainer(75.0)
         self.trainer.finished.connect(lambda: Success(""))
 
@@ -49,6 +48,7 @@ class TrainModel:
                 self.set_bar_max(len(images_path))
                 self.encoder.start()
         except Exception as e:
+            Warning(str(e))
             print(e)
 
     def train(self):
@@ -66,6 +66,7 @@ class TrainModel:
                 self.trainer.output_path = dir
                 self.trainer.start()
         except Exception as e:
+            Warning(str(e))
             print(e)
 
     def show_bar(self):
@@ -79,5 +80,6 @@ class TrainModel:
         try:
             self.parent.i_train_progress.setValue(self.parent.i_train_progress.value() + val)
         except Exception as e:
+            Warning(str(e))
             print(e)
 

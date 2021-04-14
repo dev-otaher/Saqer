@@ -11,6 +11,6 @@ class Success(QDialog):
         loadUi("gui/interfaces/Success.ui", self)
         self.setWindowFlags(QtCore.Qt.WindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint))
         self.setWindowModality(Qt.ApplicationModal)
-        self.i_hide.clicked.connect(lambda: self.close())
+        self.i_ok.clicked.connect(lambda: self.close())
         self.i_message.setText(msg)
         self.show()

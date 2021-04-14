@@ -83,5 +83,6 @@ class RegisterStudent:
             # keep updating the label according to the new frame
             self.parent.i_cam_feed.setPixmap(QPixmap.fromImage(frame))
         except Exception as e:
+            Warning(str(e))
             print(e)
 

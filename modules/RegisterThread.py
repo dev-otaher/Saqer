@@ -6,6 +6,7 @@ import imutils
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QImage
 
+from gui.Warning import Warning
 from modules.VideoThread import VideoThread
 
 
@@ -35,12 +36,12 @@ class RegisterThread(VideoThread):
             while self.threadActive:
                 ret, frame = cap.read()
                 if ret:
+                    frame = imutils.resize(frame, width=1080)
                     if self.save:
-                        filename = str(datetime.datetime.now().time()).replace(":", ".")
+                        filename = str(datetime.datetime.now()).replace(":", ".")
                         cv2.imwrite(f"db/dataset/{self.uni_id}/{filename}.jpg", frame)
                         self.save = False
                     # convert the frame into RGB format
-                    frame = imutils.resize(frame, width=1080)
                     image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                     # convert the frame into a Qt format and keep the aspect ratio
                     convertToQtFormat = QImage(image.data, image.shape[1], image.shape[0], QImage.Format_RGB888)
@@ -52,6 +53,8 @@ class RegisterThread(VideoThread):
             self.image_update.emit(QImage(first_frame, first_frame.shape[1], first_frame.shape[0], QImage.Format_RGB888))
             cap.release()
         except Error as e:
+            Warning(str(e))
             print("sqlite", e)
         except Exception as e:
+            Warning(str(e))
             print(e)

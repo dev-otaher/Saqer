@@ -2,12 +2,12 @@ import json
 
 import pyrebase
 import requests
-from PyQt5 import QtCore
-from PyQt5 import uic
+from PyQt5 import QtCore, uic
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QDialog
 
-from gui import ForgetPassword
+from gui.ForgetPassword import ForgetPassword
+from gui.Warning import Warning
 
 
 class Login(QDialog):
@@ -18,7 +18,7 @@ class Login(QDialog):
         uic.loadUi("gui/interfaces/Login.ui", self)
         self.i_login.clicked.connect(self.login)
         self.i_password_note.setHidden(True)
-        self.i_close.clicked.connect(lambda: self.close())
+        self.i_close.clicked.connect(lambda: exit())
         self.i_minmize.clicked.connect(lambda: self.showMinimized())
         self.i_forget_pass.mousePressEvent = self.forget_password
         self.i_header.mouseMoveEvent = self.move_window
@@ -35,8 +35,9 @@ class Login(QDialog):
     # Opens forget password window
     def forget_password(self, eve):
         try:
-            ForgetPassword.ForgetPassword()
+            ForgetPassword()
         except Exception as e:
+            Warning(str(e))
             print(e)
 
     # Allows window to be clickable
@@ -58,12 +59,12 @@ class Login(QDialog):
                 db = firebase.database()
                 user = auth.sign_in_with_email_and_password(username, password)
                 UUID = str(user["localId"])
-                isAdmin = db.child("users").child(UUID).child("isAdmin").get()
-                if isAdmin.val() == "True":
+                isAdmin = db.child("users").child(UUID).child("isAdmin").get().val()
+                if isAdmin == "True":
                     from gui.admin.AdminDashboard import AdminDashboard
                     AdminDashboard()
                     self.destroy()
-                elif isAdmin.val() == "False":
+                elif isAdmin == "False":
                     from gui.instructor.InstructorDashboard import InstructorDashboard
                     InstructorDashboard(UUID)
                     self.destroy()
