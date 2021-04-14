@@ -76,7 +76,7 @@ class InstructorDashboard(QDialog):
 
     def logout(self):
         try:
-            self.session.vt.threadActive = False
+            if self.session.vt is not None: self.session.vt.threadActive = False
             from gui import Login
             Login.Login()
             self.destroy()

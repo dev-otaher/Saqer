@@ -79,8 +79,8 @@ class AdminDashboard(QDialog):
 
     def logout(self):
         try:
-            self.register_student.thread.threadActive = False
-            self.train_model.encoder.is_thread_active = False
+            if self.register_student.thread is not None: self.register_student.thread = False
+            if self.train_model.encoder.is_thread_active is not None: self.train_model.encoder.is_thread_active = False
             from gui import Login
             Login.Login()
             self.destroy()

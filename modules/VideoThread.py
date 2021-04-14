@@ -8,8 +8,10 @@ import imutils
 import numpy as np
 from PyQt5.QtCore import pyqtSignal, QThread, Qt
 from PyQt5.QtGui import QImage
-from keras.models import load_model
-from keras.preprocessing.image import img_to_array
+from tensorflow.keras.models import load_model
+from tensorflow.keras.preprocessing.image import img_to_array
+# from keras.models import load_model
+# from keras.preprocessing.image import img_to_array
 
 from gui.Warning import Warning
 from modules.AttendanceTaker import AttendanceTaker
