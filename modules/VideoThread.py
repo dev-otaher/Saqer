@@ -134,7 +134,7 @@ class VideoThread(QThread):
                     for loc in locations:
                         face = self.get_face(frame, loc)
                         if face is not None:
-                            # self.process_emotion(face)
+                            self.process_emotion(face)
                             encoding = self.encode(face)
                             id, p = self.recognize(encoding)
                             if id is not None and id != "Unknown":
@@ -150,7 +150,6 @@ class VideoThread(QThread):
                         (startX, startY, endX, endY) = loc
                         # draw the bounding box of the face along with the
                         # associated probability
-                        # text = '{:.2f}%'.format(confidence * 100)
                         y = startY - 10 if startY - 10 > 10 else startY + 10
                         cv2.rectangle(frame, (startX, startY), (endX, endY), (0, 255, 0), 2)
                         cv2.putText(frame, text, (startX, y - 50), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 0, 0), 2)
