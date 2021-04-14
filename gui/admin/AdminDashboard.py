@@ -80,7 +80,7 @@ class AdminDashboard(QDialog):
         try:
             self.register_student.thread.threadActive = False
             self.train_model.encoder.is_thread_active = False
-            # from gui import Login
+            from gui import Login
             Login.Login()
             self.destroy()
         except Exception as e:

@@ -44,8 +44,12 @@ class AttendanceThread(QThread):
                                f"db/courses/{self.course_code}/{self.class_title}/dataset/output/recognizer.pickle",
                                f"db/courses/{self.course_code}/{self.class_title}/dataset/output/labels.pickle",
                                self.child_pipe)
-                Thread(target=r.vs.pick_frames, args=(interval, i * chunk_size, (i + 1) * chunk_size)).start()
-                multiprocessing.Process(target=r.run).start()
+                t = Thread(target=r.vs.pick_frames, args=(interval, i * chunk_size, (i + 1) * chunk_size))
+                t.daemon = True
+                t.start()
+                p = multiprocessing.Process(target=r.run)
+                p.daemon = True
+                p.start()
         except Exception as e:
             Warning(str(e))
             print(e)
