@@ -94,43 +94,6 @@ QPushButton:pressed {
     <bool>false</bool>
    </property>
   </widget>
-  <widget class="QLabel" name="i_forget_pass">
-   <property name="geometry">
-    <rect>
-     <x>550</x>
-     <y>620</y>
-     <width>111</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>RB</family>
-     <pointsize>10</pointsize>
-     <underline>true</underline>
-    </font>
-   </property>
-   <property name="cursor">
-    <cursorShape>PointingHandCursor</cursorShape>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">QLabel{
-color: rgb(85, 255, 255)}
-
-
-QLabel:hover {
-	color: #23b2a8;
-
-}
-
-QLabel:pressed {
-	color: #38DBD0;
-}</string>
-   </property>
-   <property name="text">
-    <string>Forget Password?</string>
-   </property>
-  </widget>
   <widget class="QLabel" name="i_password_note">
    <property name="geometry">
     <rect>
@@ -362,15 +325,50 @@ QPushButton:pressed {
     </property>
    </widget>
   </widget>
+  <widget class="QPushButton" name="i_forget_pass">
+   <property name="geometry">
+    <rect>
+     <x>540</x>
+     <y>620</y>
+     <width>111</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+     <underline>true</underline>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{
+	color: rgb(85, 255, 255);
+	background-color: rgba(255, 255, 255, 0);
+}
+
+
+QPushButton:hover {
+	color: #23b2a8;
+
+}
+
+QPushButton:pressed {
+	color: #38DBD0;
+}</string>
+   </property>
+   <property name="text">
+    <string>Forget Password?</string>
+   </property>
+  </widget>
   <zorder>i_background</zorder>
   <zorder>i_logo</zorder>
   <zorder>i_login</zorder>
-  <zorder>i_forget_pass</zorder>
   <zorder>i_password_note</zorder>
   <zorder>i_footer</zorder>
   <zorder>i_username</zorder>
   <zorder>i_password</zorder>
   <zorder>i_header</zorder>
+  <zorder>i_forget_pass</zorder>
  </widget>
  <resources>
   <include location="logo.qrc"/>

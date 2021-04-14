@@ -1,3 +1,4 @@
+import sys
 from functools import partial
 
 from PyQt5 import uic, QtCore
@@ -30,7 +31,7 @@ class InstructorDashboard(QDialog):
 
     def connect_header(self):
         self.i_header.mouseMoveEvent = self.move_window
-        self.i_close.clicked.connect(lambda: exit())
+        self.i_close.clicked.connect(lambda: sys.exit())
         self.i_minmize.clicked.connect(lambda: self.showMinimized())
         self.i_logout.clicked.connect(self.logout)
 

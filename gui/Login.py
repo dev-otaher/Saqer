@@ -1,4 +1,5 @@
 import json
+import sys
 
 import pyrebase
 import requests
@@ -18,9 +19,9 @@ class Login(QDialog):
         uic.loadUi("gui/interfaces/Login.ui", self)
         self.i_login.clicked.connect(self.login)
         self.i_password_note.setHidden(True)
-        self.i_close.clicked.connect(lambda: exit())
+        self.i_close.clicked.connect(lambda: sys.exit())
         self.i_minmize.clicked.connect(lambda: self.showMinimized())
-        self.i_forget_pass.mousePressEvent = self.forget_password
+        self.i_forget_pass.clicked.connect(self.forget_password)
         self.i_header.mouseMoveEvent = self.move_window
         self.setWindowFlags(QtCore.Qt.WindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint))
         self.show()
@@ -73,5 +74,7 @@ class Login(QDialog):
             except requests.exceptions.HTTPError as e:
                 self.i_password_note.setHidden(False)
                 Warning(str(e))
-            except Exception:
+                print(e)
+            except Exception as e:
                 Warning("Something went wrong! Could not login.")
+                print(e)
