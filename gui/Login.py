@@ -71,10 +71,8 @@ class Login(QDialog):
                     self.destroy()
                 else:
                     self.i_password_note.setHidden(False)
-            except requests.exceptions.HTTPError as e:
+            except pyrebase.pyrebase.HTTPError:
                 self.i_password_note.setHidden(False)
-                Warning(str(e))
-                print(e)
             except Exception as e:
                 Warning("Something went wrong! Could not login.")
                 print(e)

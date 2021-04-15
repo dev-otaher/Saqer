@@ -18,7 +18,7 @@ class TrainModel:
                        embedderPath="db/model/openface_nn4.small2.v1.t7")
         self.encoder.update_available.connect(self.update_progress)
         self.trainer = Trainer(75.0)
-        self.trainer.finished.connect(lambda: Success(""))
+        self.trainer.finished.connect(lambda: Success("Model trained successfully!"))
 
     def connect_widgets(self):
         self.parent.i_extract.clicked.connect(self.extract_encodings)

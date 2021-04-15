@@ -38,8 +38,8 @@
   <widget class="QLabel" name="i_success">
    <property name="geometry">
     <rect>
-     <x>138</x>
-     <y>190</y>
+     <x>139</x>
+     <y>183</y>
      <width>121</width>
      <height>41</height>
     </rect>
@@ -59,46 +59,13 @@
     <string>Success!</string>
    </property>
   </widget>
-  <widget class="QLabel" name="i_message">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>230</y>
-     <width>351</width>
-     <height>61</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>RB</family>
-     <pointsize>14</pointsize>
-     <weight>50</weight>
-     <bold>false</bold>
-    </font>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">color:white;</string>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="textFormat">
-    <enum>Qt::PlainText</enum>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignHCenter|Qt::AlignTop</set>
-   </property>
-   <property name="wordWrap">
-    <bool>true</bool>
-   </property>
-  </widget>
   <widget class="QLabel" name="i_logo">
    <property name="geometry">
     <rect>
-     <x>145</x>
+     <x>150</x>
      <y>80</y>
-     <width>101</width>
-     <height>101</height>
+     <width>100</width>
+     <height>100</height>
     </rect>
    </property>
    <property name="text">
@@ -152,8 +119,8 @@
   <widget class="QPushButton" name="i_ok">
    <property name="geometry">
     <rect>
-     <x>140</x>
-     <y>310</y>
+     <x>144</x>
+     <y>313</y>
      <width>111</width>
      <height>41</height>
     </rect>
@@ -194,6 +161,32 @@ QPushButton:pressed {
    </property>
    <property name="flat">
     <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QTextBrowser" name="i_message">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>230</y>
+     <width>381</width>
+     <height>81</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:white;
+border:none;</string>
+   </property>
+   <property name="html">
+    <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:12pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;center&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
  </widget>

@@ -13,5 +13,6 @@ class Warning(QDialog):
         self.setWindowModality(Qt.ApplicationModal)
         self.i_ok.clicked.connect(lambda: self.close())
         self.i_message.setText(msg)
+        self.i_message.setAlignment(Qt.AlignCenter)
         self.show()
 
