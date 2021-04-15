@@ -63,11 +63,11 @@ class Login(QDialog):
                 isAdmin = db.child("users").child(UUID).child("isAdmin").get().val()
                 if isAdmin == "True":
                     from gui.admin.AdminDashboard import AdminDashboard
-                    AdminDashboard()
+                    mainwindow = AdminDashboard()
                     self.destroy()
                 elif isAdmin == "False":
                     from gui.instructor.InstructorDashboard import InstructorDashboard
-                    InstructorDashboard(UUID)
+                    mainwindow = InstructorDashboard(UUID)
                     self.destroy()
                 else:
                     self.i_password_note.setHidden(False)

@@ -11,7 +11,6 @@ if __name__ == '__main__':
     try:
         app = QApplication(sys.argv)
         mainwindow = Login()
-        # mainwindow = InstructorDashboard("8z8VnJr5acOIFBsJWcZV1DDH7hW2")
         sys.exit(app.exec_())
     except Exception as e:
         Warning(str(e))

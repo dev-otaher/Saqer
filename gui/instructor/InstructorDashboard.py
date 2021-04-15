@@ -1,10 +1,9 @@
 import sys
 from functools import partial
-
+from gui.Login import Login
 from PyQt5 import uic, QtCore
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QDialog
-
 from gui.Warning import Warning
 from gui.instructor.Session import Session
 from gui.instructor.ViewReports import ViewReports
@@ -77,8 +76,7 @@ class InstructorDashboard(QDialog):
     def logout(self):
         try:
             if self.session.vt is not None: self.session.vt.threadActive = False
-            from gui import Login
-            Login.Login()
+            mainwindow = Login()
             self.destroy()
         except Exception as e:
             Warning(str(e))

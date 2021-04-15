@@ -4,7 +4,7 @@ from functools import partial
 from PyQt5 import uic, QtCore
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QDialog, QFileDialog
-
+from gui.Login import Login
 from gui.Warning import Warning
 from gui.admin.OfflineAttendance import OfflineAttendance
 from gui.admin.RegisterStudent import RegisterStudent
@@ -81,8 +81,7 @@ class AdminDashboard(QDialog):
         try:
             if self.register_student.thread is not None: self.register_student.thread = False
             if self.train_model.encoder.is_thread_active is not None: self.train_model.encoder.is_thread_active = False
-            from gui import Login
-            Login.Login()
+            mainwindow = Login()
             self.destroy()
         except Exception as e:
             Warning(str(e))
