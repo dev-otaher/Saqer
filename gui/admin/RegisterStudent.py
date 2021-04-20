@@ -1,3 +1,5 @@
+import re
+from os import mkdir
 from os.path import exists
 from os.path import sep
 from sqlite3 import Connection, IntegrityError
@@ -39,24 +41,28 @@ class RegisterStudent:
         return self.parent.i_student_name.text()
 
     def start_cam(self):
-        uni_id = self.get_uni_id()
-        std_name = self.get_std_name()
-        if uni_id == "":
-            self.parent.i_id_note.setHidden(False)
-        elif std_name == "":
-            self.parent.i_name_note.setHidden(False)
-        else:
-            self.hide_widgets()
-            self.thread.uni_id = uni_id
-            self.thread.start()
+        try:
+            uni_id = self.get_uni_id()
+            std_name = self.get_std_name()
+            regex = re.compile(r"\d{3}000\d{4}$")
+            if uni_id == "" or re.match(regex, uni_id) is None:
+                self.parent.i_id_note.setHidden(False)
+            elif std_name == "":
+                self.parent.i_name_note.setHidden(False)
+            else:
+                self.hide_widgets()
+                self.thread.uni_id = uni_id
+                self.thread.start()
+        except Exception as e:
+            print(e)
 
     def stop_cam(self):
         self.thread.threadActive = False
 
     def capture(self):
-        path = os.path.sep.join(['db', 'dataset', self.parent.i_university_id.text()])
+        path = sep.join(['db', 'dataset', self.parent.i_university_id.text()])
         if not exists(path):
-            os.mkdir(path)
+            mkdir(path)
         self.thread.save = True
 
     def register(self):
