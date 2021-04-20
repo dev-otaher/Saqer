@@ -1184,7 +1184,6 @@ QPushButton:pressed {
       <property name="styleSheet">
        <string notr="true">QProgressBar{
 	background-color:rgb(40, 120, 120);
-	color: rgb(49, 147, 147);
 	color: rgb(56, 56, 56);
 	border-style:none;
 	border-radius:10px;
@@ -1192,7 +1191,7 @@ QPushButton:pressed {
 }
 QProgressBar::chunk{
 	border-radius:10px; 
-	background-color: qlineargradient(spread:pad, x1:0, y1:0.488591, x2:0.989474, y2:0.54, stop:0 #38DBD0, stop:1#38DBD0);
+	background-color: qlineargradient(spread:pad, x1:0, y1:0.488591, x2:0.989474, y2:0.54, stop:0 #38DBD0, stop:1#00ca5e);
 }</string>
       </property>
       <property name="value">

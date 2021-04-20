@@ -2,7 +2,6 @@ import sys
 from PyQt5.QtWidgets import QApplication
 from gui.Login import Login
 from gui.Warning import Warning
-from gui.admin.AdminDashboard import AdminDashboard
 
 if __name__ == '__main__':
     try:
