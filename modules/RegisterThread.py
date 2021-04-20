@@ -4,6 +4,7 @@ from sqlite3 import Error
 
 import cv2
 import imutils
+import numpy
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QImage
 
@@ -51,7 +52,8 @@ class RegisterThread(VideoThread):
                 else:
                     self.no_cam.emit("Failed to open camera or no camera found!")
                     break
-            self.image_update.emit(QImage(first_frame, first_frame.shape[1], first_frame.shape[0], QImage.Format_RGB888))
+            black_frame = numpy.zeros((1920, 1080, 3), dtype=numpy.uint8)
+            self.image_update.emit(QImage(black_frame, black_frame.shape[1], black_frame.shape[0], QImage.Format_RGB888))
             cap.release()
         except Error as e:
             Warning(str(e))
