@@ -18,7 +18,7 @@ class ForgetPassword(QDialog):
         self.i_send.clicked.connect(self.send_email)
         self.i_close.clicked.connect(lambda: self.close())
         self.i_email_note.setHidden(True)
-        self.setWindowFlags(QtCore.Qt.WindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint))
+        self.setWindowFlags(QtCore.Qt.WindowFlags(QtCore.Qt.FramelessWindowHint))
         self.i_header.mouseMoveEvent = self.move_window
         self.setWindowModality(Qt.ApplicationModal)
         self.show()

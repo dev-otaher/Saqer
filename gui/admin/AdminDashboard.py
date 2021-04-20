@@ -17,7 +17,7 @@ class AdminDashboard(QDialog):
     def __init__(self):
         super(AdminDashboard, self).__init__()
         uic.loadUi(sep.join(['gui', 'interfaces', 'AdminDashboard.ui']), self)
-        self.setWindowFlags(QtCore.Qt.WindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint))
+        self.setWindowFlags(QtCore.Qt.WindowFlags(QtCore.Qt.FramelessWindowHint))
         self.connect_widgets()
         self.db = DBHelper()
         self.register_student = RegisterStudent(parent_gui=self)

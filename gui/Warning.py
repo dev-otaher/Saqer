@@ -11,7 +11,7 @@ class Warning(QDialog):
     def __init__(self, msg):
         super(Warning, self).__init__()
         loadUi(sep.join(['gui', 'interfaces', 'Warning.ui']), self)
-        self.setWindowFlags(QtCore.Qt.WindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint))
+        self.setWindowFlags(QtCore.Qt.WindowFlags(QtCore.Qt.FramelessWindowHint))
         self.setWindowModality(Qt.ApplicationModal)
         self.i_ok.clicked.connect(lambda: self.close())
         self.i_message.setText(msg)

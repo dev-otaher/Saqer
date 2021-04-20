@@ -17,7 +17,7 @@ class InstructorDashboard(QDialog):
     def __init__(self, UUID):
         super(InstructorDashboard, self).__init__()
         uic.loadUi(sep.join(['gui', 'interfaces', 'InstructorDashboard.ui']), self)
-        self.setWindowFlags(QtCore.Qt.WindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint))
+        self.setWindowFlags(QtCore.Qt.WindowFlags(QtCore.Qt.FramelessWindowHint))
         self.connect_widgets()
         self.UUID = UUID
         self.db = DBHelper()

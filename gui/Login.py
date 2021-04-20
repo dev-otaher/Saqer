@@ -24,7 +24,7 @@ class Login(QDialog):
         self.i_minmize.clicked.connect(lambda: self.showMinimized())
         self.i_forget_pass.clicked.connect(self.forget_password)
         self.i_header.mouseMoveEvent = self.move_window
-        self.setWindowFlags(QtCore.Qt.WindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint))
+        self.setWindowFlags(QtCore.Qt.WindowFlags(QtCore.Qt.FramelessWindowHint))
         self.show()
 
     # Move window around
