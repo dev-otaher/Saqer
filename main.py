@@ -7,8 +7,7 @@ from gui.admin.AdminDashboard import AdminDashboard
 if __name__ == '__main__':
     try:
         app = QApplication(sys.argv)
-        # mainwindow = Login()
-        mainwindow = AdminDashboard()
+        mainwindow = Login()
         sys.exit(app.exec_())
     except Exception as e:
         Warning(str(e))

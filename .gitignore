@@ -3,8 +3,7 @@ venv
 db/serviceAccountKey.json
 *.pyc
 gui/__pycache__/
-
+db/courses/CS521/
 *.jpg
-*.png
 *.jpeg
 *.avi

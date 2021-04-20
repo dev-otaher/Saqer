@@ -467,6 +467,10 @@ QPushButton:pressed {
       <property name="text">
        <string>Open Camera</string>
       </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>../images/camera.png</normaloff>../images/camera.png</iconset>
+      </property>
       <property name="iconSize">
        <size>
         <width>30</width>
@@ -523,12 +527,16 @@ QPushButton:pressed {
 }</string>
       </property>
       <property name="text">
-       <string>Stop Camera</string>
+       <string>  Stop Camera</string>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>../images/stop.png</normaloff>../images/stop.png</iconset>
       </property>
       <property name="iconSize">
        <size>
-        <width>30</width>
-        <height>30</height>
+        <width>18</width>
+        <height>18</height>
        </size>
       </property>
       <property name="checkable">
@@ -581,16 +589,16 @@ QPushButton:pressed {
 }</string>
       </property>
       <property name="text">
-       <string>Capture</string>
+       <string>  Save</string>
       </property>
       <property name="icon">
        <iconset>
-        <normaloff>../images/camera.png</normaloff>../images/camera.png</iconset>
+        <normaloff>../images/diskette.png</normaloff>../images/diskette.png</iconset>
       </property>
       <property name="iconSize">
        <size>
-        <width>30</width>
-        <height>30</height>
+        <width>22</width>
+        <height>22</height>
        </size>
       </property>
       <property name="checkable">
