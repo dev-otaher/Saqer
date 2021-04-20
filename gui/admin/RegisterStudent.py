@@ -69,7 +69,8 @@ class RegisterStudent:
         try:
             uni_id = self.get_uni_id()
             name = self.get_std_name()
-            if uni_id == "":
+            regex = re.compile(r"\d{3}000\d{4}$")
+            if uni_id == "" or re.match(regex, uni_id) is None:
                 self.parent.i_id_note.setHidden(False)
             elif name == "":
                 self.parent.i_name_note.setHidden(False)
