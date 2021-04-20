@@ -9,7 +9,6 @@ from PyQt5.QtWidgets import QDialog
 from PyQt5.uic import loadUi
 
 from gui import Success
-from gui.Warning import Warning
 
 
 class ForgetPassword(QDialog):
