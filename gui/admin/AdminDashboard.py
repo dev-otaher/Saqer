@@ -1,10 +1,11 @@
 import sys
 from functools import partial
+from os.path import sep
 
 from PyQt5 import uic, QtCore
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QDialog, QFileDialog
-from gui.Login import Login
+
 from gui.Warning import Warning
 from gui.admin.OfflineAttendance import OfflineAttendance
 from gui.admin.RegisterStudent import RegisterStudent
@@ -15,7 +16,7 @@ from modules.DBHelper import DBHelper
 class AdminDashboard(QDialog):
     def __init__(self):
         super(AdminDashboard, self).__init__()
-        uic.loadUi("gui/interfaces/AdminDashboard.ui", self)
+        uic.loadUi(sep.join(['gui', 'interfaces', 'AdminDashboard.ui']), self)
         self.setWindowFlags(QtCore.Qt.WindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint))
         self.connect_widgets()
         self.db = DBHelper()
@@ -79,8 +80,9 @@ class AdminDashboard(QDialog):
 
     def logout(self):
         try:
-            if self.register_student.thread is not None: self.register_student.thread = False
-            if self.train_model.encoder.is_thread_active is not None: self.train_model.encoder.is_thread_active = False
+            from gui.Login import Login
+            if self.register_student is not None: self.register_student.stop_cam()
+            if self.train_model.encoder is not None: self.train_model.encoder.is_thread_active = False
             mainwindow = Login()
             self.destroy()
         except Exception as e:

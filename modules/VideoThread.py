@@ -1,6 +1,6 @@
-import os
 import time
 from math import floor
+from os.path import sep
 from sqlite3 import Error
 
 import cv2
@@ -10,8 +10,6 @@ from PyQt5.QtCore import pyqtSignal, QThread, Qt
 from PyQt5.QtGui import QImage
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.image import img_to_array
-# from keras.models import load_model
-# from keras.preprocessing.image import img_to_array
 
 from gui.Warning import Warning
 from modules.AttendanceTaker import AttendanceTaker
@@ -119,14 +117,14 @@ class VideoThread(QThread):
             first_loop = self.threadActive = found_cam = True
             while self.threadActive:
                 ret, frame = cap.read()
-                if ret is False and first_loop:
+                if (not ret) and first_loop:
                     self.no_cam.emit("Failed to open camera or no camera found!")
                     found_cam = False
                     break
                 if ret:
                     frame = imutils.resize(frame, width=1080)
                     if self.isRecord and first_loop:
-                        writer = cv2.VideoWriter(os.path.sep.join([self.folder_path, self.filename+'.avi']), cv2.VideoWriter_fourcc(*'XVID'), 10, (frame.shape[1], frame.shape[0]), True)
+                        writer = cv2.VideoWriter(sep.join([self.folder_path, self.filename+'.avi']), cv2.VideoWriter_fourcc(*'XVID'), 10, (frame.shape[1], frame.shape[0]), True)
                     if self.isRecord:
                         writer.write(frame)
                     locations = self.get_locations(frame)

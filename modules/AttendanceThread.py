@@ -16,7 +16,7 @@ class AttendanceThread(QThread):
 
     def __init__(self, child_pipe: multiprocessing.Pipe, path=""):
         super(AttendanceThread, self).__init__(parent=None)
-        self.path = path
+        self.video_path = path
         self.child_pipe = child_pipe
         self.course_code = int()
         self.class_title = ""
@@ -27,7 +27,7 @@ class AttendanceThread(QThread):
 
     def run(self):
         try:
-            vs_info = FileVideoStreamInfo(self.path)
+            vs_info = FileVideoStreamInfo(self.video_path)
             fps, total_frames, duration = vs_info.get_fps(), vs_info.get_total_frames(), vs_info.get_duration(True)
             CPUs, interval = cpu_count() - 2, 0.5
             chunk_size = duration / CPUs
@@ -35,7 +35,7 @@ class AttendanceThread(QThread):
             total_picked_frames = duration / interval
             self.max_signal.emit(int(total_picked_frames))
             for i in range(CPUs):
-                r = Recognizer(self.path,
+                r = Recognizer(self.video_path,
                                qsize,
                                self.students,
                                "db/model/deploy.prototxt",

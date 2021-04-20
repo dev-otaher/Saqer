@@ -1,3 +1,4 @@
+from os.path import sep
 from sqlite3 import Error, Connection
 
 from PyQt5.QtCore import QModelIndex
@@ -24,7 +25,7 @@ class ViewReports:
         self.connect_widgets()
         self.hide_widgets()
         self.format_tables()
-        self.db_conn: Connection = self.parent.db.create_db_connection("db/saqer.db")
+        self.db_conn: Connection = self.parent.db.create_db_connection(sep.join(['db', 'saqer.db']))
         self.fill_courses()
 
     def connect_widgets(self):

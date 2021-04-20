@@ -70,8 +70,8 @@ INSERT INTO "user" VALUES ('abahasn','Abdulaziz Bahasan','abahasn@iau.edu.sa','0
  ('kawlaqi','khalid Awlaqi','kawlaqi@iau.edu.sa','0456632',1);
 INSERT INTO "student" VALUES (2170003286,'Waleed'),
  (2170007761,'Omar');
-INSERT INTO "student_photos" VALUES (2170003286,'file:///C:/Users/lenovo-pc/Desktop/IAU/GP 2020-2021/CS-511/Team Work/Charts/ER Diagram (SDS)/ERD all-Page-2.png'),
- (2170007761,'file:///C:/Users/lenovo-pc/Desktop/IAU/GP 2020-2021/CS-511/Team Work/Images/face-detection.png');
+INSERT INTO "student_photos" VALUES (2170003286,'output_path:///C:/Users/lenovo-pc/Desktop/IAU/GP 2020-2021/CS-511/Team Work/Charts/ER Diagram (SDS)/ERD all-Page-2.png'),
+ (2170007761,'output_path:///C:/Users/lenovo-pc/Desktop/IAU/GP 2020-2021/CS-511/Team Work/Images/face-detection.png');
 INSERT INTO "course" VALUES (1,'CS414','Computer Organization'),
  (2,'CS411','Software Engineering'),
  (3,'CS511','Project Proposal'),

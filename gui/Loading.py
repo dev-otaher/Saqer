@@ -1,3 +1,5 @@
+from os.path import sep
+
 from PyQt5 import QtWidgets
 from PyQt5 import uic
 from PyQt5.QtCore import Qt, QTimer
@@ -8,7 +10,7 @@ from gui.Login import Login
 class Loading(QtWidgets.QMainWindow):
     def __init__(self):
         super(Loading, self).__init__()
-        uic.loadUi("gui/interfaces/Loading.ui", self)
+        uic.loadUi(sep.join(['gui', 'interfaces', 'Loading.ui']), self)
         self.setWindowFlag(Qt.FramelessWindowHint)
         self.setAttribute(Qt.WA_TranslucentBackground)
         self.timer = QTimer(self)

@@ -1,5 +1,5 @@
-import os
 from os.path import exists
+from os.path import sep
 from sqlite3 import Connection, IntegrityError
 
 from PyQt5.QtGui import QPixmap
@@ -12,11 +12,10 @@ from modules.RegisterThread import RegisterThread
 def show_alert(msg):
     Warning(msg)
 
-
 class RegisterStudent:
     def __init__(self, parent_gui):
         self.parent = parent_gui
-        self.db_conn: Connection = self.parent.db.create_db_connection("db/saqer.db")
+        self.db_conn: Connection = self.parent.db.create_db_connection(sep.join(['db', 'saqer.db']))
         self.thread = RegisterThread(0)
         self.hide_widgets()
         self.connect_widgets()
@@ -55,7 +54,7 @@ class RegisterStudent:
         self.thread.threadActive = False
 
     def capture(self):
-        path = f"db/dataset/{self.parent.i_university_id.text()}"
+        path = os.path.sep.join(['db', 'dataset', self.parent.i_university_id.text()])
         if not exists(path):
             os.mkdir(path)
         self.thread.save = True
@@ -64,14 +63,19 @@ class RegisterStudent:
         try:
             uni_id = self.get_uni_id()
             name = self.get_std_name()
-            sql = '''
-                    INSERT INTO student(uni_id, name)
-                    VALUES (?, ?)
-                    '''
-            with self.db_conn as con:
-                con.cursor().execute(sql, (int(uni_id), name))
-                con.commit()
-                Success("Data Saved!")
+            if uni_id == "":
+                self.parent.i_id_note.setHidden(False)
+            elif name == "":
+                self.parent.i_name_note.setHidden(False)
+            else:
+                sql = '''
+                        INSERT INTO student(uni_id, name)
+                        VALUES (?, ?)
+                        '''
+                with self.db_conn as con:
+                    con.cursor().execute(sql, (int(uni_id), name))
+                    con.commit()
+                    Success("Data Saved!")
         except IntegrityError:
             Warning("Student already exists!")
         except Exception as e:

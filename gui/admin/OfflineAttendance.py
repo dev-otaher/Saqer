@@ -1,6 +1,6 @@
-import os
 from multiprocessing import Pipe
-from os.path import exists
+from os import getcwd
+from os.path import exists, sep
 from sqlite3 import Error
 from typing import List
 
@@ -27,7 +27,7 @@ class OfflineAttendance:
         self.emitter.new_list.connect(self.combine_std_lists)
         self.students = Students()
         self.db = DBHelper()
-        self.db_conn = DBHelper().create_db_connection("db/saqer.db")
+        self.db_conn = DBHelper().create_db_connection(sep.join(['db', 'saqer.db']))
         self.fill_instructor_cb()
 
     def connect_widgets(self):
@@ -118,7 +118,8 @@ class OfflineAttendance:
 
     def prepare_thread(self, path, code, class_id, class_title):
         self.attendance_thread.max_signal.connect(self.set_bar_max)
-        self.attendance_thread.path = path
+
+        self.attendance_thread.video_path = path
         self.attendance_thread.course_code = code
         self.attendance_thread.class_title = class_title
         self.attendance_thread.get_students(class_id)
@@ -129,15 +130,26 @@ class OfflineAttendance:
             course_code = self.get_course_code(self.parent.i_course_cb.currentData())
             class_title = self.parent.i_class_cb.currentText()
             dt = self.parent.i_date_cb.currentText()
-            recording_path = os.getcwd()+f"/db/courses/{course_code}/{class_title}/{dt}.avi"
-            recognizer_path = os.getcwd()+f"/db/courses/{course_code}/{class_title}/dataset/output/recognizer.pickle"
-            labels_path = os.getcwd()+f"/db/courses/{course_code}/{class_title}/dataset/output/labels.pickle"
+            recording_path = sep.join([getcwd(), 'db', 'courses', course_code, class_title, f"{dt}.avi"])
+            recognizer_path = sep.join(
+                [getcwd(), 'db', 'courses', course_code, class_title, 'dataset', 'output', 'recognizer.pickle'])
+            labels_path = sep.join(
+                [getcwd(), 'db', 'courses', course_code, class_title, 'dataset', 'output', 'labels.pickle'])
+            proto_path = sep.join(['db', 'model', 'deploy.prototxt'])
+            model_path = sep.join(['db', 'model', 'res10_300x300_ssd_iter_140000.caffemodel'])
+            embedder_path = sep.join(['db', 'model', 'openface_nn4.small2.v1.t7'])
             if not exists(recording_path):
                 self.parent.i_video_note.setHidden(False)
+            elif not exists(proto_path):
+                Warning('Could not find "db/model/deploy.prototxt"!')
+            elif not exists(model_path):
+                Warning('Could not find "db/model/res10_300x300_ssd_iter_140000.caffemodel"!')
+            elif not exists(embedder_path):
+                Warning('Could not find "db/model/openface_nn4.small2.v1.t7"!')
             elif not exists(recognizer_path):
-                Warning("Could not find 'recognizer.pickle'! Train model first!")
+                Warning('Could not find "recognizer.pickle"! Train model first!')
             elif not exists(labels_path):
-                Warning("Could not find 'labels.pickle'! Train model first!")
+                Warning('Could not find "labels.pickle"! Train model first!')
             else:
                 self.reset_table(self.parent.i_recheck_table)
                 self.reset_progress_bar()
@@ -177,7 +189,7 @@ class OfflineAttendance:
         for std in self.students:
             self.add_record(std.uni_id, std.name, std.appear_counter, checkpoints)
             checkbox = QtWidgets.QCheckBox()
-            is_present = std.appear_counter/self.parent.i_progress_bar.maximum() > 0.7
+            is_present = std.appear_counter / self.parent.i_progress_bar.maximum() > 0.7
             checkbox.setChecked(is_present)
             self.parent.i_recheck_table.setCellWidget(0, 3, checkbox)
 
@@ -185,7 +197,7 @@ class OfflineAttendance:
         self.parent.i_recheck_table.insertRow(0)
         self.parent.i_recheck_table.setItem(0, 0, QtWidgets.QTableWidgetItem(uni_id))
         self.parent.i_recheck_table.setItem(0, 1, QtWidgets.QTableWidgetItem(name))
-        self.parent.i_recheck_table.setItem(0, 2,QtWidgets.QTableWidgetItem(str(appear_counter) + f"/{checkpoints}"))
+        self.parent.i_recheck_table.setItem(0, 2, QtWidgets.QTableWidgetItem(str(appear_counter) + f"/{checkpoints}"))
 
     def save_data(self):
         try:
@@ -211,4 +223,3 @@ class OfflineAttendance:
         except Exception as e:
             Warning(str(e))
             print(e)
-

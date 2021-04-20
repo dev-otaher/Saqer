@@ -1,6 +1,6 @@
-import os
 import pickle
 from datetime import datetime
+from os.path import sep
 
 import cv2
 import imutils
@@ -14,10 +14,11 @@ class Encoder(QThread):
     update_available = pyqtSignal(int)
     def __init__(self, protoPath, modelPath, embedderPath, confidence=0.6):
         super().__init__()
-        self._detector = cv2.dnn.readNetFromCaffe(protoPath, modelPath)
-        self._embedder = cv2.dnn.readNetFromTorch(embedderPath)
+        self.protoPath, self.modelPath, self.embedderPath = protoPath, modelPath, embedderPath
+        self._detector = None
+        self._embedder = None
         self.confidence = confidence
-        self.file = str()
+        self.output_path = str()
         self.dataset_path = str()
         self.is_thread_active = False
 
@@ -62,7 +63,7 @@ class Encoder(QThread):
 
     def save_encodings(self, data):
         try:
-            f = open(f"{self.file}/encodings_{self.get_current_datetime()}.pickle", "wb")
+            f = open(sep.join([self.output_path, f"encodings_{self.get_current_datetime()}.pickle"]), "wb")
             f.write(pickle.dumps(data))
             f.close()
         except Exception as e:
@@ -76,8 +77,10 @@ class Encoder(QThread):
         names = []
         embeddings = []
         self.is_thread_active = True
+        self._detector = cv2.dnn.readNetFromCaffe(self.protoPath, self.modelPath)
+        self._embedder = cv2.dnn.readNetFromTorch(self.embedderPath)
         for i, path in enumerate(self.dataset_path):
-            if self.is_thread_active is False:
+            if not self.is_thread_active:
                 return
             frame = imutils.resize(cv2.imread(path), width=800)
             location = self.get_location(frame)
@@ -85,7 +88,7 @@ class Encoder(QThread):
                 face = self.get_face(frame, location)
                 embedding = self.encode(face)
                 if embedding is not None:
-                    names.append(path.split(os.path.sep)[-2])
+                    names.append(path.split(sep)[-2])
                     embeddings.append(embedding)
             self.update_available.emit(1)
         self.save_encodings({"names": names, "embeddings": embeddings})

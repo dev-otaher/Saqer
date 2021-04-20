@@ -1,5 +1,6 @@
 import json
 import re
+from os.path import sep
 
 import pyrebase
 from PyQt5 import QtCore
@@ -14,7 +15,7 @@ from gui.Warning import Warning
 class ForgetPassword(QDialog):
     def __init__(self):
         super(ForgetPassword, self).__init__()
-        loadUi("gui/interfaces/ForgetPassword.ui", self)
+        loadUi(sep.join(['gui', 'interfaces', 'ForgetPassword.ui']), self)
         self.i_send.clicked.connect(self.send_email)
         self.i_close.clicked.connect(lambda: self.close())
         self.i_email_note.setHidden(True)
@@ -42,7 +43,7 @@ class ForgetPassword(QDialog):
             if email == "" or not re.match(pattern, email):
                 self.i_email_note.setHidden(False)
             else:
-                with open('db/fbConfig.json') as file:
+                with open(sep.join(['db', 'fbConfig.json'])) as file:
                   config = json.load(file)
                 firebase = pyrebase.initialize_app(config)
                 auth = firebase.auth()

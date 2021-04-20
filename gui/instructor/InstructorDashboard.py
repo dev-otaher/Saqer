@@ -1,9 +1,11 @@
 import sys
 from functools import partial
-from gui.Login import Login
+from os.path import sep
+
 from PyQt5 import uic, QtCore
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QDialog
+
 from gui.Warning import Warning
 from gui.instructor.Session import Session
 from gui.instructor.ViewReports import ViewReports
@@ -14,7 +16,7 @@ class InstructorDashboard(QDialog):
 
     def __init__(self, UUID):
         super(InstructorDashboard, self).__init__()
-        uic.loadUi("gui/interfaces/InstructorDashboard.ui", self)
+        uic.loadUi(sep.join(['gui', 'interfaces', 'InstructorDashboard.ui']), self)
         self.setWindowFlags(QtCore.Qt.WindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint))
         self.connect_widgets()
         self.UUID = UUID
@@ -76,6 +78,7 @@ class InstructorDashboard(QDialog):
     def logout(self):
         try:
             if self.session.vt is not None: self.session.vt.threadActive = False
+            from gui.Login import Login
             mainwindow = Login()
             self.destroy()
         except Exception as e:

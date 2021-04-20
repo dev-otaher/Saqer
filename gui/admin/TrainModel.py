@@ -1,4 +1,5 @@
-import os
+from os import getcwd, mkdir
+from os.path import sep, exists, dirname
 
 from imutils import paths
 
@@ -13,10 +14,7 @@ class TrainModel:
         self.parent = parent_gui
         self.connect_widgets()
         self.hide_widgets()
-        self.encoder = Encoder(protoPath="db/model/deploy.prototxt",
-                       modelPath="db/model/res10_300x300_ssd_iter_140000.caffemodel",
-                       embedderPath="db/model/openface_nn4.small2.v1.t7")
-        self.encoder.update_available.connect(self.update_progress)
+        self.encoder = None
         self.trainer = Trainer(75.0)
         self.trainer.finished.connect(lambda: Success("Model trained successfully!"))
 
@@ -33,17 +31,40 @@ class TrainModel:
     def set_bar_max(self, val):
         self.parent.i_train_progress.setMaximum(val)
 
+    def prepare_encoder(self):
+        proto_path = sep.join([getcwd(), 'db', 'model', 'deploy.prototxt'])
+        model_path = sep.join([getcwd(), 'db', 'model', 'res10_300x300_ssd_iter_140000.caffemodel'])
+        embedder_path = sep.join([getcwd(), 'db', 'model', 'openface_nn4.small2.v1.t7'])
+        if not exists(proto_path):
+            Warning('Could not find "db/model/deploy.prototxt"!')
+            return False
+        elif not exists(model_path):
+            Warning('Could not find "db/model/res10_300x300_ssd_iter_140000.caffemodel"!')
+            return False
+        elif not exists(embedder_path):
+            Warning('Could not find "db/model/openface_nn4.small2.v1.t7"!')
+            return False
+        else:
+            self.encoder = Encoder(proto_path, model_path, embedder_path)
+            self.encoder.update_available.connect(self.update_progress)
+            return True
+
     def extract_encodings(self):
         try:
             self.parent.i_folder_note.setHidden(True)
             path = self.parent.i_folder_path.text()
+            images_path = list(paths.list_images(path))
             if path == "":
+                self.parent.i_folder_note.setText("No folder selected!")
                 self.parent.i_folder_note.setHidden(False)
-            else:
-                self.show_bar()
+            elif len(images_path) == 0:
+                self.parent.i_folder_note.setText("No pictures found!")
+                self.parent.i_folder_note.setHidden(False)
+            elif self.prepare_encoder():
                 self.reset_bar()
-                self.encoder.file = path+"/output"
-                images_path = list(paths.list_images(path))
+                self.show_bar()
+                self.encoder.output_path = sep.join([path, 'output'])
+                if not exists(self.encoder.output_path): mkdir(self.encoder.output_path)
                 self.encoder.dataset_path = images_path
                 self.set_bar_max(len(images_path))
                 self.encoder.start()
@@ -55,14 +76,15 @@ class TrainModel:
         try:
             self.parent.i_pickle_note.setHidden(True)
             path = self.parent.i_pickle_path.text()
-            # path = "D:/Playground/Python/FaceAttendance - Parallelism/class_videos/1k - 2.MOV"
             if path == "":
                 self.parent.i_pickle_note.setHidden(False)
+            elif not exists(path):
+                Warning("Could not find file! File might be deleted or not accessible!")
             else:
                 self.show_bar()
                 self.reset_bar()
                 self.trainer.encodings_path = self.parent.i_pickle_path.text()
-                dir = os.path.dirname(self.trainer.encodings_path)
+                dir = dirname(self.trainer.encodings_path)
                 self.trainer.output_path = dir
                 self.trainer.start()
         except Exception as e:
@@ -82,4 +104,3 @@ class TrainModel:
         except Exception as e:
             Warning(str(e))
             print(e)
-

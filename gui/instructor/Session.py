@@ -1,7 +1,7 @@
-import os
 import pickle
 from datetime import datetime
 from os.path import exists
+from os.path import sep
 from sqlite3 import Error, Connection
 
 from PyQt5.QtGui import QPixmap
@@ -20,7 +20,7 @@ class Session:
         self.parent = parent_gui
         self.connect_widgets()
         self.hide_widgets()
-        self.db_conn: Connection = self.parent.db.create_db_connection("db/saqer.db")
+        self.db_conn: Connection = self.parent.db.create_db_connection(sep.join(['db', 'saqer.db']))
         self.fill_courses()
         self.vt: VideoThread = None
         self.class_id = None
@@ -100,36 +100,54 @@ class Session:
             return course_code
 
     def prepare_thread(self):
-        self.vt = VideoThread("video_samples/1k.mp4",
-                    "db/model/deploy.prototxt",
-                    "db/model/res10_300x300_ssd_iter_140000.caffemodel",
-                    "db/model/openface_nn4.small2.v1.t7",
-                    "db/model/epoch_75.hdf5")
-        self.vt.image_update.connect(self.update_holder)
-        self.vt.std_list.connect(self.fill_recheck_table)
-        self.vt.no_cam.connect(show_alert)
-        self.vt.no_cam.connect(self.default_layout)
-        class_title, course_code = self.parent.i_classes_cb.currentText(), self.get_course_code()
-        r_path = f"db/courses/{course_code}/{class_title}/dataset/output/recognizer.pickle"
-        l_path = f"db/courses/{course_code}/{class_title}/dataset/output/labels.pickle"
-        if exists(r_path) and exists(l_path):
-            self.vt.recognizer = pickle.loads(open(r_path, 'rb').read())
-            self.vt.label_encoder = pickle.loads(open(l_path, 'rb').read())
-            self.vt.isRecord = self.parent.i_save_recording_checkbox.isChecked()
-            self.vt.folder_path = os.path.sep.join(['db', 'courses', course_code, class_title])
-            self.date_time = self.vt.filename = str(datetime.now()).replace(":", ".")
-            return True
-        else:
-            Warning("No recognizer found!")
+        proto_path = sep.join(['db', 'model', 'deploy.prototxt'])
+        model_path = sep.join(['db', 'model', 'res10_300x300_ssd_iter_140000.caffemodel'])
+        embedder_path = sep.join(['db', 'model', 'openface_nn4.small2.v1.t7'])
+        behaviour_path = sep.join(['db', 'model', 'epoch_75.hdf5'])
+        if not exists(proto_path):
+            Warning('Could not find "db/model/deploy.prototxt"!')
             return False
+        elif not exists(model_path):
+            Warning('Could not find "db/model/res10_300x300_ssd_iter_140000.caffemodel"!')
+            return False
+        elif not exists(embedder_path):
+            Warning('Could not find "db/model/openface_nn4.small2.v1.t7"!')
+            return False
+        elif not exists(behaviour_path):
+            Warning('Could not find "db/model/epoch_75.hdf5"!')
+            return False
+        else:
+            self.vt = VideoThread(
+                        sep.join(['video_samples', '1k.mp4']),
+                        proto_path,
+                        model_path,
+                        embedder_path,
+                        behaviour_path
+            )
+            self.vt.image_update.connect(self.update_holder)
+            self.vt.std_list.connect(self.fill_recheck_table)
+            self.vt.no_cam.connect(show_alert)
+            self.vt.no_cam.connect(self.default_layout)
+            class_title, course_code = self.parent.i_classes_cb.currentText(), self.get_course_code()
+            r_path = sep.join(['db', 'courses', course_code, class_title, 'dataset', 'output', 'recognizer.pickle'])
+            l_path = sep.join(['db', 'courses', course_code, class_title, 'dataset', 'output', 'labels.pickle'])
+            if exists(r_path) and exists(l_path):
+                self.vt.recognizer = pickle.loads(open(r_path, 'rb').read())
+                self.vt.label_encoder = pickle.loads(open(l_path, 'rb').read())
+                self.vt.isRecord = self.parent.i_save_recording_checkbox.isChecked()
+                self.vt.folder_path = sep.join(['db', 'courses', course_code, class_title])
+                self.date_time = self.vt.filename = str(datetime.now()).replace(":", ".")
+                return True
+            else:
+                Warning("Recognizer or labels not found!")
+                return False
 
     def start_session(self):
-        if self.prepare_thread() is True:
+        if self.prepare_thread():
             self.class_id = self.vt.class_id = self.parent.i_classes_cb.currentData()
             self.parent.disable_btn(self.parent.i_start_session)
             self.parent.enable_btn(self.parent.i_end_session)
             self.parent.goto(self.parent.i_video_sec, self.parent.i_video_holder)
-
             self.vt.start()
 
     def update_holder(self, frame):

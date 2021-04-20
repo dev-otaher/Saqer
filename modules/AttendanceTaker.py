@@ -1,3 +1,5 @@
+from os.path import sep
+
 from modules.DBHelper import DBHelper
 from modules.Student import Student
 from modules.Students import Students
@@ -10,7 +12,7 @@ class AttendanceTaker:
         self.checkpoints = 0
         self.faces = 0
         self.db = DBHelper()
-        self.db_conn = DBHelper().create_db_connection("db/saqer.db")
+        self.db_conn = DBHelper().create_db_connection(sep.join(['db', 'saqer.db']))
 
     def populate_std_list(self):
         sql = '''

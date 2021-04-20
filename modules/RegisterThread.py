@@ -1,4 +1,5 @@
 import datetime
+from os.path import sep
 from sqlite3 import Error
 
 import cv2
@@ -30,7 +31,7 @@ class RegisterThread(VideoThread):
                 cap = cv2.VideoCapture(self.stream_path)
             self.threadActive = True
             ret, first_frame = cap.read()
-            if ret is False:
+            if not ret:
                 self.no_cam.emit("Failed to open camera or no camera found!")
                 return
             while self.threadActive:
@@ -39,7 +40,7 @@ class RegisterThread(VideoThread):
                     frame = imutils.resize(frame, width=1080)
                     if self.save:
                         filename = str(datetime.datetime.now()).replace(":", ".")
-                        cv2.imwrite(f"db/dataset/{self.uni_id}/{filename}.jpg", frame)
+                        cv2.imwrite(sep.join(['db', 'dataset', self.uni_id, f"{filename}.jpg"]), frame)
                         self.save = False
                     # convert the frame into RGB format
                     image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)

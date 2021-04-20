@@ -10,7 +10,7 @@ from numpy import ndarray
 
 class FileVideoStream:
     def __init__(self, path=None, queue_size=128, transform=None):
-        # initialize the file video stream along with the boolean
+        # initialize the output_path video stream along with the boolean
         # used to indicate if the thread should be stopped or not
         self.path = path
         self._scounter = 0
@@ -18,7 +18,7 @@ class FileVideoStream:
         self.transform = transform
 
         # initialize the queue used to store frames read from
-        # the video file
+        # the video output_path
         self.Q = Queue(maxsize=queue_size)
 
     def get_stream(self):
@@ -36,11 +36,11 @@ class FileVideoStream:
 
             # otherwise, ensure the queue has room in it
             if not self.Q.full():
-                # read the next frame from the file
+                # read the next frame from the output_path
                 (grabbed, frame) = stream.read()
 
                 # if the `grabbed` boolean is `False`, then we have
-                # reached the end of the video file
+                # reached the end of the video output_path
                 if not grabbed:
                     self.stopped = True
 
@@ -81,7 +81,7 @@ class FileVideoStream:
             if not self.Q.full():
                 frame_id = ceil(start * fps)
                 ret, frame = self.get_frame_by_id(stream, frame_id)
-                if (ret is False) or (end != -1 and start > end):
+                if (not ret) or (end != -1 and start > end):
                     self.stop()
                     break
                 self.Q.put(frame)

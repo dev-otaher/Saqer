@@ -352,8 +352,8 @@ border-bottom: 2px solid rgb(85, 255, 255);
      <widget class="QLabel" name="label_4">
       <property name="geometry">
        <rect>
-        <x>20</x>
-        <y>210</y>
+        <x>380</x>
+        <y>20</y>
         <width>161</width>
         <height>21</height>
        </rect>
@@ -375,7 +375,7 @@ border-bottom: 2px solid rgb(85, 255, 255);
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>400</y>
+        <y>190</y>
         <width>161</width>
         <height>31</height>
        </rect>
@@ -431,9 +431,9 @@ QPushButton:pressed {
      <widget class="QPushButton" name="i_open_cam">
       <property name="geometry">
        <rect>
-        <x>20</x>
-        <y>250</y>
-        <width>161</width>
+        <x>380</x>
+        <y>690</y>
+        <width>151</width>
         <height>31</height>
        </rect>
       </property>
@@ -489,9 +489,9 @@ QPushButton:pressed {
      <widget class="QPushButton" name="i_stop_cam">
       <property name="geometry">
        <rect>
-        <x>20</x>
-        <y>350</y>
-        <width>161</width>
+        <x>550</x>
+        <y>690</y>
+        <width>151</width>
         <height>31</height>
        </rect>
       </property>
@@ -547,9 +547,9 @@ QPushButton:pressed {
      <widget class="QPushButton" name="i_capture">
       <property name="geometry">
        <rect>
-        <x>20</x>
-        <y>300</y>
-        <width>161</width>
+        <x>720</x>
+        <y>690</y>
+        <width>151</width>
         <height>31</height>
        </rect>
       </property>
@@ -1168,9 +1168,9 @@ QPushButton:pressed {
       <property name="geometry">
        <rect>
         <x>100</x>
-        <y>700</y>
+        <y>703</y>
         <width>631</width>
-        <height>30</height>
+        <height>23</height>
        </rect>
       </property>
       <property name="styleSheet">

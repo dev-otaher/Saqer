@@ -1,5 +1,7 @@
 import sys
+
 from PyQt5.QtWidgets import QApplication
+
 from gui.Login import Login
 from gui.Warning import Warning
 

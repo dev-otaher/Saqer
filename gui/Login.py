@@ -1,11 +1,12 @@
 import json
 import sys
+from os.path import sep
 
 import pyrebase
-import requests
 from PyQt5 import QtCore, uic
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QDialog
+from cv2 import error
 
 from gui.ForgetPassword import ForgetPassword
 from gui.Warning import Warning
@@ -16,7 +17,7 @@ class Login(QDialog):
     # constructor of the class
     def __init__(self):
         super(Login, self).__init__()
-        uic.loadUi("gui/interfaces/Login.ui", self)
+        uic.loadUi(sep.join(['gui', 'interfaces', 'Login.ui']), self)
         self.i_login.clicked.connect(self.login)
         self.i_password_note.setHidden(True)
         self.i_close.clicked.connect(lambda: sys.exit())
@@ -53,7 +54,7 @@ class Login(QDialog):
             self.i_password_note.setHidden(False)
         else:
             try:
-                with open('db/fbConfig.json') as file:
+                with open(sep.join(['db', 'fbConfig.json'])) as file:
                     config = json.load(file)
                 firebase = pyrebase.initialize_app(config)
                 auth = firebase.auth()
@@ -73,6 +74,8 @@ class Login(QDialog):
                     self.i_password_note.setHidden(False)
             except pyrebase.pyrebase.HTTPError:
                 self.i_password_note.setHidden(False)
+            except error as e :
+                Warning(str(e.err))
             except Exception as e:
                 Warning("Something went wrong! Could not login.")
                 print(e)
