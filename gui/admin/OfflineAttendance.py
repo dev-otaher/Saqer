@@ -129,16 +129,22 @@ class OfflineAttendance:
             course_code = self.get_course_code(self.parent.i_course_cb.currentData())
             class_title = self.parent.i_class_cb.currentText()
             dt = self.parent.i_date_cb.currentText()
-            path = os.getcwd()+f"/db/courses/{course_code}/{class_title}/{dt}.avi"
-            if path == "" or not exists(path):
+            recording_path = os.getcwd()+f"/db/courses/{course_code}/{class_title}/{dt}.avi"
+            recognizer_path = os.getcwd()+f"/db/courses/{course_code}/{class_title}/dataset/output/recognizer.pickle"
+            labels_path = os.getcwd()+f"/db/courses/{course_code}/{class_title}/dataset/output/labels.pickle"
+            if not exists(recording_path):
                 self.parent.i_video_note.setHidden(False)
+            elif not exists(recognizer_path):
+                Warning("Could not find 'recognizer.pickle'! Train model first!")
+            elif not exists(labels_path):
+                Warning("Could not find 'labels.pickle'! Train model first!")
             else:
                 self.reset_table(self.parent.i_recheck_table)
                 self.reset_progress_bar()
                 self.students.clear()
                 self.emitter.start()
                 class_id = self.parent.i_class_cb.currentData()
-                self.prepare_thread(path, course_code, class_id, class_title)
+                self.prepare_thread(recording_path, course_code, class_id, class_title)
                 self.attendance_thread.start()
         except Exception as e:
             Warning(str(e))
