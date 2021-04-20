@@ -50,7 +50,6 @@ class ForgetPassword(QDialog):
                 auth.send_password_reset_email(email)
                 Success.Success("We've sent reset link to your email.")
                 self.destroy()
-        except Exception as e:
+        except Exception:
             # if there's error in the email authentication show error message
-            Warning(str(e))
-            print(e)
+            self.i_email_note.setHidden(False)
