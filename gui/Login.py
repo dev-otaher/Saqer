@@ -48,8 +48,8 @@ class Login(QDialog):
 
     def login(self):
         self.i_password_note.setHidden(True)
-        username = self.i_username.text()
-        password = self.i_password.text()
+        username = self.i_username.text().strip()
+        password = self.i_password.text().strip()
         if username == "" or password == "":
             self.i_password_note.setHidden(False)
         else:
