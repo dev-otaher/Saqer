@@ -1,3 +1,4 @@
+import os
 import sys
 from functools import partial
 from os.path import sep
@@ -15,7 +16,7 @@ from modules.DBHelper import DBHelper
 class InstructorDashboard(QDialog):
 
     def __init__(self, UUID):
-        super(InstructorDashboard, self).__init__()
+        super().__init__()
         uic.loadUi(sep.join(['gui', 'interfaces', 'InstructorDashboard.ui']), self)
         self.setWindowFlags(QtCore.Qt.WindowFlags(QtCore.Qt.FramelessWindowHint))
         self.connect_widgets()
@@ -78,9 +79,7 @@ class InstructorDashboard(QDialog):
     def logout(self):
         try:
             if self.session.vt is not None: self.session.vt.threadActive = False
-            from gui.Login import Login
-            mainwindow = Login()
-            self.destroy()
+            os.execl(sys.executable, sys.executable, *sys.argv)
         except Exception as e:
             Warning(str(e))
             print(e)

@@ -117,21 +117,21 @@ class Session:
             Warning('Could not find "db/model/epoch_75.hdf5"!')
             return False
         else:
-            self.vt = VideoThread(
-                        sep.join(['video_samples', '1k.mp4']),
-                        proto_path,
-                        model_path,
-                        embedder_path,
-                        behaviour_path
-            )
-            self.vt.image_update.connect(self.update_holder)
-            self.vt.std_list.connect(self.fill_recheck_table)
-            self.vt.no_cam.connect(show_alert)
-            self.vt.no_cam.connect(self.default_layout)
             class_title, course_code = self.parent.i_classes_cb.currentText(), self.get_course_code()
             r_path = sep.join(['db', 'courses', course_code, class_title, 'dataset', 'output', 'recognizer.pickle'])
             l_path = sep.join(['db', 'courses', course_code, class_title, 'dataset', 'output', 'labels.pickle'])
             if exists(r_path) and exists(l_path):
+                self.vt = VideoThread(
+                    sep.join(['video_samples', '1k.mp4']),
+                    proto_path,
+                    model_path,
+                    embedder_path,
+                    behaviour_path
+                )
+                self.vt.image_update.connect(self.update_holder)
+                self.vt.std_list.connect(self.fill_recheck_table)
+                self.vt.no_cam.connect(show_alert)
+                self.vt.no_cam.connect(self.default_layout)
                 self.vt.recognizer = pickle.loads(open(r_path, 'rb').read())
                 self.vt.label_encoder = pickle.loads(open(l_path, 'rb').read())
                 self.vt.isRecord = self.parent.i_save_recording_checkbox.isChecked()
@@ -144,11 +144,11 @@ class Session:
 
     def start_session(self):
         if self.prepare_thread():
+            self.vt.start()
             self.class_id = self.vt.class_id = self.parent.i_classes_cb.currentData()
             self.parent.disable_btn(self.parent.i_start_session)
             self.parent.enable_btn(self.parent.i_end_session)
             self.parent.goto(self.parent.i_video_sec, self.parent.i_video_holder)
-            self.vt.start()
 
     def update_holder(self, frame):
         try:

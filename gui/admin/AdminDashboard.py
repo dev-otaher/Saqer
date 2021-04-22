@@ -1,3 +1,4 @@
+import os
 import sys
 from functools import partial
 from os.path import sep
@@ -80,11 +81,7 @@ class AdminDashboard(QDialog):
 
     def logout(self):
         try:
-            from gui.Login import Login
-            if self.register_student is not None: self.register_student.stop_cam()
-            if self.train_model.encoder is not None: self.train_model.encoder.is_thread_active = False
-            mainwindow = Login()
-            self.destroy()
+            os.execl(sys.executable, sys.executable, *sys.argv)
         except Exception as e:
             Warning(str(e))
             print(e)

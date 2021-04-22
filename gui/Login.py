@@ -65,11 +65,11 @@ class Login(QDialog):
                 if isAdmin == "True":
                     from gui.admin.AdminDashboard import AdminDashboard
                     mainwindow = AdminDashboard()
-                    self.destroy()
+                    self.close()
                 elif isAdmin == "False":
                     from gui.instructor.InstructorDashboard import InstructorDashboard
                     mainwindow = InstructorDashboard(UUID)
-                    self.destroy()
+                    self.close()
                 else:
                     self.i_password_note.setHidden(False)
             except pyrebase.pyrebase.HTTPError:

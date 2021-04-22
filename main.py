@@ -1,3 +1,4 @@
+import cgitb
 import sys
 
 from PyQt5.QtWidgets import QApplication
@@ -5,6 +6,7 @@ from PyQt5.QtWidgets import QApplication
 from gui.Login import Login
 from gui.Warning import Warning
 
+cgitb.enable(format = 'text')
 if __name__ == '__main__':
     try:
         app = QApplication(sys.argv)

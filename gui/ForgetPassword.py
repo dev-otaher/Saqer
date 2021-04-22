@@ -48,7 +48,7 @@ class ForgetPassword(QDialog):
                 auth = firebase.auth()
                 auth.send_password_reset_email(email)
                 Success.Success("We've sent reset link to your email.")
-                self.destroy()
+                self.close()
         except Exception:
             # if there's error in the email authentication show error message
             self.i_email_note.setHidden(False)

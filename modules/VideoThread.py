@@ -6,10 +6,9 @@ from sqlite3 import Error
 import cv2
 import imutils
 import numpy as np
+import tensorflow
 from PyQt5.QtCore import pyqtSignal, QThread, Qt
 from PyQt5.QtGui import QImage
-from tensorflow.keras.models import load_model
-from tensorflow.keras.preprocessing.image import img_to_array
 
 from gui.Warning import Warning
 from modules.AttendanceTaker import AttendanceTaker
@@ -21,7 +20,7 @@ class VideoThread(QThread):
     image_update = pyqtSignal(QImage)
     std_list = pyqtSignal(object)
     def __init__(self, stream_path, proto_path, model_path, embedder_path, emotioner_path, confidence=0.8):
-        super(VideoThread, self).__init__()
+        super().__init__()
         self.threadActive = True
         self.isRecord = None
         self.folder_path = None
@@ -82,18 +81,17 @@ class VideoThread(QThread):
             id = "Unknown"
         return id, p
 
-    def process_emotion(self, face):
+    def process_emotion(self, facee):
         try:
-            roi = cv2.cvtColor(face, cv2.COLOR_BGR2GRAY)
-            if roi is None:
-                print('roi is None')
+            roii = cv2.cvtColor(facee, cv2.COLOR_BGR2GRAY)
+            if roii is None:
                 return
-            roi = cv2.resize(roi, (48, 48))
-            roi = roi.astype('float') / 255.0
-            roi = img_to_array(roi)  # convert to keras-compatible array
-            roi = np.expand_dims(roi, axis=0)
-            preds = self.emotioner.predict(roi)[0]
-            self.emotions[preds.argmax()][1] += 1
+            roii = cv2.resize(roii, (48, 48))
+            roii = roii.astype('float') / 255.0
+            roii = tensorflow.keras.preprocessing.image.img_to_array(roii)  # convert to keras-compatible array
+            roii= np.expand_dims(roii, axis=0)
+            predss = self.emotioner.predict(roii)[0]
+            self.emotions[predss.argmax()][1] += 1
         except Exception as e:
             Warning(str(e))
             print(e)
@@ -104,9 +102,10 @@ class VideoThread(QThread):
 
     def run(self):
         try:
+            # print(sys.modules)
+            self.emotioner = tensorflow.keras.models.load_model(self.emotioner_path)
             self.detector = cv2.dnn.readNetFromCaffe(self.proto_path, self.model_path)
             self.embedder = cv2.dnn.readNetFromTorch(self.embedder_path)
-            self.emotioner = load_model(self.emotioner_path)
             taker = AttendanceTaker(self.class_id).populate_std_list()
             if self.stream_path is int:
                 cap = cv2.VideoCapture(self.stream_path, cv2.CAP_DSHOW)

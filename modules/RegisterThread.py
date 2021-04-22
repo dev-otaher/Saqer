@@ -5,22 +5,19 @@ from sqlite3 import Error
 import cv2
 import imutils
 import numpy
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QThread, pyqtSignal
 from PyQt5.QtGui import QImage
 
 from gui.Warning import Warning
-from modules.VideoThread import VideoThread
 
 
-class RegisterThread(VideoThread):
+class RegisterThread(QThread):
     # this class will handle the detection and recognition part using worker thread
+    no_cam = pyqtSignal(str)
+    image_update = pyqtSignal(QImage)
     def __init__(self, stream_path):
-        super().__init__(stream_path,
-                         "db/model/deploy.prototxt",
-                         "db/model/res10_300x300_ssd_iter_140000.caffemodel",
-                         "db/model/openface_nn4.small2.v1.t7",
-                         "db/model/epoch_75.hdf5")
-        self.detector = self.embedder = self.emotioner = None
+        super().__init__()
+        self.stream_path = stream_path
         self.save = False
         self.uni_id = None
 
