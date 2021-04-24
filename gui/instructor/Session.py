@@ -122,7 +122,8 @@ class Session:
             l_path = sep.join(['db', 'courses', course_code, class_title, 'dataset', 'output', 'labels.pickle'])
             if exists(r_path) and exists(l_path):
                 self.vt = VideoThread(
-                    sep.join(['video_samples', '1k.mp4']),
+                    # sep.join(['video_samples', '1k.mp4']),
+                    0,
                     proto_path,
                     model_path,
                     embedder_path,
