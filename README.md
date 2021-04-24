@@ -1,7 +1,8 @@
 # Prerequisites
 1. Python 3.8+ (See: https://youtu.be/i-MuSAwgwCU)
-2. pip
-3. Create virtual environment.
+2. pip (Update pip to latest version if not updated)
+3. Microsoft Build Tools (Download from: https://www.microsoft.com/en-us/download/details.aspx?id=48159)
+4. Create virtual environment.
 
 # Create Virtual Environment
 To install requried packages, it is better to create virtual environment first:
@@ -13,7 +14,7 @@ To install requried packages, it is better to create virtual environment first:
 
 # Install Requirements
 After activating the created virtual environement, we need to install required packages found in `requirements.txt`:
-1. In the same cmd window, type `pip install -r requirements.txt`
+1. In the same cmd window, type `pip install -r requirements.txt --no-cache-dir`
 2. Wait untill all requried packages are installed.
 3. Close cmd window.
 
