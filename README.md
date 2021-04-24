@@ -12,7 +12,7 @@ To install requried packages, it is better to create virtual environment first:
 4. Now, we need to activate our created virtual environment. In the same cmd window, type `<name_of_virtualenv>\Scripts\activate`.
 5. Keep cmd window open.
 
-<img src="video_samples/create_venv.gif">
+<img src=".github\images\create_venv.gif">
 
 
 # Install Requirements
@@ -21,8 +21,11 @@ After activating the created virtual environement, we need to install required p
 2. Wait untill all requried packages are installed.
 3. Close cmd window.
 
-# Run Saqer App
+<img src=".github\images\install_req.gif">
+
+# Run App
 Every time you need to run Saqer app, the created virtual environment needs to be activated first. (Apply step 1, 2 and 4 from `Create Virtual Environment` section):
 1. After activating the virtual environment, type `python main.py` in cmd window.
 2. Happy testing ༼ つ ◕_◕ ༽つ!
 
+<img src=".github\images\run_app.gif">
