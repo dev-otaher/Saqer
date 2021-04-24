@@ -12,6 +12,9 @@ To install requried packages, it is better to create virtual environment first:
 4. Now, we need to activate our created virtual environment. In the same cmd window, type `<name_of_virtualenv>\Scripts\activate`.
 5. Keep cmd window open.
 
+<img src="video_samples/create_venv.gif">
+
+
 # Install Requirements
 After activating the created virtual environement, we need to install required packages found in `requirements.txt`:
 1. In the same cmd window, type `pip install -r requirements.txt --no-cache-dir`
