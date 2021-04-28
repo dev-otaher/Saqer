@@ -9,17 +9,17 @@ To install requried packages, it is better to create virtual environment first:
 1. Navigate to repo's folder.
 2. Type `cmd` in window's path field.
 3. In cmd, type `python -m venv <name_of_virtualenv>`.
-4. Now, we need to activate our created virtual environment. In the same cmd window, type `<name_of_virtualenv>\Scripts\activate`.
-5. Keep cmd window open.
+4. Keep cmd window open.
 
 <img src=".github\images\create_venv.gif">
 
 
 # Install Requirements
-After activating the created virtual environement, we need to install required packages found in `requirements.txt`:
-1. In the same cmd window, type `pip install -r requirements.txt --no-cache-dir`
-2. Wait untill all requried packages are installed.
-3. Close cmd window.
+After creating the virtual environement, we need to install required packages found in `requirements.txt`:
+1. We need to activate our created virtual environment. In the same cmd window, type `<name_of_virtualenv>\Scripts\activate`.
+2. In the same cmd window, type `pip install -r requirements.txt --no-cache-dir`
+3. Wait untill all requried packages are installed.
+4. Close cmd window.
 
 <img src=".github\images\install_req.gif">
 
